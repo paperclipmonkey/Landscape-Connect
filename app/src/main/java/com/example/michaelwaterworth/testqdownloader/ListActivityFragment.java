@@ -1,11 +1,15 @@
 package com.example.michaelwaterworth.testqdownloader;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -40,6 +44,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+
 /**
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
@@ -47,6 +52,9 @@ public class ListActivityFragment extends Fragment {
     protected ListActivityFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
+
+    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+
 
     public ListActivityFragment() {
     }
@@ -215,15 +223,51 @@ public class ListActivityFragment extends Fragment {
                     break;
                 //QR button pressed
                 case R.id.fab_qr:
-                    IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
-                    integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                    integrator.setPrompt(getActivity().getString(R.string.scan_qr_code));
-                    integrator.setBeepEnabled(true);
-                    integrator.initiateScan();
+                    getFabQr();
                     break;
             }
         }
     };
+
+    private void getFabQr(){
+        Log.d("TAG", "Get 1");
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                //TODO Add explanation
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+            integrator.setPrompt(getActivity().getString(R.string.scan_qr_code));
+            integrator.setBeepEnabled(true);
+            integrator.initiateScan();
+        }
+    }
 
 
     public void showHideProgress(){
@@ -236,6 +280,28 @@ public class ListActivityFragment extends Fragment {
                 .content(R.string.please_wait)
                 .progress(true, 0)
                 .show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("TAG", "Permission Granted");
+                    getFabQr();
+                } else {
+                    Log.d("TAG", "Permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 
