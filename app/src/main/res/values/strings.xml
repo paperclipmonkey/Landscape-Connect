@@ -18,5 +18,6 @@
 
     <string name="downloading_questionnaire">Downloading Questionnaire</string>
     <string name="please_wait">Please wait</string>
+    <string name="new_landscape">New Landscape</string>
 
 </resources>

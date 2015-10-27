@@ -59,10 +59,6 @@ public class ListActivityFragment extends Fragment {
     public ListActivityFragment() {
     }
 
-    public static ListActivityFragment newInstance() {
-        return new ListActivityFragment();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
