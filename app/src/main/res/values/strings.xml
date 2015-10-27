@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">TestQDownloader</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
+    <string name="questionnaires">Questionnaires</string>
+    <string name="scan_qr_code">Scan a QR code</string>
+    <string name="space_selected">" selected"</string>
+    <string name="title">Landscape Connect</string>
+
+    <string name="add_code_dialog_title">Add from Code</string>
+    <string name="add_code_dialog_content">Please add the 5 character Landscape Connect code</string>
+    <string name="add_code_dialog_hint">#####</string>
+    <string name="add_code_dialog_prefill">" "</string>
+
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_content">Are you sure you want to delete these Questionnaires</string>
+    <string name="delete_dialog_positive">Delete</string>
+    <string name="delete_dialog_negative">Cancel</string>
+
+    <string name="downloading_questionnaire">Downloading Questionnaire</string>
+    <string name="please_wait">Please wait</string>
+
+</resources>

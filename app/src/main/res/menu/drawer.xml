@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_attachment"
+            android:checked="true"
+            android:icon="@drawable/ic_ic_action_list_2"
+            android:title="Questionnaires" />
+        <item
+            android:id="@+id/navigation_item_images"
+            android:icon="@drawable/ic_file_cloud_upload"
+            android:title="Upload Queue" />
+    </group>
+
+    <item android:title="App">
+        <menu>
+            <item
+                android:icon="@drawable/ic_action_settings"
+                android:title="Settings" />
+            <item
+                android:icon="@drawable/ic_action_info_outline"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>

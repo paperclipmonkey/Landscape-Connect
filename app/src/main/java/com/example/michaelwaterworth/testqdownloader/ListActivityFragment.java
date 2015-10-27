@@ -1,0 +1,357 @@
+package com.example.michaelwaterworth.testqdownloader;
+
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.view.ActionMode;
+import android.text.InputType;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+
+import com.activeandroid.content.ContentProvider;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
+/**
+ * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
+ */
+public class ListActivityFragment extends Fragment {
+    protected ListActivityFragment mThis;
+    protected ActionMode mActionMode;
+    protected MaterialDialog dialog;
+
+    public ListActivityFragment() {
+    }
+
+    public static ListActivityFragment newInstance() {
+        return new ListActivityFragment();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.d("Home", "Inflating Qs List Fragment");
+        mThis = this;
+        final View base = inflater.inflate(R.layout.fragment_list, container, false);
+
+        // Create a progress bar to display while the list loads
+        ProgressBar progressBar = new ProgressBar(getActivity());
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        progressBar.setIndeterminate(true);
+
+        final ListView listView = (ListView) base.findViewById(R.id.qslist);
+        listView.setEmptyView(progressBar);
+
+        listView.setAdapter(new SimpleCursorAdapter(getActivity(),
+                R.layout.qs_row,
+                null,
+                new String[] { "Name", "Description" , "DateAdded"},
+                new int[] { R.id.qs_row_title, R.id.qs_row_description, R.id.qs_row_date },
+                0));
+
+        final String[] projection = {"_id", "DateAdded", "Name", "Description"};
+
+        getActivity().getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
+                return new CursorLoader(getActivity(),
+                        ContentProvider.createUri(Qs.class, null),
+                        projection, null, null, null
+                );
+            }
+
+            @Override
+            public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(cursor);
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> arg0) {
+                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(null);
+            }
+        });
+
+        // Must add the progress bar to the root of the layout
+        //ViewGroup root = (ViewGroup) getActivity().findViewById(android.R.id.content);
+        //root.addView(progressBar);
+
+//        final QsAdapter adapter = new QsAdapter(Qs.getAll());
+//        // Assign adapter to ListView
+//        listView.setAdapter(adapter);
+
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            int selectedCount = 0;
+
+            @Override
+            public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
+                // Inflate the menu for the CAB
+                MenuInflater inflater = actionMode.getMenuInflater();
+                inflater.inflate(R.menu.menu_list, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(android.view.ActionMode actionMode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
+                //long[] ids = listView.getCheckedItemIds();
+                //List<Qs> qs = Qs.getFromIds(ids);
+                //Log.d("TAG", "Size: " + qs.size());
+                final long[] ids = listView.getCheckedItemIds();
+
+                switch (menuItem.getItemId()) {
+                    case R.id.action_delete:
+                        new MaterialDialog.Builder(getContext())
+                                .title(R.string.delete_dialog_title)
+                                .content(R.string.delete_dialog_content)
+                                .positiveText(R.string.delete_dialog_positive)
+                                .negativeText(R.string.delete_dialog_negative)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        //Delete the IDs specified
+                                        Qs.deleteFromIds(ids);
+                                    }
+                                })
+                                .show();
+                        actionMode.finish(); // Action picked, so close the CAB
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(android.view.ActionMode actionMode) {
+                selectedCount = 0;
+            }
+
+            @Override
+            public void onItemCheckedStateChanged(android.view.ActionMode actionMode, int i, long l, boolean b) {
+                if (b) {
+                    selectedCount++;
+                } else {
+                    selectedCount--;
+                }
+                ListView listView = (ListView) base.findViewById(R.id.qslist);
+                listView.getChildAt(i).setSelected(b);
+                actionMode.setTitle(selectedCount + getActivity().getString(R.string.space_selected));
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                // ListView Clicked item index
+                Cursor c = (Cursor)adapterView.getItemAtPosition(position);
+                Qs qs = Qs.newInstance(c);
+                Log.d("Tag", qs.getName());
+            }
+        });
+
+        //Respond to FAB events
+        final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
+        final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
+        fabButton1.setOnClickListener(clickListener);
+        fabButton2.setOnClickListener(clickListener);
+
+        return base;
+    }
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            //Close the FAB menu
+            FloatingActionMenu fabMenu = (FloatingActionMenu) v.getParent();
+            fabMenu.close(true);
+
+            switch (v.getId()) {
+                //Link button pressed
+                case R.id.fab_link:
+                    new MaterialDialog.Builder(getContext())
+                            .title(R.string.add_code_dialog_title)
+                            .content(R.string.add_code_dialog_content)
+                            .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT)
+                            .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                    addNewQs(input.toString());
+                                }
+                            }).show();
+                    break;
+                //QR button pressed
+                case R.id.fab_qr:
+                    IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
+                    integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                    integrator.setPrompt(getActivity().getString(R.string.scan_qr_code));
+                    integrator.setBeepEnabled(true);
+                    integrator.initiateScan();
+                    break;
+            }
+        }
+    };
+
+
+    public void showHideProgress(){
+        if(dialog != null){
+            dialog.dismiss();
+            dialog = null;
+        } else {
+            dialog = new MaterialDialog.Builder(getContext())
+                .title(R.string.downloading_questionnaire)
+                .content(R.string.please_wait)
+                .progress(true, 0)
+                .show();
+        }
+    }
+
+
+    public void addNewQs(String url){
+        new DownloadToString().execute("http://3equals.co.uk/lc-json/1.json");
+        showHideProgress();
+//        Qs qs = new Qs();
+//        qs.setServerId(url);
+//        qs.setName("Sample name");
+//        qs.setDescription("Sample description here. This is a bit longer");
+//        qs.save();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                Log.d("QRSCAN", "Cancelled from fragment");
+            } else {
+                Log.d("QRSCAN", "Scanned from fragment: " + result.getContents());
+                //TODO - Check is URL
+                addNewQs(result.getContents());
+            }
+
+        }
+    }
+
+    public void parseJson(String string){
+        showHideProgress();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Qs qs = gson.fromJson(string, Qs.class);
+        qs.save();
+    }
+
+
+    /**
+     * Background Async Task to download file
+     * */
+    class DownloadToString extends AsyncTask<String, String, String> {
+        // Output stream
+        final ByteArrayOutputStream output = new ByteArrayOutputStream();
+        /**
+         * Before starting background thread Show Progress Bar Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //showDialog(progress_bar_type);
+        }
+
+        /**
+         * Downloading file in background thread
+         * */
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                URL url = new URL(f_url[0]);
+                URLConnection conection = url.openConnection();
+                conection.connect();
+
+                // this will be useful so that you can show a typical 0-100%
+                // progress bar
+
+                int lenghtOfFile = conection.getContentLength();
+
+                // download the file
+                InputStream input = new BufferedInputStream(url.openStream(),
+                        8192);
+
+                byte data[] = new byte[1024];
+
+                long total = 0;
+
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // publishing the progress....
+                    // After this onProgressUpdate will be called
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+
+                    // writing data to file
+                    output.write(data, 0, count);
+                }
+
+                // flushing output
+                output.flush();
+
+                // closing streams
+                output.close();
+                input.close();
+
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+
+            return null;
+        }
+
+        /**
+         * Updating progress bar
+         * */
+        protected void onProgressUpdate(String... progress) {
+            // setting progress percentage
+            //pDialog.setProgress(Integer.parseInt(progress[0]));
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        @Override
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after the file was downloaded
+            //dismissDialog(progress_bar_type);
+            parseJson(output.toString());
+        }
+    }
+}
