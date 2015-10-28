@@ -3,7 +3,6 @@ package com.example.michaelwaterworth.testqdownloader;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.google.gson.Gson;
 public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
+    protected Qs qs;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -48,24 +48,20 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
 
-        Log.d("ID", "" + qsId);
-        Qs qs = Qs.load(Qs.class, qsId);
+        qs = Qs.load(Qs.class, qsId);
 
         String questions; //= qs.getQuestions();
         questions = "[{\"title\":\"Section 1\",\"required\":true,\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]";
-        Log.d("Questions", "" + questions);
 
         Gson gson = new Gson();
 
         Section[] objs2 = gson.fromJson(questions, Section[].class);
 
         Question[] questionsArr = objs2[0].getQuestions();
-        Log.d("Questions: ", questionsArr.toString());
 
         //Build the UI
-        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.thanks));
-
-
+        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
+        
         Button donebutton = (Button) base.findViewById(R.id.section_button_done);
         donebutton.setOnClickListener(this);
 
@@ -80,6 +76,12 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 returnToSections();
                 break;
         }
+    }
+
+    public void finish(){
+//        Intent returnIntent = new Intent();
+//        returnIntent.putExtra("result",result);
+//        setResult(Activity.RESULT_OK, returnIntent);
     }
 
     public void returnToSections(){

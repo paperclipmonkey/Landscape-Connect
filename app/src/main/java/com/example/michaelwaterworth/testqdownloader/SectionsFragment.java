@@ -26,8 +26,10 @@ import com.google.gson.Gson;
 public class SectionsFragment extends Fragment implements View.OnClickListener {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     static final int REQUEST_IMAGE_CAPTURE = 2;
+    static final int REQUEST_SECTION_DATA = 3;
     protected ViewFlipper flipper;
     protected ViewGroup base;
+    protected Qs qs;
 
     public SectionsFragment() {
     }
@@ -59,14 +61,15 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
-        Qs qs = Qs.load(Qs.class, qsId);
+
+        qs = Qs.load(Qs.class, qsId);
+
         if(null == qs){
             Log.e("err", "Failed to get Qs");
             return base;
         }
         String questions; //= qs.getQuestions();
         questions = "[{\"title\":\"Section 1\",\"required\":true,\"pages\":[{\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]}]";
-        Log.d("Questions", "" + questions);
 
         Gson gson = new Gson();
 
@@ -92,8 +95,8 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
     public void openSection(){
         Intent intent = new Intent(getActivity(), SectionActivity.class);
-        //intent.putExtra("id", qs.getId());
-        startActivity(intent);
+        intent.putExtra("id", qs.getId());
+        startActivityForResult(intent, REQUEST_SECTION_DATA);
     }
 
     public void buttonTakePhoto(View view) {
@@ -137,6 +140,12 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             //mImageView.setImageBitmap(imageBitmap);
+            pageNext();
+        }
+        if(requestCode == REQUEST_SECTION_DATA){
+            Log.d("JSON", "Got JSON from Section");
+            Bundle extras = data.getExtras();
+            String json = (String) extras.get("data");
             pageNext();
         }
     }
