@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:id="@+id/group_pages">
         <item
             android:id="@+id/drawer_questionnaires"
             android:checked="true"
             android:icon="@drawable/ic_ic_action_list_2"
-            android:title="Questionnaires" />
+            android:title="@string/drawer_questionnaires" />
         <item
             android:id="@+id/drawer_uploads"
             android:icon="@drawable/ic_file_cloud_upload"
-            android:title="Upload Queue" />
+            android:title="@string/drawer_queue" />
     </group>
 
-    <item android:title="App">
-        <menu>
-            <item
-                android:icon="@drawable/ic_action_settings"
-                android:title="Settings" />
-            <item
-                android:icon="@drawable/ic_action_info_outline"
-                android:title="About" />
-        </menu>
-    </item>
+    <group android:checkableBehavior="single" android:id="@+id/group_app">
+        <item
+            android:icon="@drawable/ic_action_settings"
+            android:title="@string/drawer_settings" />
+        <item
+            android:icon="@drawable/ic_action_info_outline"
+            android:title="@string/drawer_about" />
+    </group>
 
 </menu>
