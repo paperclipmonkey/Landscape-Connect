@@ -1,5 +1,7 @@
 package com.example.michaelwaterworth.testqdownloader;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -29,6 +31,13 @@ public class SectionActivity extends AppCompatActivity {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentFragment, fragment);
         fragmentTransaction.commit();
+    }
+
+    public void sendResult(String result){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result", result);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
     }
 
     @Override
