@@ -14,9 +14,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -31,6 +29,9 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     protected ViewFlipper flipper;
     protected ViewGroup base;
 
+    public SectionsFragment() {
+    }
+
     protected void setTaskProgress(int percentage){
         ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
         if(progressBar != null) {
@@ -42,9 +43,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         if(flipper != null) {
             flipper.showNext();  // Switches to the next view
         }
-    }
-
-    public SectionsFragment() {
     }
 
     @Override
@@ -61,33 +59,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         b.setOnClickListener(this);
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
-
-        Log.d("ID", "" + qsId);
         Qs qs = Qs.load(Qs.class, qsId);
-
-//        //Build a sample piece of JSON
-//        Question q1 = new Question();
-//        q1.setTitle("How old are you");
-//        q1.setType("string");
-//        q1.setRequired(true);
-//
-//        Page p1 = new Page();
-//
-//        ArrayList<Question> questionArr = new ArrayList<Question>();
-//        questionArr.add(q1);
-//
-//        p1.setQuestions(questionArr);
-//
-//        Section s1 = new Section();
-//        s1.setRequired(true);
-//        s1.setTitle("Section 1");
-//
-//        ArrayList<Page> pagesArray = new ArrayList<Page>();
-//        pagesArray.add(p1);
-//        s1.setPages(pagesArray);
-//
-//        ArrayList<Section> sectionsArray = new ArrayList<Section>();
-//        sectionsArray.add(s1);
 
         String questions = qs.getQuestions();
         questions = "[{\"title\":\"Section 1\",\"required\":true,\"pages\":[{\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]}]";
@@ -121,9 +93,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.sections_fragment, menu);
@@ -145,9 +115,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -180,30 +147,4 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         return viewGroup;
     }
-
-    public View buildQuestionView(Question question){
-        RelativeLayout relativeLayout = new RelativeLayout(getContext());
-        TextView title = new TextView(getContext());
-        title.setText(question.getTitle());
-
-        View view;
-        switch (question.getType()){
-            case "textarea":
-                EditText textareaObj = new EditText(getContext());
-                view = textareaObj;
-                break;
-            case "string":
-                EditText stringObj = new EditText(getContext());
-                view = stringObj;
-                break;
-            default:
-                view = new View(getContext());
-        }
-
-        relativeLayout.addView(title);
-        relativeLayout.addView(view);
-
-        return relativeLayout;
-    }
-
 }

@@ -16,7 +16,6 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.view.ActionMode;
 import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,9 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 
 import com.activeandroid.content.ContentProvider;
 import com.afollestad.materialdialogs.DialogAction;
@@ -49,12 +46,38 @@ import java.net.URLConnection;
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class ListActivityFragment extends Fragment {
+    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     protected ListActivityFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+        //Close the FAB menu
+        FloatingActionMenu fabMenu = (FloatingActionMenu) v.getParent();
+        fabMenu.close(true);
 
-    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-
+        switch (v.getId()) {
+            //Link button pressed
+            case R.id.fab_link:
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.add_code_dialog_title)
+                        .content(R.string.add_code_dialog_content)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT)
+                        .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                addNewQs(input.toString());
+                            }
+                        }).show();
+                break;
+            //QR button pressed
+            case R.id.fab_qr:
+                getFabQr();
+                break;
+        }
+        }
+    };
 
     public ListActivityFragment() {
     }
@@ -62,26 +85,16 @@ public class ListActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("Home", "Inflating Qs List Fragment");
         mThis = this;
         final View base = inflater.inflate(R.layout.fragment_list, container, false);
-
-
-        // Create a progress bar to display while the list loads
-        ProgressBar progressBar = new ProgressBar(getActivity());
-        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
-        progressBar.setIndeterminate(true);
-
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
-        listView.setEmptyView(progressBar);
 
         listView.setAdapter(new SimpleCursorAdapter(getActivity(),
-                R.layout.qs_row,
-                null,
-                new String[] { "Name", "Description" , "DateAdded"},
-                new int[] { R.id.qs_row_title, R.id.qs_row_description, R.id.qs_row_date },
-                0));
+            R.layout.qs_row,
+            null,
+            new String[] { "Name", "Description" , "DateAdded"},
+            new int[] { R.id.qs_row_title, R.id.qs_row_description, R.id.qs_row_date },
+            0));
 
         final String[] projection = {"_id", "DateAdded", "Name", "Description"};
 
@@ -132,9 +145,6 @@ public class ListActivityFragment extends Fragment {
 
             @Override
             public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
-                //long[] ids = listView.getCheckedItemIds();
-                //List<Qs> qs = Qs.getFromIds(ids);
-                //Log.d("TAG", "Size: " + qs.size());
                 final long[] ids = listView.getCheckedItemIds();
 
                 switch (menuItem.getItemId()) {
@@ -192,7 +202,7 @@ public class ListActivityFragment extends Fragment {
             }
         });
 
-        //Respond to FAB events
+        //Registed handlers for FAB events
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
         fabButton1.setOnClickListener(clickListener);
@@ -200,36 +210,6 @@ public class ListActivityFragment extends Fragment {
 
         return base;
     }
-
-    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-            //Close the FAB menu
-            FloatingActionMenu fabMenu = (FloatingActionMenu) v.getParent();
-            fabMenu.close(true);
-
-            switch (v.getId()) {
-                //Link button pressed
-                case R.id.fab_link:
-                    new MaterialDialog.Builder(getContext())
-                            .title(R.string.add_code_dialog_title)
-                            .content(R.string.add_code_dialog_content)
-                            .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT)
-                            .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
-                                @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
-                                    addNewQs(input.toString());
-                                }
-                            }).show();
-                    break;
-                //QR button pressed
-                case R.id.fab_qr:
-                    getFabQr();
-                    break;
-            }
-        }
-    };
 
     private void getFabQr(){
         Log.d("TAG", "Get 1");

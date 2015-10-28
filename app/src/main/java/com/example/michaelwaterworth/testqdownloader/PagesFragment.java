@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -102,7 +101,7 @@ public class PagesFragment extends Fragment implements View.OnClickListener {
         title.setText(section.getTitle());
 
         TextView required = (TextView) viewGroup.findViewById(R.id.section_row_description);
-        required.setText("" + section.isRequired());
+        required.setText(String.format("%s", section.isRequired()));
 
         return viewGroup;
     }
@@ -111,8 +110,7 @@ public class PagesFragment extends Fragment implements View.OnClickListener {
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.sections_row, null);// You would want to add your new inflated view to your layout
 
-        RelativeLayout relativeLayout = new RelativeLayout(getContext());
-        TextView title = new TextView(getContext());
+        TextView title = (TextView) viewGroup.findViewById(R.id.question_question);
         title.setText(question.getTitle());
 
         View view;
@@ -129,10 +127,9 @@ public class PagesFragment extends Fragment implements View.OnClickListener {
                 view = new View(getContext());
         }
 
-        relativeLayout.addView(title);
-        relativeLayout.addView(view);
+        viewGroup.addView(view);
 
-        return relativeLayout;
+        return viewGroup;
     }
 
 }
