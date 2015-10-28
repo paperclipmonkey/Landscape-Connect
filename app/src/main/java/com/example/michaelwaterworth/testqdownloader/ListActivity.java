@@ -1,6 +1,10 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -8,7 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity{
+    public static final int LISTFRAGMENT = 0;
+    public static final int UPLOADFRAGMENT = 1;
+
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -23,6 +30,58 @@ public class ListActivity extends AppCompatActivity {
         actionBar.setTitle(R.string.app_name);
         actionBar.setDisplayHomeAsUpEnabled(true);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //Initializing NavigationView
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                //Checking if the item is in checked state or not, if not make it in checked state
+                if (menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);
+
+                //Closing drawer on item click
+                mDrawerLayout.closeDrawers();
+                Fragment fragment;
+
+                //Check to see which item was being clicked and perform appropriate action
+                switch (menuItem.getItemId()) {
+
+                    case R.id.drawer_questionnaires:
+                        fragment = new ListActivityFragment();
+                        break;
+
+                    default:
+                        fragment = new UploadListFragment();
+                        break;
+
+                }
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.contentFragment, fragment);
+                fragmentTransaction.commit();
+                return true;
+            }
+        });
+
+        switchFragment(LISTFRAGMENT);
+    }
+
+    public void switchFragment(int fragmentId){
+        Fragment fragment;
+        if(fragmentId == 0){
+            fragment =  new ListActivityFragment();
+        } else {
+            fragment = new UploadListFragment();
+        }
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.contentFragment, fragment);
+        transaction.commit();
     }
 
     @Override

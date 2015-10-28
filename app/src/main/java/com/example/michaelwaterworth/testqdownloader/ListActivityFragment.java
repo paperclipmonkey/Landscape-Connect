@@ -183,6 +183,10 @@ public class ListActivityFragment extends Fragment {
                 Cursor c = (Cursor)adapterView.getItemAtPosition(position);
                 Qs qs = Qs.newInstance(c);
                 Log.d("Tag", qs.getName());
+
+                Intent intent = new Intent(getActivity(), QuestionsActivity.class);
+                intent.putExtra("id", qs.getId());
+                startActivity(intent);
             }
         });
 
@@ -329,9 +333,14 @@ public class ListActivityFragment extends Fragment {
 
     public void parseJson(String string){
         showHideProgress();
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        Qs qs = gson.fromJson(string, Qs.class);
-        qs.save();
+        try {
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            Qs qs = gson.fromJson(string, Qs.class);
+            qs.save();
+        } catch (Exception e){
+            //TODO Add a message to the user here
+            Log.d("Error","An error occurred");
+        }
     }
 
 

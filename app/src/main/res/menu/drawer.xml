@@ -3,12 +3,12 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/navigation_item_attachment"
+            android:id="@+id/drawer_questionnaires"
             android:checked="true"
             android:icon="@drawable/ic_ic_action_list_2"
             android:title="Questionnaires" />
         <item
-            android:id="@+id/navigation_item_images"
+            android:id="@+id/drawer_uploads"
             android:icon="@drawable/ic_file_cloud_upload"
             android:title="Upload Queue" />
     </group>
