@@ -10,7 +10,7 @@ import android.view.MenuItem;
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
-public class QuestionsActivity extends AppCompatActivity {
+public class SectionsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

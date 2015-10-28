@@ -66,6 +66,7 @@ public class ListActivityFragment extends Fragment {
         mThis = this;
         final View base = inflater.inflate(R.layout.fragment_list, container, false);
 
+
         // Create a progress bar to display while the list loads
         ProgressBar progressBar = new ProgressBar(getActivity());
         progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -182,9 +183,10 @@ public class ListActivityFragment extends Fragment {
                 // ListView Clicked item index
                 Cursor c = (Cursor)adapterView.getItemAtPosition(position);
                 Qs qs = Qs.newInstance(c);
-                Log.d("Tag", qs.getName());
+                Log.d("ID", "" + qs.getId());
+                Log.d("Questions", "Questions: " + qs.getQuestions());
 
-                Intent intent = new Intent(getActivity(), QuestionsActivity.class);
+                Intent intent = new Intent(getActivity(), SectionsActivity.class);
                 intent.putExtra("id", qs.getId());
                 startActivity(intent);
             }

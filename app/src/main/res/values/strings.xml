@@ -19,6 +19,13 @@
     <string name="downloading_questionnaire">Downloading Questionnaire</string>
     <string name="please_wait">Please wait</string>
     <string name="new_landscape">New Landscape</string>
+    <string name="new_landscape_title">Add New Landscape</string>
+    <string name="new_landscape_subtitle">Welcome to the Natural England questionnaire. \n Let us walk you through the steps of sharing your landscape with us.</string>
+    <string name="new_landscape_take_photo_button">Take Photo</string>
+
+    <string name="done">Done</string>
+    <string name="next">Next</string>
+
 
     <string name="upload">Upload</string>
 </resources>
