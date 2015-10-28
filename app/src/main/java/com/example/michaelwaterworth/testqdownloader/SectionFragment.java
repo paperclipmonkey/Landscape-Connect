@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+
+import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
@@ -61,9 +64,18 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         //Build the UI
         buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
-        
+
         Button donebutton = (Button) base.findViewById(R.id.section_button_done);
         donebutton.setOnClickListener(this);
+
+        ImageViewTouch imageViewTouch = (ImageViewTouch) base.findViewById(R.id.section_image);
+
+        Picasso.with(getContext())
+                .load(R.drawable.ic_file_cloud_upload)
+                .fit()
+                .centerInside()
+                //.placeholder(R.drawable.loading)
+                .into(imageViewTouch);
 
         return base;
     }
@@ -73,19 +85,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.section_button_done:
-                returnToSections();
+                sendResult();
                 break;
         }
     }
 
-    public void finish(){
-//        Intent returnIntent = new Intent();
-//        returnIntent.putExtra("result",result);
-//        setResult(Activity.RESULT_OK, returnIntent);
-    }
-
-    public void returnToSections(){
-
+    public void sendResult(){
+        SectionActivity sectionActivity = (SectionActivity) getActivity();
+        sectionActivity.sendResult("Some result text here");
     }
 
     public void buildQuestionsView(Question[] questions, ViewGroup base){
