@@ -10,7 +10,7 @@ import android.view.MenuItem;
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
-public class SectionsActivity extends AppCompatActivity {
+public class SectionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +21,11 @@ public class SectionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("New Landscape");
+            actionBar.setTitle("Section name");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Fragment fragment = new SectionsFragment();
+        Fragment fragment = new SectionFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentFragment, fragment);
         fragmentTransaction.commit();

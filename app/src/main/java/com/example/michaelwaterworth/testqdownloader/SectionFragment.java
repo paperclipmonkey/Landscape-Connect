@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
 
@@ -19,21 +17,21 @@ import com.google.gson.Gson;
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
-    protected ViewFlipper flipper;
+//    protected ViewFlipper flipper;
     protected ViewGroup base;
 
-    protected void setTaskProgress(int percentage){
-        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
-        if(progressBar != null) {
-            progressBar.setProgress(percentage);
-        }
-    }
-
-    public void pageNext(){
-        if(flipper != null) {
-            flipper.showNext();  // Switches to the next view
-        }
-    }
+//    protected void setTaskProgress(int percentage){
+//        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
+//        if(progressBar != null) {
+//            progressBar.setProgress(percentage);
+//        }
+//    }
+//
+//    public void pageNext(){
+//        if(flipper != null) {
+//            flipper.showNext();  // Switches to the next view
+//        }
+//    }
 
     public SectionFragment() {
     }
@@ -46,17 +44,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
 
         //View Flipper for switching between pages
-        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
-
-        Button b = (Button) base.findViewById(R.id.button_take_photo);
-        b.setOnClickListener(this);
+//        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
 
         Log.d("ID", "" + qsId);
         Qs qs = Qs.load(Qs.class, qsId);
 
-        String questions = qs.getQuestions();
+        String questions; //= qs.getQuestions();
         questions = "[{\"title\":\"Section 1\",\"required\":true,\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]";
         Log.d("Questions", "" + questions);
 
@@ -68,17 +63,27 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         Log.d("Questions: ", questionsArr.toString());
 
         //Build the UI
-        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.diary_page));
+        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.thanks));
+
+
+        Button donebutton = (Button) base.findViewById(R.id.section_button_done);
+        donebutton.setOnClickListener(this);
 
         return base;
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //case R.id.button_take_photo:
-            //    break;
+            case R.id.section_button_done:
+                returnToSections();
+                break;
         }
+    }
+
+    public void returnToSections(){
+
     }
 
     public void buildQuestionsView(Question[] questions, ViewGroup base){
@@ -89,7 +94,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     public View buildQuestionView(Question question){
         LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.sections_row, null);// You would want to add your new inflated view to your layout
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
 
         TextView title = (TextView) viewGroup.findViewById(R.id.question_question);
         title.setText(question.getTitle());

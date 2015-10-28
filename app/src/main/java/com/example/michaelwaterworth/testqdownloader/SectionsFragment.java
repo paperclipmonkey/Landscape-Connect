@@ -91,7 +91,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
     public void openSection(){
-        Intent intent = new Intent(getActivity(), SectionsActivity.class);
+        Intent intent = new Intent(getActivity(), SectionActivity.class);
         //intent.putExtra("id", qs.getId());
         startActivity(intent);
     }

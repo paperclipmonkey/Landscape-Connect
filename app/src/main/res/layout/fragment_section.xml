@@ -3,20 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/task_progressbar"
-        android:layout_width="fill_parent"
-        android:layout_height="5dp"
-        style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal" />
+    <!--<ProgressBar-->
+        <!--android:id="@+id/task_progressbar"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="5dp"-->
+        <!--style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal" />-->
 
-    <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/switcher"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <!--<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/switcher"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="fill_parent">-->
 
         <!-- Section screen -->
         <LinearLayout
-            android:id="@+id/thanks"
+            android:id="@+id/questions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -28,13 +28,14 @@
                 <!--android:layout_height="0dp"-->
                 <!--android:layout_weight="1" />-->
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:longClickable="true"
-                android:text="@string/next" />
-        </LinearLayout>
 
-    </ViewFlipper>
+        </LinearLayout>
+        <Button
+            android:id="@+id/section_button_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:longClickable="true"
+            android:text="@string/done" />
+    <!--</ViewFlipper>-->
 </LinearLayout>
