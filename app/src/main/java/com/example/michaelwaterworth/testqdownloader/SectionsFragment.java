@@ -3,7 +3,6 @@ package com.example.michaelwaterworth.testqdownloader;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +25,6 @@ public class SectionsFragment extends Fragment {
         final View base = inflater.inflate(R.layout.fragment_sections, container, false);
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return base;
     }
 
@@ -36,13 +34,7 @@ public class SectionsFragment extends Fragment {
 
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        inflater.inflate(R.menu.drawer, menu);
-
-        //fragment specific menu creation
-
+        inflater.inflate(R.menu.sections_fragment, menu);
     }
 
     @Override
