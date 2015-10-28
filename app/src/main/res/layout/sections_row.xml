@@ -6,6 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
+    android:id="@+id/section_row"
     android:paddingTop="8dp">
 
     <TextView

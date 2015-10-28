@@ -1,21 +1,19 @@
 package com.example.michaelwaterworth.testqdownloader;
 
-import java.util.ArrayList;
-
 /**
  * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
 public class Section {
     public String title;
     public boolean required;
-    public ArrayList<Page> pages;
+    public Question[] questions;
 
-    public ArrayList<Page> getPages() {
-        return pages;
+    public Question[] getQuestions() {
+        return questions;
     }
 
-    public void setPages(ArrayList<Page> pages) {
-        this.pages = pages;
+    public void setQuestions(Question[] questions) {
+        this.questions = questions;
     }
 
     public String getTitle() {

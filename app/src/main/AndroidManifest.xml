@@ -12,7 +12,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/mic_launcher"
-        android:name=".BaseApplication"
+        android:name="com.activeandroid.app.Application"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -27,7 +27,7 @@
             android:value="com.myapp.model.Item, com.myapp.model.Category" />
 
         <activity
-            android:name=".ListActivity"
+            android:name=".QsActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListActivity" />
+                android:value=".QsActivity" />
         </activity>
     </application>
 

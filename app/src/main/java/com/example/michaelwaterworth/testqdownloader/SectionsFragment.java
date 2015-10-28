@@ -60,8 +60,11 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
         Qs qs = Qs.load(Qs.class, qsId);
-
-        String questions = qs.getQuestions();
+        if(null == qs){
+            Log.e("err", "Failed to get Qs");
+            return base;
+        }
+        String questions; //= qs.getQuestions();
         questions = "[{\"title\":\"Section 1\",\"required\":true,\"pages\":[{\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]}]";
         Log.d("Questions", "" + questions);
 
@@ -81,7 +84,16 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             case R.id.button_take_photo:
                 buttonTakePhoto(v);
                 break;
+            case R.id.section_row:
+                openSection();
+                break;
         }
+    }
+
+    public void openSection(){
+        Intent intent = new Intent(getActivity(), SectionsActivity.class);
+        //intent.putExtra("id", qs.getId());
+        startActivity(intent);
     }
 
     public void buttonTakePhoto(View view) {
@@ -145,6 +157,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         TextView required = (TextView) viewGroup.findViewById(R.id.section_row_description);
         required.setText("" + section.isRequired());
 
+        viewGroup.setOnClickListener(this);
         return viewGroup;
     }
 }

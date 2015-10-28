@@ -45,9 +45,9 @@ import java.net.URLConnection;
 /**
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
-public class ListActivityFragment extends Fragment {
+public class QsActivityFragment extends Fragment {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    protected ListActivityFragment mThis;
+    protected QsActivityFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
     private View.OnClickListener clickListener = new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class ListActivityFragment extends Fragment {
         }
     };
 
-    public ListActivityFragment() {
+    public QsActivityFragment() {
     }
 
     @Override
