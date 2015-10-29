@@ -21,7 +21,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
-    protected Qs qs;
+    protected Questionnaire questionnaire;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -51,9 +51,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
 
-        qs = Qs.load(Qs.class, qsId);
+        questionnaire = Questionnaire.load(Questionnaire.class, qsId);
 
-        String questions = qs.getQuestions();
+        String questions = questionnaire.getQuestions();
 
         Gson gson = new Gson();
 

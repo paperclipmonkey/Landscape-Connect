@@ -55,7 +55,7 @@ public class UploadListFragment extends Fragment {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
-                        ContentProvider.createUri(Qs.class, null),
+                        ContentProvider.createUri(Questionnaire.class, null),
                         projection, null, null, null
                 );
             }
@@ -75,7 +75,7 @@ public class UploadListFragment extends Fragment {
         //ViewGroup root = (ViewGroup) getActivity().findViewById(android.R.id.content);
         //root.addView(progressBar);
 
-//        final QsAdapter adapter = new QsAdapter(Qs.getAll());
+//        final QuestionnairesAdapter adapter = new QuestionnairesAdapter(Questionnaire.getAll());
 //        // Assign adapter to ListView
 //        listView.setAdapter(adapter);
 
@@ -99,8 +99,8 @@ public class UploadListFragment extends Fragment {
             @Override
             public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
                 //long[] ids = listView.getCheckedItemIds();
-                //List<Qs> qs = Qs.getFromIds(ids);
-                //Log.d("TAG", "Size: " + qs.size());
+                //List<Questionnaire> questionnaire = Questionnaire.getFromIds(ids);
+                //Log.d("TAG", "Size: " + questionnaire.size());
                 final long[] ids = listView.getCheckedItemIds();
 
                 switch (menuItem.getItemId()) {
@@ -114,7 +114,7 @@ public class UploadListFragment extends Fragment {
                                     @Override
                                     public void onClick(MaterialDialog dialog, DialogAction which) {
                                         //Delete the IDs specified
-                                        Qs.deleteFromIds(ids);
+                                        Questionnaire.deleteFromIds(ids);
                                     }
                                 })
                                 .show();
@@ -148,8 +148,8 @@ public class UploadListFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // ListView Clicked item index
                 Cursor c = (Cursor) adapterView.getItemAtPosition(position);
-                Qs qs = Qs.newInstance(c);
-                Log.d("Tag", qs.getName());
+                Questionnaire questionnaire = Questionnaire.newInstance(c);
+                Log.d("Tag", questionnaire.getName());
             }
         });
 

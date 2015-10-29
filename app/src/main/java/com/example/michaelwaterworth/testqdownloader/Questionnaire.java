@@ -21,27 +21,27 @@ import java.util.List;
  * Created by michaelwaterworth on 30/07/15. Copyright Michael Waterworth
  */
 
-@Table(name = "Qs", id = BaseColumns._ID)
-public class Qs extends Model implements Parcelable {
-    public static final Creator<Qs> CREATOR = new Creator<Qs>() {
+@Table(name = "Questionnaire", id = BaseColumns._ID)
+public class Questionnaire extends Model implements Parcelable {
+    public static final Creator<Questionnaire> CREATOR = new Creator<Questionnaire>() {
         @Override
-        public Qs createFromParcel(Parcel in) {
-            return new Qs(in);
+        public Questionnaire createFromParcel(Parcel in) {
+            return new Questionnaire(in);
         }
 
         @Override
-        public Qs[] newArray(int size) {
-            return new Qs[size];
+        public Questionnaire[] newArray(int size) {
+            return new Questionnaire[size];
         }
     };
 
-    public static Qs newInstance(Cursor c){
-//        Qs ld = new Qs()
+    public static Questionnaire newInstance(Cursor c){
+//        Questionnaire ld = new Questionnaire()
           int _id = c.getInt(c.getColumnIndex("_id"));
 //        ld.setId(_id);
 //        return ld;
         return new Select()
-                .from(Qs.class)
+                .from(Questionnaire.class)
                 .where("_id = ?", _id)
                 .executeSingle();
     }
@@ -69,21 +69,21 @@ public class Qs extends Model implements Parcelable {
     @Column(name = "Questions")
     private String questions;//Bool has this Task already been used as a notification
 
-    public Qs() {
+    public Questionnaire() {
         dateAdded = Calendar.getInstance().getTimeInMillis() / 1000;
     }
 
-    public static List<Qs> getAll() {
+    public static List<Questionnaire> getAll() {
         return new Select()
-                .from(Qs.class)
+                .from(Questionnaire.class)
                 //.where("Category = ?", category.getId())
                 .orderBy("name ASC")
                 .execute();
     }
 
-    public static List<Qs> getFromIds(long[] ids) {
+    public static List<Questionnaire> getFromIds(long[] ids) {
         From query = new Select()
-                .from(Qs.class)
+                .from(Questionnaire.class)
                 .where("_id = -1");
         for (long id: ids) {
             query.or("_id = ?", id);
@@ -94,7 +94,7 @@ public class Qs extends Model implements Parcelable {
 
     public static void deleteFromIds(long[] ids) {
         From query = new Delete()
-                .from(Qs.class)
+                .from(Questionnaire.class)
                 .where("_id = -1");
         for (long id: ids) {
             query.or("_id = ?", id);
@@ -103,7 +103,7 @@ public class Qs extends Model implements Parcelable {
         query.execute();
     }
 
-    public Qs(Parcel in) {
+    public Questionnaire(Parcel in) {
         dateAdded = in.readLong();
         name = in.readString();
         serverId = in.readString();

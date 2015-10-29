@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-public class QsActivity extends AppCompatActivity{
+public class QuestionnairesActivity extends AppCompatActivity{
     public static final int LISTFRAGMENT = 0;
     public static final int UPLOADFRAGMENT = 1;
     private ActionBar actionBar;
@@ -56,7 +56,7 @@ public class QsActivity extends AppCompatActivity{
                 switch (menuItem.getItemId()) {
 
                     case R.id.drawer_questionnaires:
-                        fragment = new QsActivityFragment();
+                        fragment = new QuestionnairesActivityFragment();
                         setTitle(R.string.questionnaires);
                         break;
                     default:
@@ -84,7 +84,7 @@ public class QsActivity extends AppCompatActivity{
     public void switchFragment(int fragmentId){
         Fragment fragment;
         if(fragmentId == 0){
-            fragment =  new QsActivityFragment();
+            fragment =  new QuestionnairesActivityFragment();
         } else {
             fragment = new UploadListFragment();
         }

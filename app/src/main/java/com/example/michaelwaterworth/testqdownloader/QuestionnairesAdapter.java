@@ -13,9 +13,9 @@ import android.widget.TextView;
  * Attaches Data objects to Lists.
  * Adapter supplies stylised Data
  */
-class QsAdapter extends CursorAdapter {
+class QuestionnairesAdapter extends CursorAdapter {
 
-    public QsAdapter(Context context, Cursor c, boolean autoRequery) {
+    public QuestionnairesAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
     }
 
@@ -26,7 +26,7 @@ class QsAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Qs ti = Qs.newInstance(cursor);
+        Questionnaire ti = Questionnaire.newInstance(cursor);
         TextView title = (TextView) view.findViewById(R.id.qs_row_title);
         TextView description = (TextView) view.findViewById(R.id.qs_row_description);
         TextView dateView = (TextView) view.findViewById(R.id.qs_row_date);

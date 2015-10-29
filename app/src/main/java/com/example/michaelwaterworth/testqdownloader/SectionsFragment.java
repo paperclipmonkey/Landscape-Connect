@@ -29,7 +29,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_SECTION_DATA = 3;
     protected ViewFlipper flipper;
     protected ViewGroup base;
-    protected Qs qs;
+    protected Questionnaire questionnaire;
 
     public SectionsFragment() {
     }
@@ -62,13 +62,13 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         long qsId = getActivity().getIntent().getLongExtra("id", -1);
 
-        qs = Qs.load(Qs.class, qsId);
+        questionnaire = Questionnaire.load(Questionnaire.class, qsId);
 
-        if(null == qs){
-            Log.e("err", "Failed to get Qs");
+        if(null == questionnaire){
+            Log.e("err", "Failed to get Questionnaire");
             return base;
         }
-        String questions = qs.getQuestions();
+        String questions = questionnaire.getQuestions();
 
         Gson gson = new Gson();
 
@@ -95,7 +95,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public void openSection(){
         ((SectionsActivity)getActivity()).switchToSection(11);
 //        Intent intent = new Intent(getActivity(), SectionActivity.class);
-//        intent.putExtra("id", qs.getId());
+//        intent.putExtra("id", questionnaire.getId());
 //        startActivityForResult(intent, REQUEST_SECTION_DATA);
     }
 

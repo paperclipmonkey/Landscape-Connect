@@ -45,12 +45,12 @@ import java.net.URLConnection;
 /**
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
-public class QsActivityFragment extends Fragment {
+public class QuestionnairesActivityFragment extends Fragment {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    protected QsActivityFragment mThis;
+    protected QuestionnairesActivityFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
-    private View.OnClickListener clickListener = new View.OnClickListener() {
+    private View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
         //Close the FAB menu
@@ -79,7 +79,7 @@ public class QsActivityFragment extends Fragment {
         }
     };
 
-    public QsActivityFragment() {
+    public QuestionnairesActivityFragment() {
     }
 
     @Override
@@ -90,7 +90,7 @@ public class QsActivityFragment extends Fragment {
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
         // Setup cursor adapter
-        QsAdapter todoAdapter = new QsAdapter(getContext(), null, true);
+        QuestionnairesAdapter todoAdapter = new QuestionnairesAdapter(getContext(), null, true);
         // Attach cursor adapter to the ListView
         listView.setAdapter(todoAdapter);
 
@@ -100,19 +100,19 @@ public class QsActivityFragment extends Fragment {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
-                        ContentProvider.createUri(Qs.class, null),
+                        ContentProvider.createUri(Questionnaire.class, null),
                         projection, null, null, null
                 );
             }
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((QsAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((QuestionnairesAdapter)listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((QsAdapter)listView.getAdapter()).swapCursor(null);
+                ((QuestionnairesAdapter)listView.getAdapter()).swapCursor(null);
             }
         });
 
@@ -120,7 +120,7 @@ public class QsActivityFragment extends Fragment {
         //ViewGroup root = (ViewGroup) getActivity().findViewById(android.R.id.content);
         //root.addView(progressBar);
 
-//        final QsAdapter adapter = new QsAdapter(Qs.getAll());
+//        final QuestionnairesAdapter adapter = new QuestionnairesAdapter(Questionnaire.getAll());
 //        // Assign adapter to ListView
 //        listView.setAdapter(adapter);
 
@@ -156,7 +156,7 @@ public class QsActivityFragment extends Fragment {
                                     @Override
                                     public void onClick(MaterialDialog dialog, DialogAction which) {
                                         //Delete the IDs specified
-                                        Qs.deleteFromIds(ids);
+                                        Questionnaire.deleteFromIds(ids);
                                     }
                                 })
                                 .show();
@@ -190,9 +190,9 @@ public class QsActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // ListView Clicked item index
                 Cursor c = (Cursor)adapterView.getItemAtPosition(position);
-                Qs qs = Qs.newInstance(c);
+                Questionnaire questionnaire = Questionnaire.newInstance(c);
                 Intent intent = new Intent(getActivity(), SectionsActivity.class);
-                intent.putExtra("id", qs.getId());
+                intent.putExtra("id", questionnaire.getId());
                 startActivity(intent);
             }
         });
@@ -202,8 +202,8 @@ public class QsActivityFragment extends Fragment {
 
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
-        fabButton1.setOnClickListener(clickListener);
-        fabButton2.setOnClickListener(clickListener);
+        fabButton1.setOnClickListener(fabClickListener);
+        fabButton2.setOnClickListener(fabClickListener);
 
         fabButton2.setMax(100);
 
@@ -226,21 +226,15 @@ public class QsActivityFragment extends Fragment {
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 //TODO Add explanation
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
 
             } else {
 
                 // No explanation needed, we can request the permission.
 
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
             }
         } else {
             IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
@@ -250,7 +244,6 @@ public class QsActivityFragment extends Fragment {
             integrator.initiateScan();
         }
     }
-
 
     public void showHideProgress(){
         if(dialog != null){
@@ -279,11 +272,9 @@ public class QsActivityFragment extends Fragment {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
-                return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
+            default:
+                Log.d("TAG", "Unknown request code");
         }
     }
 
@@ -291,11 +282,6 @@ public class QsActivityFragment extends Fragment {
     public void addNewQs(String url){
         new DownloadToString().execute("http://3equals.co.uk/lc-json/1.json");
         showHideProgress();
-//        Qs qs = new Qs();
-//        qs.setServerId(url);
-//        qs.setName("Sample name");
-//        qs.setDescription("Sample description here. This is a bit longer");
-//        qs.save();
     }
 
     @Override
@@ -309,7 +295,6 @@ public class QsActivityFragment extends Fragment {
                 //TODO - Check is URL
                 addNewQs(result.getContents());
             }
-
         }
     }
 
@@ -317,8 +302,8 @@ public class QsActivityFragment extends Fragment {
         showHideProgress();
         try {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            Qs qs = gson.fromJson(string, Qs.class);
-            qs.save();
+            Questionnaire questionnaire = gson.fromJson(string, Questionnaire.class);
+            questionnaire.save();
         } catch (Exception e){
             //TODO Add a message to the user here
             Log.d("Error",e.getLocalizedMessage());
