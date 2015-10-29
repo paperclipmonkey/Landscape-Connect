@@ -68,8 +68,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             Log.e("err", "Failed to get Qs");
             return base;
         }
-        String questions; //= qs.getQuestions();
-        questions = "[{\"title\":\"Section 1\",\"required\":true,\"pages\":[{\"questions\":[{\"title\":\"What is your name\",\"type\":\"string\"},{\"title\":\"Tell me a little about yourself\",\"type\":\"textarea\"}]}]}]";
+        String questions = qs.getQuestions();
 
         Gson gson = new Gson();
 
