@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.view.ActionMode;
 import android.text.InputType;
 import android.util.Log;
@@ -38,6 +37,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -89,12 +89,10 @@ public class QsActivityFragment extends Fragment {
         final View base = inflater.inflate(R.layout.fragment_list, container, false);
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
-        listView.setAdapter(new SimpleCursorAdapter(getActivity(),
-            R.layout.qs_row,
-            null,
-            new String[] { "Name", "Description" , "DateAdded"},
-            new int[] { R.id.qs_row_title, R.id.qs_row_description, R.id.qs_row_date },
-            0));
+        // Setup cursor adapter
+        QsAdapter todoAdapter = new QsAdapter(getContext(), null, true);
+        // Attach cursor adapter to the ListView
+        listView.setAdapter(todoAdapter);
 
         final String[] projection = {"_id", "DateAdded", "Name", "Description"};
 
@@ -109,12 +107,12 @@ public class QsActivityFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((QsAdapter)listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(null);
+                ((QsAdapter)listView.getAdapter()).swapCursor(null);
             }
         });
 
@@ -181,8 +179,8 @@ public class QsActivityFragment extends Fragment {
                 } else {
                     selectedCount--;
                 }
-                ListView listView = (ListView) base.findViewById(R.id.qslist);
-                listView.getChildAt(i).setSelected(b);
+                //ListView listView = (ListView) base.findViewById(R.id.qslist);
+                //listView.getChildAt(i).setSelected(b);
                 actionMode.setTitle(selectedCount + getActivity().getString(R.string.space_selected));
             }
         });
@@ -193,9 +191,6 @@ public class QsActivityFragment extends Fragment {
                 // ListView Clicked item index
                 Cursor c = (Cursor)adapterView.getItemAtPosition(position);
                 Qs qs = Qs.newInstance(c);
-                Log.d("ID", "" + qs.getId());
-                Log.d("Questions", "Questions: " + qs.getQuestions());
-
                 Intent intent = new Intent(getActivity(), SectionsActivity.class);
                 intent.putExtra("id", qs.getId());
                 startActivity(intent);
@@ -203,10 +198,15 @@ public class QsActivityFragment extends Fragment {
         });
 
         //Registed handlers for FAB events
+        FloatingActionMenu floatingActionMenu = (FloatingActionMenu) base.findViewById(R.id.fab_menu);
+
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
         fabButton1.setOnClickListener(clickListener);
         fabButton2.setOnClickListener(clickListener);
+
+        fabButton2.setMax(100);
+
 
         return base;
     }
@@ -321,7 +321,7 @@ public class QsActivityFragment extends Fragment {
             qs.save();
         } catch (Exception e){
             //TODO Add a message to the user here
-            Log.d("Error","An error occurred");
+            Log.d("Error",e.getLocalizedMessage());
         }
     }
 
@@ -371,7 +371,7 @@ public class QsActivityFragment extends Fragment {
                     // After this onProgressUpdate will be called
                     publishProgress("" + (int) ((total * 100) / lenghtOfFile));
 
-                    // writing data to file
+                    // writing data to buffer
                     output.write(data, 0, count);
                 }
 
@@ -404,7 +404,11 @@ public class QsActivityFragment extends Fragment {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after the file was downloaded
             //dismissDialog(progress_bar_type);
-            parseJson(output.toString());
+            try {
+                parseJson(output.toString("UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
