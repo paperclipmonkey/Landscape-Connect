@@ -94,9 +94,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
     public void openSection(){
-        Intent intent = new Intent(getActivity(), SectionActivity.class);
-        intent.putExtra("id", qs.getId());
-        startActivityForResult(intent, REQUEST_SECTION_DATA);
+        ((SectionsActivity)getActivity()).switchToSection(11);
+//        Intent intent = new Intent(getActivity(), SectionActivity.class);
+//        intent.putExtra("id", qs.getId());
+//        startActivityForResult(intent, REQUEST_SECTION_DATA);
     }
 
     public void buttonTakePhoto(View view) {
@@ -142,7 +143,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             //mImageView.setImageBitmap(imageBitmap);
             pageNext();
         }
-        if(requestCode == REQUEST_SECTION_DATA){
+        if(requestCode == REQUEST_SECTION_DATA && resultCode == getActivity().RESULT_OK){
             Log.d("JSON", "Got JSON from Section");
             Bundle extras = data.getExtras();
             String json = (String) extras.get("data");

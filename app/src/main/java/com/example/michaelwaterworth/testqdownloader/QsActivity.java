@@ -15,6 +15,7 @@ import android.view.MenuItem;
 public class QsActivity extends AppCompatActivity{
     public static final int LISTFRAGMENT = 0;
     public static final int UPLOADFRAGMENT = 1;
+    private ActionBar actionBar;
 
     private DrawerLayout mDrawerLayout;
 
@@ -25,10 +26,10 @@ public class QsActivity extends AppCompatActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-            actionBar.setTitle(R.string.app_name);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
+            actionBar.setTitle(R.string.questionnaires);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -56,10 +57,11 @@ public class QsActivity extends AppCompatActivity{
 
                     case R.id.drawer_questionnaires:
                         fragment = new QsActivityFragment();
+                        setTitle(R.string.questionnaires);
                         break;
-
                     default:
                         fragment = new UploadListFragment();
+                        setTitle("Upload Queue");
                         break;
 
                 }
@@ -71,6 +73,12 @@ public class QsActivity extends AppCompatActivity{
         });
 
         switchFragment(LISTFRAGMENT);
+    }
+
+    private void setTitle(String title){
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
     }
 
     public void switchFragment(int fragmentId){

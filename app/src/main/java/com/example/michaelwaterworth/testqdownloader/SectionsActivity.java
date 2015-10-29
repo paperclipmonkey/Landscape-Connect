@@ -2,6 +2,8 @@ package com.example.michaelwaterworth.testqdownloader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +31,28 @@ public class SectionsActivity extends AppCompatActivity {
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentFragment, fragment);
         fragmentTransaction.commit();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(
+            new FragmentManager.OnBackStackChangedListener() {
+                public void onBackStackChanged() {
+                    // Update your UI here.
+                }
+            });
+    }
+
+
+
+    public void switchToSection(int section){
+        Fragment fragment = new SectionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong("id", -1);
+        fragment.setArguments(bundle);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        // Add this transaction to the back stack
+        transaction.addToBackStack("Section");
+        transaction.replace(R.id.contentFragment, fragment);
+        transaction.commit();
     }
 
     @Override

@@ -91,8 +91,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void sendResult(){
-        SectionActivity sectionActivity = (SectionActivity) getActivity();
-        sectionActivity.sendResult("Some result text here");
+        getFragmentManager().popBackStackImmediate();
     }
 
     public void buildQuestionsView(Question[] questions, ViewGroup base){
