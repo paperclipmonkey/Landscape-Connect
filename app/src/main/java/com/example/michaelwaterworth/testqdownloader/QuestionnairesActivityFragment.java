@@ -230,9 +230,7 @@ public class QuestionnairesActivityFragment extends Fragment {
                     MY_PERMISSIONS_REQUEST_CAMERA);
 
             } else {
-
                 // No explanation needed, we can request the permission.
-
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
                     MY_PERMISSIONS_REQUEST_CAMERA);
             }
@@ -272,6 +270,7 @@ public class QuestionnairesActivityFragment extends Fragment {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
+                return;
             }
             default:
                 Log.d("TAG", "Unknown request code");

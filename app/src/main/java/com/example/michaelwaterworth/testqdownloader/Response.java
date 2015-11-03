@@ -16,13 +16,17 @@ import java.util.List;
 @Table(name = "Responses", id = BaseColumns._ID)
 public class Response extends Model {
 
-
     @Column(name = "id")
     private int id;
 
     @Expose
     @Column(name = "DateAdded")
     public Long dateAdded;//Date & Time to be completed
+
+
+    @Expose
+    @Column(name = "Questionnaire")
+    public Questionnaire questionnaire;
 
     @Expose
     @Column(name = "Photo")
