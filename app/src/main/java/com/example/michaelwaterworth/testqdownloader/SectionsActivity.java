@@ -9,6 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
@@ -47,13 +52,18 @@ public class SectionsActivity extends AppCompatActivity {
     private Response createResponse(Long questionnaireId){
         Questionnaire questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
 
+        Gson gson = new Gson();
+
+        // Construct the array of sections
+        ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questionnaire.getQuestions(), Section[].class)));
+
         Response response = new Response();
         response.questionnaire = questionnaire;
         //Get Id for Object
         response.save();
 
         int i = 0;
-        while(i < 1){
+        while(i < arrayOfSections.size()){
             SectionResponse sectionResponse = new SectionResponse();
             sectionResponse.response = response;
             sectionResponse.save();

@@ -71,15 +71,22 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         String questions = questionnaire.getQuestions();
 
+        Log.d("Questions", questions);
+
         Gson gson = new Gson();
 
         // Construct the data source
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
 
-        //Log.d("Size", "" + response.items().get(0));
+        //TODO Hack. Why is this -1?
+        arrayOfSections.remove(arrayOfSections.size() - 1);
+
+        Log.d("Size", "" + arrayOfSections.size());
 
         int i = 0;
         while(i < arrayOfSections.size()){
+            Log.d("i", "" + i);
+            Log.d("titles", arrayOfSections.get(i).getTitle());
             //Set whether the section is complete
             if(response.items().get(i) != null && response.items().get(i).data != null) {
                 Log.d("IsCompleted", "Completed");
