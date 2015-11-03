@@ -36,11 +36,4 @@ class QuestionnairesAdapter extends CursorAdapter {
 
         dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
     }
-
-    @Override
-    public void notifyDataSetChanged(){
-        super.notifyDataSetChanged();
-
-    }
-
 }
