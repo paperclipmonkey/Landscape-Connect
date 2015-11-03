@@ -13,6 +13,7 @@ import android.view.MenuItem;
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsActivity extends AppCompatActivity {
+    private Response response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,9 @@ public class SectionsActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        //Create Response object to base this on
+        response = createResponse(getIntent().getLongExtra("id", -1));
+
         Fragment fragment = new SectionsFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.contentFragment, fragment);
@@ -38,6 +42,20 @@ public class SectionsActivity extends AppCompatActivity {
                     // Update your UI here.
                 }
             });
+    }
+
+    private Response createResponse(Long questionnaireId){
+        Questionnaire questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
+
+        Response response = new Response();
+        response.questionnaire = questionnaire;
+
+        response.save();
+        return response;
+    }
+
+    public Response getResponse(){
+        return this.response;
     }
 
 

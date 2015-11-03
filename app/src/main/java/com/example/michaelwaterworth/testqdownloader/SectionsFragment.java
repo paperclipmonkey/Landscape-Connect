@@ -1,14 +1,16 @@
 package com.example.michaelwaterworth.testqdownloader;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,6 +34,7 @@ import java.util.Date;
  */
 public class SectionsFragment extends Fragment implements View.OnClickListener {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE = 4;
     static final int REQUEST_IMAGE_CAPTURE = 2;
     static final int REQUEST_SECTION_DATA = 3;
     protected ViewFlipper flipper;
@@ -68,9 +71,9 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         Button b = (Button) base.findViewById(R.id.button_take_photo);
         b.setOnClickListener(this);
 
-        long qsId = getActivity().getIntent().getLongExtra("id", -1);
+        response = ((SectionsActivity) getActivity()).getResponse();
 
-        questionnaire = Questionnaire.load(Questionnaire.class, qsId);
+        questionnaire = response.questionnaire;
 
         if(null == questionnaire){
             Log.e("err", "Failed to get Questionnaire");
@@ -85,12 +88,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         //Build the UI
         buildSectionsView(objs2, (ViewGroup) base.findViewById(R.id.diary_page));
 
-
-        //See if there's already a semi-saved Response object
-
-        //else create a new one
-        response = new Response();
-
+        //Ensure we're on the right page based on the current Response status
+        if(response.photo != null && !response.photo.isEmpty()){
+            pageNext();
+        }
 
         return base;
     }
@@ -115,6 +116,58 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
     public void buttonTakePhoto(View view) {
+        checkPermissions();
+    }
+
+    public void checkPermissions(){
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.CAMERA)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                //TODO Add explanation
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+
+            } else {
+                // No explanation needed, we can request the permission.
+                requestPermissions(new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_CAMERA);
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                    //TODO Add explanation
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE);
+
+                } else {
+                    // No explanation needed, we can request the permission.
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_STORAGE);
+                }
+            } else {
+                takePhoto();
+            }
+        }
+    }
+
+    private void takePhoto(){
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -149,6 +202,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         // Save a file: path for use with ACTION_VIEW intents
         response.photo = "file:" + image.getAbsolutePath();
+        response.save();
         return image;
     }
 
@@ -168,7 +222,19 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("TAG", "Permission Granted");
-                    //TODO
+                    checkPermissions();
+                } else {
+                    Log.d("TAG", "Permission denied");
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("TAG", "Permission Granted");
+                    checkPermissions();
                 } else {
                     Log.d("TAG", "Permission denied");
                     // permission denied, boo! Disable the
@@ -183,9 +249,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             Log.d("Photo", "Got photo");
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //mImageView.setImageBitmap(imageBitmap);
             pageNext();
         }
         if(requestCode == REQUEST_SECTION_DATA && resultCode == getActivity().RESULT_OK){
