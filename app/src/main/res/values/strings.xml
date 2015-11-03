@@ -26,6 +26,8 @@
     <string name="done">Done</string>
     <string name="next">Next</string>
 
+    <string name="question_sections">Question sections</string>
+
 
     <string name="upload">Upload</string>
     <string name="drawer_questionnaires">Questionnaires</string>

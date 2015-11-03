@@ -1,7 +1,6 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -17,9 +16,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
@@ -27,6 +27,8 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -83,10 +85,20 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         Gson gson = new Gson();
 
-        Section[] objs2 = gson.fromJson(questions, Section[].class);
+        // Construct the data source
+        ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
+        // Create the adapter to convert the array to views
+        SectionAdapter adapter = new SectionAdapter(getContext(), arrayOfSections);
+        // Attach the adapter to a ListView
+        ListView listView = (ListView) base.findViewById(R.id.sections_list);
+        listView.setAdapter(adapter);
 
-        //Build the UI
-        buildSectionsView(objs2, (ViewGroup) base.findViewById(R.id.diary_page));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                openSection(position);
+            }
+        });
 
         //Ensure we're on the right page based on the current Response status
         if(response.photo != null && !response.photo.isEmpty()){
@@ -256,23 +268,23 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void buildSectionsView(Section[] sections, ViewGroup base){
-        for(Section section : sections){
-            base.addView(buildSectionView(section));
-        }
-    }
-
-    public View buildSectionView(Section section){
-        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.sections_row, null);// You would want to add your new inflated view to your layout
-
-        TextView title = (TextView) viewGroup.findViewById(R.id.section_row_title);
-        title.setText(section.getTitle());
-
-        TextView required = (TextView) viewGroup.findViewById(R.id.section_row_description);
-        required.setText("" + section.isRequired());
-
-        viewGroup.setOnClickListener(this);
-        return viewGroup;
-    }
+//    public void buildSectionsView(Section[] sections, ViewGroup base){
+//        for(Section section : sections){
+//            base.addView(buildSectionView(section));
+//        }
+//    }
+//
+//    public View buildSectionView(Section section){
+//        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
+//        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.sections_row, null);// You would want to add your new inflated view to your layout
+//
+//        TextView title = (TextView) viewGroup.findViewById(R.id.section_row_title);
+//        title.setText(section.getTitle());
+//
+//        TextView required = (TextView) viewGroup.findViewById(R.id.section_row_description);
+//        required.setText("" + section.isRequired());
+//
+//        viewGroup.setOnClickListener(this);
+//        return viewGroup;
+//    }
 }

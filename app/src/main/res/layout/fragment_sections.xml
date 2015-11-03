@@ -63,7 +63,7 @@
 
         <!-- Sections list screen -->
         <LinearLayout
-            android:id="@+id/diary_page"
+            android:id="@+id/sections_page"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -74,8 +74,15 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/new_landscape_title"
+                android:text="@string/question_sections"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ListView
+                android:id="@+id/sections_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </LinearLayout>
     </ViewFlipper>
 </LinearLayout>
