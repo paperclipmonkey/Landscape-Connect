@@ -22,6 +22,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
     protected Questionnaire questionnaire;
+    protected Response response;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -49,9 +50,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         //View Flipper for switching between pages
 //        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
 
-        long qsId = getActivity().getIntent().getLongExtra("id", -1);
+        response = ((SectionsActivity) getActivity()).getResponse();
 
-        questionnaire = Questionnaire.load(Questionnaire.class, qsId);
+        questionnaire = response.questionnaire;
 
         String questions = questionnaire.getQuestions();
 
@@ -70,7 +71,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         ImageViewTouch imageViewTouch = (ImageViewTouch) base.findViewById(R.id.section_image);
 
         Picasso.with(getContext())
-                .load(R.drawable.ic_file_cloud_upload)
+                .load(response.photo)
                 .fit()
                 .centerInside()
                 //.placeholder(R.drawable.loading)
