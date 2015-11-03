@@ -24,9 +24,10 @@
         android:layout_gravity="end" />
 
     <ImageView
-        android:id="@+id/section_row_image"
+        android:id="@+id/section_row_done"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:background="@drawable/ic_action_done" />
 </RelativeLayout>

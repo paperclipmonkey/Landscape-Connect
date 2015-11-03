@@ -6,6 +6,16 @@ package com.example.michaelwaterworth.testqdownloader;
 public class Section {
     public String title;
     public boolean required;
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public boolean completed;
     public Question[] questions;
 
     public Question[] getQuestions() {

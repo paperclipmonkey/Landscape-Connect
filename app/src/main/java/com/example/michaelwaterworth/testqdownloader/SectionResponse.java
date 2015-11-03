@@ -15,12 +15,12 @@ public class SectionResponse extends Model{
 
     @Expose
     @Column(name = "Title")
-    private String title;//Date & Time to be completed
+    public String title;//Date & Time to be completed
 
     @Column(name = "Response")
     public Response response;
 
     @Expose
     @Column(name = "Data")
-    private String data;//Date & Time to be completed
+    public String data;//Date & Time to be completed
 }

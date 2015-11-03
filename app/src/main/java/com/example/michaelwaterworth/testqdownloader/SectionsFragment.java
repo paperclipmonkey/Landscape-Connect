@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
@@ -47,13 +46,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public SectionsFragment() {
     }
 
-    protected void setTaskProgress(int percentage){
-        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
-        if(progressBar != null) {
-            progressBar.setProgress(percentage);
-        }
-    }
-
     public void pageNext(){
         if(flipper != null) {
             flipper.showNext();  // Switches to the next view
@@ -77,18 +69,30 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         questionnaire = response.questionnaire;
 
-        if(null == questionnaire){
-            Log.e("err", "Failed to get Questionnaire");
-            return base;
-        }
         String questions = questionnaire.getQuestions();
 
         Gson gson = new Gson();
 
         // Construct the data source
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
+
+        //Log.d("Size", "" + response.items().get(0));
+
+        int i = 0;
+        while(i < arrayOfSections.size()){
+            //Set whether the section is complete
+            if(response.items().get(i) != null && response.items().get(i).data != null) {
+                Log.d("IsCompleted", "Completed");
+                arrayOfSections.get(i).setCompleted(true);
+            } else {
+                Log.d("IsCompleted", "Not completed");
+            }
+            i++;
+        }
+
         // Create the adapter to convert the array to views
         SectionAdapter adapter = new SectionAdapter(getContext(), arrayOfSections);
+
         // Attach the adapter to a ListView
         ListView listView = (ListView) base.findViewById(R.id.sections_list);
         listView.setAdapter(adapter);
@@ -268,23 +272,4 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-//    public void buildSectionsView(Section[] sections, ViewGroup base){
-//        for(Section section : sections){
-//            base.addView(buildSectionView(section));
-//        }
-//    }
-//
-//    public View buildSectionView(Section section){
-//        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
-//        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.sections_row, null);// You would want to add your new inflated view to your layout
-//
-//        TextView title = (TextView) viewGroup.findViewById(R.id.section_row_title);
-//        title.setText(section.getTitle());
-//
-//        TextView required = (TextView) viewGroup.findViewById(R.id.section_row_description);
-//        required.setText("" + section.isRequired());
-//
-//        viewGroup.setOnClickListener(this);
-//        return viewGroup;
-//    }
 }

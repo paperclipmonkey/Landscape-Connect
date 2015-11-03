@@ -23,6 +23,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     protected ViewGroup base;
     protected Questionnaire questionnaire;
     protected Response response;
+    protected int sectionNum;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -60,7 +61,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         Section[] objs2 = gson.fromJson(questions, Section[].class);
 
-        int sectionNum = getArguments().getInt("section_num");
+        sectionNum = getArguments().getInt("section_num");
 
         Question[] questionsArr = objs2[sectionNum].getQuestions();
 
@@ -93,6 +94,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void sendResult(){
+        SectionResponse sectionResponse = response.items().get(sectionNum);
+        //TODO - Save section data
+        sectionResponse.data = "Section completed data as JSON";
+        sectionResponse.save();
+
         getFragmentManager().popBackStackImmediate();
     }
 

@@ -49,16 +49,23 @@ public class SectionsActivity extends AppCompatActivity {
 
         Response response = new Response();
         response.questionnaire = questionnaire;
-
+        //Get Id for Object
         response.save();
+
+        int i = 0;
+        while(i < 1){
+            SectionResponse sectionResponse = new SectionResponse();
+            sectionResponse.response = response;
+            sectionResponse.save();
+            i++;
+        }
+
         return response;
     }
 
     public Response getResponse(){
         return this.response;
     }
-
-
 
     public void switchToSection(int section){
         Fragment fragment = new SectionFragment();

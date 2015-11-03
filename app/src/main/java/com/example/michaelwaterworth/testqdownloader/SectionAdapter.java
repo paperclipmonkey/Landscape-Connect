@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -38,6 +39,11 @@ public class SectionAdapter extends ArrayAdapter<Section> {
             isRequired = "Required";
         }
         required.setText(isRequired);
+
+        ImageView isCompleted = (ImageView) convertView.findViewById(R.id.section_row_done);
+        if(section.isCompleted()){
+            isCompleted.setVisibility(View.VISIBLE);
+        }
 
         return convertView;
     }
