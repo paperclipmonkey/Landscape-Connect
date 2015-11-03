@@ -60,7 +60,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         Section[] objs2 = gson.fromJson(questions, Section[].class);
 
-        Question[] questionsArr = objs2[0].getQuestions();
+        int sectionNum = getArguments().getInt("section_num");
+
+        Question[] questionsArr = objs2[sectionNum].getQuestions();
 
         //Build the UI
         buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
