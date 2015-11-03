@@ -45,9 +45,9 @@ import java.net.URLConnection;
 /**
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
-public class QuestionnairesActivityFragment extends Fragment {
+public class QuestionnairesFragment extends Fragment {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    protected QuestionnairesActivityFragment mThis;
+    protected QuestionnairesFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
     private View.OnClickListener fabClickListener = new View.OnClickListener() {
@@ -79,7 +79,7 @@ public class QuestionnairesActivityFragment extends Fragment {
         }
     };
 
-    public QuestionnairesActivityFragment() {
+    public QuestionnairesFragment() {
     }
 
     @Override
@@ -227,7 +227,7 @@ public class QuestionnairesActivityFragment extends Fragment {
                 // sees the explanation, try again to request the permission.
                 //TODO Add explanation
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
+                        MY_PERMISSIONS_REQUEST_CAMERA);
 
             } else {
                 // No explanation needed, we can request the permission.

@@ -56,7 +56,7 @@ public class QuestionnairesActivity extends AppCompatActivity{
                 switch (menuItem.getItemId()) {
 
                     case R.id.drawer_questionnaires:
-                        fragment = new QuestionnairesActivityFragment();
+                        fragment = new QuestionnairesFragment();
                         setTitle(R.string.questionnaires);
                         break;
                     default:
@@ -84,7 +84,7 @@ public class QuestionnairesActivity extends AppCompatActivity{
     public void switchFragment(int fragmentId){
         Fragment fragment;
         if(fragmentId == 0){
-            fragment =  new QuestionnairesActivityFragment();
+            fragment =  new QuestionnairesFragment();
         } else {
             fragment = new UploadListFragment();
         }
