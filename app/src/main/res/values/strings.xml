@@ -9,7 +9,7 @@
     <string name="add_code_dialog_title">Add from Code</string>
     <string name="add_code_dialog_content">Please add the 5 character Landscape Connect code</string>
     <string name="add_code_dialog_hint">#####</string>
-    <string name="add_code_dialog_prefill">" "</string>
+    <string name="add_code_dialog_prefill">""</string>
 
     <string name="delete_dialog_title">Delete</string>
     <string name="delete_dialog_content">Are you sure you want to delete these Questionnaires</string>

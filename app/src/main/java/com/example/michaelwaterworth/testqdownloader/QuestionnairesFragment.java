@@ -279,7 +279,9 @@ public class QuestionnairesFragment extends Fragment {
 
 
     public void addNewQs(String url){
-        new DownloadToString().execute("http://3equals.co.uk/lc-json/1.json");
+        String jsonUrl = "http://3equals.co.uk/lc-json/" + url + ".json";
+        Log.d("download", "Downloading JSON: " + jsonUrl);
+        new DownloadToString().execute(jsonUrl);
         showHideProgress();
     }
 
