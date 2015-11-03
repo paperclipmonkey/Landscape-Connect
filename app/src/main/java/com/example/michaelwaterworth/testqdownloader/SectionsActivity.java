@@ -63,7 +63,7 @@ public class SectionsActivity extends AppCompatActivity {
     public void switchToSection(int section){
         Fragment fragment = new SectionFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("section_num", 0);
+        bundle.putInt("section_num", section);
         fragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();

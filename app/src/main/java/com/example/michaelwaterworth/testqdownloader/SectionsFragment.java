@@ -103,16 +103,13 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                 buttonTakePhoto(v);
                 break;
             case R.id.section_row:
-                openSection();
+                openSection(0);
                 break;
         }
     }
 
-    public void openSection(){
-        ((SectionsActivity)getActivity()).switchToSection(11);
-//        Intent intent = new Intent(getActivity(), SectionActivity.class);
-//        intent.putExtra("id", questionnaire.getId());
-//        startActivityForResult(intent, REQUEST_SECTION_DATA);
+    public void openSection(int section_id){
+        ((SectionsActivity)getActivity()).switchToSection(section_id);
     }
 
     public void buttonTakePhoto(View view) {
