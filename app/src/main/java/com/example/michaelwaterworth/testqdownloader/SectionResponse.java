@@ -17,6 +17,7 @@ public class SectionResponse extends Model{
     @Column(name = "Title")
     public String title;//Date & Time to be completed
 
+    @Expose
     @Column(name = "Response")
     public Response response;
 
