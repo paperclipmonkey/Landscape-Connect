@@ -29,7 +29,7 @@ public class QuestionnairesActivity extends AppCompatActivity{
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
-            actionBar.setTitle(R.string.questionnaires);
+            //actionBar.setTitle(R.string.questionnaires);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -54,7 +54,6 @@ public class QuestionnairesActivity extends AppCompatActivity{
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-
                     case R.id.drawer_questionnaires:
                         fragment = new QuestionnairesFragment();
                         setTitle(R.string.questionnaires);
@@ -75,17 +74,13 @@ public class QuestionnairesActivity extends AppCompatActivity{
         switchFragment(LISTFRAGMENT);
     }
 
-    private void setTitle(String title){
-        if (actionBar != null) {
-            actionBar.setTitle(title);
-        }
-    }
-
     public void switchFragment(int fragmentId){
         Fragment fragment;
         if(fragmentId == 0){
+            setTitle(R.string.questionnaires);
             fragment =  new QuestionnairesFragment();
         } else {
+            setTitle(R.string.upload_queue);
             fragment = new UploadListFragment();
         }
 
