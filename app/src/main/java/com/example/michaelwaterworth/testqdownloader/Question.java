@@ -7,7 +7,7 @@ public class Question {
     public String title;
     public String type;
     public boolean required;
-    public String selectOptions;
+    public String[] options;
 
     public String getTitle() {
         return title;
@@ -33,11 +33,11 @@ public class Question {
         this.required = required;
     }
 
-    public String getSelectOptions() {
-        return selectOptions;
+    public String[] getSelect() {
+        return options;
     }
 
-    public void setSelectOptions(String selectOptions) {
-        this.selectOptions = selectOptions;
+    public void setSelect(String[] selectOptions) {
+        this.options = selectOptions;
     }
 }
