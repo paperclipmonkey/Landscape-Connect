@@ -28,6 +28,7 @@
 
     <string name="question_sections">Question sections</string>
 
+    <string name="upload_queue">"Upload Queue"</string>
 
     <string name="upload">Upload</string>
     <string name="drawer_questionnaires">Questionnaires</string>

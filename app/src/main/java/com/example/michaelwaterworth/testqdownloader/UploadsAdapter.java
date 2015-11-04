@@ -26,13 +26,13 @@ class UploadsAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Questionnaire ti = Questionnaire.newInstance(cursor);
+        Response ti = Response.newInstance(cursor);
         TextView title = (TextView) view.findViewById(R.id.qs_row_title);
         TextView description = (TextView) view.findViewById(R.id.qs_row_description);
         TextView dateView = (TextView) view.findViewById(R.id.qs_row_date);
 
-        title.setText(ti.getName());
-        description.setText(ti.getDescription());
+        title.setText(ti.questionnaire.getName());
+        description.setText(ti.questionnaire.getDescription());
 
         dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
     }

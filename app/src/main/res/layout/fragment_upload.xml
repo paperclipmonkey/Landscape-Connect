@@ -11,7 +11,7 @@
         android:fillViewport="true">
 
         <ListView
-            android:id="@+id/qslist"
+            android:id="@+id/uploadlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
