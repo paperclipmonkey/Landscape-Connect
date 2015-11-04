@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.activeandroid.content.ContentProvider;
@@ -107,12 +108,12 @@ public class QuestionnairesFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((QuestionnairesAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((CursorAdapter)listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((QuestionnairesAdapter)listView.getAdapter()).swapCursor(null);
+                ((CursorAdapter)listView.getAdapter()).swapCursor(null);
             }
         });
 

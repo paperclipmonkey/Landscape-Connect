@@ -6,9 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.view.ActionMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.activeandroid.content.ContentProvider;
@@ -36,18 +34,16 @@ public class UploadListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View base = inflater.inflate(R.layout.fragment_upload, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mThis = this;
-
+        final View base = inflater.inflate(R.layout.fragment_upload, container, false);
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
-        listView.setAdapter(new SimpleCursorAdapter(getActivity(),
-                R.layout.qs_row,
-                null,
-                new String[] { "Name", "Description" , "DateAdded"},
-                new int[] { R.id.qs_row_title, R.id.qs_row_description, R.id.qs_row_date },
-                0));
+        // Setup cursor adapter
+        UploadsAdapter adapter = new UploadsAdapter(getContext(), null, true);
+        // Attach cursor adapter to the ListView
+        listView.setAdapter(adapter);
 
         final String[] projection = {"_id", "DateAdded", "Name", "Description"};
 
@@ -55,29 +51,21 @@ public class UploadListFragment extends Fragment {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
-                        ContentProvider.createUri(Questionnaire.class, null),
+                        ContentProvider.createUri(Response.class, null),
                         projection, null, null, null
                 );
             }
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((CursorAdapter)listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((SimpleCursorAdapter)listView.getAdapter()).swapCursor(null);
+                ((CursorAdapter)listView.getAdapter()).swapCursor(null);
             }
         });
-
-        // Must add the progress bar to the root of the layout
-        //ViewGroup root = (ViewGroup) getActivity().findViewById(android.R.id.content);
-        //root.addView(progressBar);
-
-//        final QuestionnairesAdapter adapter = new QuestionnairesAdapter(Questionnaire.getAll());
-//        // Assign adapter to ListView
-//        listView.setAdapter(adapter);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -98,9 +86,6 @@ public class UploadListFragment extends Fragment {
 
             @Override
             public boolean onActionItemClicked(android.view.ActionMode actionMode, MenuItem menuItem) {
-                //long[] ids = listView.getCheckedItemIds();
-                //List<Questionnaire> questionnaire = Questionnaire.getFromIds(ids);
-                //Log.d("TAG", "Size: " + questionnaire.size());
                 final long[] ids = listView.getCheckedItemIds();
 
                 switch (menuItem.getItemId()) {
@@ -137,21 +122,23 @@ public class UploadListFragment extends Fragment {
                 } else {
                     selectedCount--;
                 }
-                ListView listView = (ListView) base.findViewById(R.id.qslist);
-                listView.getChildAt(i).setSelected(b);
+                //ListView listView = (ListView) base.findViewById(R.id.qslist);
+                //listView.getChildAt(i).setSelected(b);
                 actionMode.setTitle(selectedCount + getActivity().getString(R.string.space_selected));
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // ListView Clicked item index
-                Cursor c = (Cursor) adapterView.getItemAtPosition(position);
-                Questionnaire questionnaire = Questionnaire.newInstance(c);
-                Log.d("Tag", questionnaire.getName());
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                // ListView Clicked item index
+//                Cursor c = (Cursor)adapterView.getItemAtPosition(position);
+//                Questionnaire questionnaire = Questionnaire.newInstance(c);
+//                Intent intent = new Intent(getActivity(), SectionsActivity.class);
+//                intent.putExtra("id", questionnaire.getId());
+//                startActivity(intent);
+//            }
+//        });
 
         return base;
     }

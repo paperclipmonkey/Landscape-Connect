@@ -1,7 +1,6 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ public class SectionAdapter extends ArrayAdapter<Section> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d("Section", "New section adapter view");
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.sections_row, parent, false);
