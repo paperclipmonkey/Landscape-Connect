@@ -62,6 +62,13 @@ public class SectionsActivity extends AppCompatActivity {
         //Get Id for Object
         response.save();
 
+        //TODO Remove length hack
+        for(Section sec : arrayOfSections){
+            if(sec == null){
+                arrayOfSections.remove(sec);
+            }
+        }
+
         int i = 0;
         while(i < arrayOfSections.size()){
             SectionResponse sectionResponse = new SectionResponse();

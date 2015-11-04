@@ -63,7 +63,17 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         sectionNum = getArguments().getInt("section_num");
 
-        Question[] questionsArr = objs2[sectionNum].getQuestions();
+        ArrayList<Question> questionsArr = new ArrayList<>(Arrays.asList(objs2[sectionNum].getQuestions()));
+
+        for(Question sec : questionsArr){
+            if(sec == null){
+                questionsArr.remove(sec);
+            }
+        }
+
+        for(Question k : questionsArr){
+            Log.d("Qtitle", k.getTitle());
+        }
 
         //Build the UI
         buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
@@ -102,7 +112,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         getFragmentManager().popBackStackImmediate();
     }
 
-    public void buildQuestionsView(Question[] questions, ViewGroup base){
+    public void buildQuestionsView(List<Question> questions, ViewGroup base){
         for(Question question : questions){
             base.addView(buildQuestionView(question));
         }
