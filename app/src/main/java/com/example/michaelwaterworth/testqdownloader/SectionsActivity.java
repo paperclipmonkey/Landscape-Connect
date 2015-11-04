@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,7 @@ public class SectionsActivity extends AppCompatActivity {
     private Response createResponse(Long questionnaireId){
         Questionnaire questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         // Construct the array of sections
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questionnaire.getQuestions(), Section[].class)));

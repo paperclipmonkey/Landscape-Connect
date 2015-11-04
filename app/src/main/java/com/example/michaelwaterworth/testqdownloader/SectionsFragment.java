@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,8 +81,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         String questions = questionnaire.getQuestions();
 
-
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         // Construct the data source
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
@@ -99,6 +99,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             //Set whether the section is complete
             if(response.items().get(i) != null && response.items().get(i).data != null) {
                 arrayOfSections.get(i).setCompleted(true);
+                Log.d("Data", response.items().get(i).data);
                 completedCount++;
             }
             i++;

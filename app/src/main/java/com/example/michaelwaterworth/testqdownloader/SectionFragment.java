@@ -1,20 +1,14 @@
 package com.example.michaelwaterworth.testqdownloader;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,6 +26,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     protected Questionnaire questionnaire;
     protected Response response;
     protected int sectionNum;
+    protected ArrayList<Question> questionsArr;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -65,13 +60,13 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         String questions = questionnaire.getQuestions();
 
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         Section[] objs2 = gson.fromJson(questions, Section[].class);
 
         sectionNum = getArguments().getInt("section_num");
 
-        ArrayList<Question> questionsArr = new ArrayList<>(Arrays.asList(objs2[sectionNum].getQuestions()));
+        questionsArr = new ArrayList<>(Arrays.asList(objs2[sectionNum].getQuestions()));
 
         for(Question sec : questionsArr){
             if(sec == null){
@@ -109,8 +104,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     public void sendResult(){
         SectionResponse sectionResponse = response.items().get(sectionNum);
-        //TODO - Save section data
-        sectionResponse.data = "Section completed data as JSON";
+
+        String res = "";
+
+        for(Question q: questionsArr){
+            res += q.getSerialisedAnswer();
+        }
+
+        sectionResponse.data = res;
         sectionResponse.save();
 
         getFragmentManager().popBackStackImmediate();
@@ -118,54 +119,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     public void buildQuestionsView(List<Question> questions, ViewGroup base){
         for(Question question : questions){
-            base.addView(buildQuestionView(question));
+            base.addView(question.createBaseView(getContext()));
         }
-    }
-
-    public View buildQuestionView(Question question){
-        LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
-
-        TextView title = (TextView) viewGroup.findViewById(R.id.question_question);
-        title.setText(question.getTitle());
-
-        View view;
-        switch (question.getType()){
-            case "textarea":
-                EditText textareaObj = new EditText(getContext());
-                view = textareaObj;
-                break;
-            case "string":
-                EditText stringObj = new EditText(getContext());
-                stringObj.setLines(1);
-                view = stringObj;
-                break;
-            case "radio":
-                RadioGroup radioGroup = new RadioGroup(getContext());
-                for(String option: question.getSelect()){
-                    RadioButton radioButton = new RadioButton(getContext());
-                    radioButton.setText(option);
-                    radioGroup.addView(radioButton);
-                }
-                view = radioGroup;
-                break;
-            case "multi":
-                LinearLayout layout = new LinearLayout(getContext());
-                layout.setOrientation(LinearLayout.VERTICAL);
-                for(String option: question.getSelect()) {
-                    CheckBox checkBox = new CheckBox(getContext());
-                    checkBox.setText(option);
-                    layout.addView(checkBox);
-                }
-                view = layout;
-                break;
-            default:
-                view = new View(getContext());
-        }
-
-        viewGroup.addView(view);
-
-        return viewGroup;
     }
 
 }
