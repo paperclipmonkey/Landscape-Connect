@@ -50,7 +50,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     protected void setTaskProgress(int percentage){
         ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
         if(progressBar != null) {
-            Log.d("Progress", "" + percentage);
             progressBar.setProgress(percentage);
         }
     }
@@ -280,7 +279,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-            Log.d("Photo", "Got photo");
             pageNext();
         }
         if(requestCode == REQUEST_SECTION_DATA && resultCode == getActivity().RESULT_OK){

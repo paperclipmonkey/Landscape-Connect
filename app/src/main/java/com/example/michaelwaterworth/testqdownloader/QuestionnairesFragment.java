@@ -212,7 +212,6 @@ public class QuestionnairesFragment extends Fragment {
     }
 
     private void getFabQr(){
-        Log.d("TAG", "Get 1");
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA)

@@ -3,7 +3,6 @@ package com.example.michaelwaterworth.testqdownloader;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +77,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             if(sec == null){
                 questionsArr.remove(sec);
             }
-        }
-
-        for(Question k : questionsArr){
-            Log.d("Qtitle", k.getTitle());
         }
 
         //Build the UI
