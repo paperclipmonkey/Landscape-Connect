@@ -1,12 +1,15 @@
 package com.example.michaelwaterworth.testqdownloader;
 
+import android.database.Cursor;
 import android.provider.BaseColumns;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -40,4 +43,18 @@ public class Response extends Model {
     @Expose
     @Column(name = "Complete")
     public Boolean complete;
+
+    public static Response newInstance(Cursor c){
+        int _id = c.getInt(c.getColumnIndex("_id"));
+        return new Select()
+                .from(Response.class)
+                .where("_id = ?", _id)
+                .executeSingle();
+    }
+
+    public Calendar getDateAdded() {
+        Calendar rDate = Calendar.getInstance();
+        rDate.setTimeInMillis(dateAdded * 1000);
+        return rDate;
+    }
 }
