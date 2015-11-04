@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
 
 import com.google.gson.Gson;
@@ -46,6 +47,15 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public SectionsFragment() {
     }
 
+    protected void setTaskProgress(int percentage){
+        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
+        if(progressBar != null) {
+            Log.d("Progress", "" + percentage);
+            progressBar.setProgress(percentage);
+        }
+    }
+
+
     public void pageNext(){
         if(flipper != null) {
             flipper.showNext();  // Switches to the next view
@@ -71,31 +81,33 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         String questions = questionnaire.getQuestions();
 
-        Log.d("Questions", questions);
 
         Gson gson = new Gson();
 
         // Construct the data source
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
 
-        //TODO Hack. Why is this -1?
-        arrayOfSections.remove(arrayOfSections.size() - 1);
-
-        Log.d("Size", "" + arrayOfSections.size());
+        //TODO Hack. Why is GSON returning empty array values
+        for(Section sec : arrayOfSections){
+            if(sec == null){
+                arrayOfSections.remove(sec);
+            }
+        }
 
         int i = 0;
+        int completedCount = 0;
         while(i < arrayOfSections.size()){
-            Log.d("i", "" + i);
-            Log.d("titles", arrayOfSections.get(i).getTitle());
             //Set whether the section is complete
             if(response.items().get(i) != null && response.items().get(i).data != null) {
-                Log.d("IsCompleted", "Completed");
                 arrayOfSections.get(i).setCompleted(true);
-            } else {
-                Log.d("IsCompleted", "Not completed");
+                completedCount++;
             }
             i++;
         }
+
+
+        int percentage = Math.round(((float) completedCount / (float) arrayOfSections.size())*100);
+        setTaskProgress(percentage);
 
         // Create the adapter to convert the array to views
         SectionAdapter adapter = new SectionAdapter(getContext(), arrayOfSections);
