@@ -23,9 +23,9 @@
 
         <provider android:authorities="com.example.michaelwaterworth.testqdownloader" android:exported="false" android:name="com.activeandroid.content.ContentProvider" />
 
-        <meta-data
-            android:name="AA_MODELS"
-            android:value="com.myapp.model.Item, com.myapp.model.Category" />
+        <!--<meta-data-->
+            <!--android:name="AA_MODELS"-->
+            <!--android:value="com.myapp.model.Item, com.myapp.model.Category" />-->
 
         <activity
             android:name=".QuestionnairesActivity"
