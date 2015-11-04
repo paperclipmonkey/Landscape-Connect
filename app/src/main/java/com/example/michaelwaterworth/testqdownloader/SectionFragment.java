@@ -3,15 +3,24 @@ package com.example.michaelwaterworth.testqdownloader;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
@@ -133,7 +142,27 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 break;
             case "string":
                 EditText stringObj = new EditText(getContext());
+                stringObj.setLines(1);
                 view = stringObj;
+                break;
+            case "radio":
+                RadioGroup radioGroup = new RadioGroup(getContext());
+                for(String option: question.getSelect()){
+                    RadioButton radioButton = new RadioButton(getContext());
+                    radioButton.setText(option);
+                    radioGroup.addView(radioButton);
+                }
+                view = radioGroup;
+                break;
+            case "multi":
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                for(String option: question.getSelect()) {
+                    CheckBox checkBox = new CheckBox(getContext());
+                    checkBox.setText(option);
+                    layout.addView(checkBox);
+                }
+                view = layout;
                 break;
             default:
                 view = new View(getContext());
