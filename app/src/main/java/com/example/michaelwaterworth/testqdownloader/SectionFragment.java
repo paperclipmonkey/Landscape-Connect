@@ -112,6 +112,10 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
 
         sectionResponse.data = res;
+
+        //TODO - Check if section is complete.
+        sectionResponse.complete = true;
+
         sectionResponse.save();
 
         getFragmentManager().popBackStackImmediate();

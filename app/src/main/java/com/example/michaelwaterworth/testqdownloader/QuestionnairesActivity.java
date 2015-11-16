@@ -15,7 +15,6 @@ import android.view.MenuItem;
 public class QuestionnairesActivity extends AppCompatActivity{
     public static final int LISTFRAGMENT = 0;
     public static final int UPLOADFRAGMENT = 1;
-    private ActionBar actionBar;
 
     private DrawerLayout mDrawerLayout;
 
@@ -26,7 +25,7 @@ public class QuestionnairesActivity extends AppCompatActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
             //actionBar.setTitle(R.string.questionnaires);

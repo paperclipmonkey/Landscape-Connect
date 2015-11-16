@@ -24,4 +24,14 @@ public class SectionResponse extends Model{
     @Expose
     @Column(name = "Data")
     public String data;//Date & Time to be completed
+
+    @Expose
+    @Column(name = "Complete")
+    public boolean complete;
+
+    public boolean isCompleted() { return complete; }
+
+    public void setCompleted(boolean complete) {
+        this.complete = complete;
+    }
 }

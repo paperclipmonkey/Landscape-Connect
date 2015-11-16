@@ -23,8 +23,8 @@ public class Response extends Model {
     private int id;
 
     @Expose
-    @Column(name = "DateAdded")
-    public Long dateAdded;//Date & Time to be completed
+    @Column(name = "Timestamp")
+    public Long timestamp;//Date & Time to be completed
 
 
     @Expose
@@ -40,9 +40,10 @@ public class Response extends Model {
         return getMany(SectionResponse.class, "Response");
     }
 
+    //Finished is when the user says it's finished. Ready for upload
     @Expose
-    @Column(name = "Complete")
-    public Boolean complete;
+    @Column(name = "Finished")
+    public Boolean finished;
 
     public static Response newInstance(Cursor c){
         int _id = c.getInt(c.getColumnIndex("_id"));
@@ -52,9 +53,27 @@ public class Response extends Model {
                 .executeSingle();
     }
 
-    public Calendar getDateAdded() {
+    public Calendar getDateCompleted() {
         Calendar rDate = Calendar.getInstance();
-        rDate.setTimeInMillis(dateAdded * 1000);
+        rDate.setTimeInMillis(timestamp * 1000);
         return rDate;
+    }
+
+    //Complete when all of the required sections are completed.
+    //TODO - Optional sections
+    public boolean isComplete(){
+        for(SectionResponse sectionResponse: items()){
+            //if(sectionResponse.section.isRequired()){
+            if (!sectionResponse.complete){
+                return false;
+            }
+            //}
+        }
+        return true;
+    }
+
+    public void setFinished(){
+        this.finished = true;
+        this.timestamp = Calendar.getInstance().getTimeInMillis();
     }
 }

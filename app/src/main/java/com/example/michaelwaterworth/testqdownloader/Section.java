@@ -35,10 +35,4 @@ public class Section {
         this.required = required;
     }
 
-    public boolean isCompleted() { return completed; }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
 }

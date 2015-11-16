@@ -94,16 +94,23 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+        //Section Response Link links sections and sectionresponses. Holding the View and the Db result.
+        ArrayList<SectionResponseLink> sectionResponseLink = new ArrayList<>();
+        //Link sections and section responses.
         int i = 0;
-        int completedCount = 0;
         while(i < arrayOfSections.size()){
+            SectionResponseLink srl = new SectionResponseLink(response.items().get(i), arrayOfSections.get(i));
+            sectionResponseLink.add(srl);
+            i++;
+        }
+
+        int completedCount = 0;
+        for(SectionResponseLink srl: sectionResponseLink){
             //Set whether the section is complete
-            if(response.items().get(i) != null && response.items().get(i).data != null) {
-                arrayOfSections.get(i).setCompleted(true);
-                Log.d("Data", response.items().get(i).data);
+            if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
+                Log.d("Data", srl.sectionResponse.data);
                 completedCount++;
             }
-            i++;
         }
 
 
@@ -111,7 +118,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         setTaskProgress(percentage);
 
         // Create the adapter to convert the array to views
-        SectionAdapter adapter = new SectionAdapter(getContext(), arrayOfSections);
+        SectionAdapter adapter = new SectionAdapter(getContext(), sectionResponseLink);
 
         // Attach the adapter to a ListView
         ListView listView = (ListView) base.findViewById(R.id.sections_list);
@@ -251,7 +258,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_upload:
-                response.complete = true;
+                response.setFinished();
                 response.save();
                 ((SectionsActivity) getActivity()).finish();
                 return true;

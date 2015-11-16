@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -58,6 +59,8 @@ public class SectionsActivity extends AppCompatActivity {
         // Construct the array of sections
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questionnaire.getQuestions(), Section[].class)));
 
+        Log.d("Section Size", "1 :" + arrayOfSections.size());
+
         Response response = new Response();
         response.questionnaire = questionnaire;
         //Get Id for Object
@@ -69,6 +72,8 @@ public class SectionsActivity extends AppCompatActivity {
                 arrayOfSections.remove(sec);
             }
         }
+        Log.d("Section Size", "2 :" + arrayOfSections.size());
+
 
         int i = 0;
         while(i < arrayOfSections.size()){

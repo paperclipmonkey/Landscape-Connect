@@ -13,8 +13,8 @@ import java.util.ArrayList;
 /**
  * Created by michaelwaterworth on 03/11/2015. Copyright Michael Waterworth
  */
-public class SectionAdapter extends ArrayAdapter<Section> {
-    public SectionAdapter(Context context, ArrayList<Section> users) {
+public class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
+    public SectionAdapter(Context context, ArrayList<SectionResponseLink> users) {
         super(context, 0, users);
     }
 
@@ -25,21 +25,21 @@ public class SectionAdapter extends ArrayAdapter<Section> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.sections_row, parent, false);
         }
 
-        Section section = getItem(position);
+        SectionResponseLink srl = getItem(position);
 
         TextView title = (TextView) convertView.findViewById(R.id.section_row_title);
-        title.setText(section.getTitle());
+        title.setText(srl.section.getTitle());
 
         TextView required = (TextView) convertView.findViewById(R.id.section_row_description);
 
         String isRequired = "";
-        if(section.isRequired()){
+        if(srl.section.isRequired()){
             isRequired = "Required";
         }
         required.setText(isRequired);
 
         ImageView isCompleted = (ImageView) convertView.findViewById(R.id.section_row_done);
-        if(section.isCompleted()){
+        if(srl.sectionResponse.isCompleted()){
             isCompleted.setVisibility(View.VISIBLE);
         }
 
