@@ -2,17 +2,15 @@ package com.example.michaelwaterworth.testqdownloader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -23,7 +21,6 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
-    protected Questionnaire questionnaire;
     protected Response response;
     protected int sectionNum;
     protected ArrayList<Question> questionsArr;
@@ -56,23 +53,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         response = ((SectionsActivity) getActivity()).getResponse();
 
-        questionnaire = response.questionnaire;
-
-        String questions = questionnaire.getQuestions();
-
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-        Section[] objs2 = gson.fromJson(questions, Section[].class);
-
         sectionNum = getArguments().getInt("section_num");
-
-        questionsArr = new ArrayList<>(Arrays.asList(objs2[sectionNum].getQuestions()));
-
-        for(Question sec : questionsArr){
-            if(sec == null){
-                questionsArr.remove(sec);
-            }
-        }
+        questionsArr = ((SectionsActivity) getActivity()).getSection(sectionNum);
 
         //Build the UI
         buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
@@ -103,6 +85,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void sendResult(){
+        Log.d("sectionFragment", "Saving result for section: " + sectionNum);
         SectionResponse sectionResponse = response.items().get(sectionNum);
 
         String res = "";

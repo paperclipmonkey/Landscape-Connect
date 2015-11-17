@@ -148,7 +148,9 @@ public class Question {
                     if (v instanceof RadioGroup) {
                         RadioGroup radioGroup = (RadioGroup) v;
                         int selId = radioGroup.getCheckedRadioButtonId();
-                        return ((RadioButton) baseView.findViewById(selId)).getText().toString();
+                        if(selId != -1) {
+                            return ((RadioButton) v.findViewById(selId)).getText().toString();
+                        } return null;
                     }
                 }
                 break;

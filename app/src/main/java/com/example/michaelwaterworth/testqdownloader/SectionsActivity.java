@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -21,6 +20,8 @@ import java.util.Arrays;
  */
 public class SectionsActivity extends AppCompatActivity {
     private Response response;
+    private Questionnaire questionnaire;
+    private Section[] sections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,8 @@ public class SectionsActivity extends AppCompatActivity {
         }
 
         //Create Response object to base this on
-        response = createResponse(getIntent().getLongExtra("id", -1));
+        createQuestionnaireObject(getIntent().getLongExtra("id", -1));
+        createResponse();
 
         Fragment fragment = new SectionsFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -51,17 +53,48 @@ public class SectionsActivity extends AppCompatActivity {
             });
     }
 
-    private Response createResponse(Long questionnaireId){
-        Questionnaire questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
+    private void createQuestionnaireObject(Long questionnaireId){
+        questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
+
+        String questions = questionnaire.getQuestions();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        sections = gson.fromJson(questions, Section[].class);
+    }
+
+    public ArrayList<Question> getSection(int sectionNum){
+        ArrayList<Question> questionsArr = new ArrayList<>(Arrays.asList(sections[sectionNum].getQuestions()));
+
+        //TODO remove length hack
+        for(Question sec : questionsArr){
+            if(sec == null){
+                questionsArr.remove(sec);
+            }
+        }
+        return questionsArr;
+    }
+
+    public ArrayList<Section> getSections(){
+        ArrayList<Section> sectionArrayList =  new ArrayList<>(Arrays.asList(sections));
+
+        //TODO Hack. Why is GSON returning empty array values
+        for(Section sec : sectionArrayList){
+            if(sec == null){
+                sectionArrayList.remove(sec);
+            }
+        }
+
+        return sectionArrayList;
+    }
+
+
+    private void createResponse(){
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         // Construct the array of sections
         ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questionnaire.getQuestions(), Section[].class)));
 
-        Log.d("Section Size", "1 :" + arrayOfSections.size());
-
-        Response response = new Response();
+        response = new Response();
         response.questionnaire = questionnaire;
         //Get Id for Object
         response.save();
@@ -72,8 +105,6 @@ public class SectionsActivity extends AppCompatActivity {
                 arrayOfSections.remove(sec);
             }
         }
-        Log.d("Section Size", "2 :" + arrayOfSections.size());
-
 
         int i = 0;
         while(i < arrayOfSections.size()){
@@ -82,9 +113,9 @@ public class SectionsActivity extends AppCompatActivity {
             sectionResponse.save();
             i++;
         }
-
-        return response;
     }
+
+    public Questionnaire getQuestionnaire(){ return this.questionnaire; }
 
     public Response getResponse(){
         return this.response;

@@ -41,6 +41,8 @@ public class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
         ImageView isCompleted = (ImageView) convertView.findViewById(R.id.section_row_done);
         if(srl.sectionResponse.isCompleted()){
             isCompleted.setVisibility(View.VISIBLE);
+        } else {
+            isCompleted.setVisibility(View.GONE);
         }
 
         return convertView;

@@ -23,14 +23,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -80,32 +76,21 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         questionnaire = response.questionnaire;
 
-        String questions = questionnaire.getQuestions();
+        // Get the data source
+        ArrayList<Section> arrayOfSections = ((SectionsActivity) getActivity()).getSections();
 
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-        // Construct the data source
-        ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questions, Section[].class)));
-
-        //TODO Hack. Why is GSON returning empty array values
-        for(Section sec : arrayOfSections){
-            if(sec == null){
-                arrayOfSections.remove(sec);
-            }
-        }
-
-        //Section Response Link links sections and sectionresponses. Holding the View and the Db result.
-        ArrayList<SectionResponseLink> sectionResponseLink = new ArrayList<>();
+        //Section Response Link links section and sectionresponse. Holding the View and the Db result.
+        ArrayList<SectionResponseLink> sectionResponseLinks = new ArrayList<>();
         //Link sections and section responses.
         int i = 0;
         while(i < arrayOfSections.size()){
             SectionResponseLink srl = new SectionResponseLink(response.items().get(i), arrayOfSections.get(i));
-            sectionResponseLink.add(srl);
+            sectionResponseLinks.add(srl);
             i++;
         }
 
         int completedCount = 0;
-        for(SectionResponseLink srl: sectionResponseLink){
+        for(SectionResponseLink srl: sectionResponseLinks){
             //Set whether the section is complete
             if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
                 Log.d("Data", srl.sectionResponse.data);
@@ -118,7 +103,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         setTaskProgress(percentage);
 
         // Create the adapter to convert the array to views
-        SectionAdapter adapter = new SectionAdapter(getContext(), sectionResponseLink);
+        SectionAdapter adapter = new SectionAdapter(getContext(), sectionResponseLinks);
 
         // Attach the adapter to a ListView
         ListView listView = (ListView) base.findViewById(R.id.sections_list);
@@ -301,12 +286,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-            pageNext();
-        }
-        if(requestCode == REQUEST_SECTION_DATA && resultCode == getActivity().RESULT_OK){
-            Log.d("JSON", "Got JSON from Section");
-            Bundle extras = data.getExtras();
-            String json = (String) extras.get("data");
             pageNext();
         }
     }
