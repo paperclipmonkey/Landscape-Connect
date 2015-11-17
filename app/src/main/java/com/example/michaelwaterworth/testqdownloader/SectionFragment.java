@@ -2,8 +2,8 @@ package com.example.michaelwaterworth.testqdownloader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +22,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
     protected Response response;
+    protected SectionResponse sectionResponse;
     protected int sectionNum;
     protected ArrayList<Question> questionsArr;
 
@@ -42,6 +43,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //TODO Hijacking all options menu items from this Fragment
+        super.onOptionsItemSelected(item);
+        getFragmentManager().popBackStackImmediate();
+        return true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         base = (ViewGroup) inflater.inflate(R.layout.fragment_section, container, false);
@@ -51,16 +60,17 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         //View Flipper for switching between pages
 //        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
 
-        response = ((SectionsActivity) getActivity()).getResponse();
-
         sectionNum = getArguments().getInt("section_num");
         questionsArr = ((SectionsActivity) getActivity()).getSection(sectionNum);
+        response = ((SectionsActivity) getActivity()).getResponse();
+        sectionResponse = response.items().get(sectionNum);
+
 
         //Build the UI
-        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions));
+        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions), sectionResponse);
 
-        Button donebutton = (Button) base.findViewById(R.id.section_button_done);
-        donebutton.setOnClickListener(this);
+        Button doneButton = (Button) base.findViewById(R.id.section_button_done);
+        doneButton.setOnClickListener(this);
 
         ImageViewTouch imageViewTouch = (ImageViewTouch) base.findViewById(R.id.section_image);
 
@@ -85,8 +95,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void sendResult(){
-        Log.d("sectionFragment", "Saving result for section: " + sectionNum);
-        SectionResponse sectionResponse = response.items().get(sectionNum);
 
         String res = "";
 
@@ -104,10 +112,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         getFragmentManager().popBackStackImmediate();
     }
 
-    public void buildQuestionsView(List<Question> questions, ViewGroup base){
+    public void buildQuestionsView(List<Question> questions, ViewGroup base, SectionResponse sectionResponse){
         for(Question question : questions){
-            base.addView(question.createBaseView(getContext()));
+            base.addView(question.createBaseView(getContext(), sectionResponse));
         }
     }
-
 }

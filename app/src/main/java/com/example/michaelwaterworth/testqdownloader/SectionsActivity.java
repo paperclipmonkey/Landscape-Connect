@@ -34,6 +34,8 @@ public class SectionsActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setTitle("New Landscape");
             actionBar.setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
         }
 
         //Create Response object to base this on

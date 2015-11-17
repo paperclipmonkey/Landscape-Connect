@@ -65,7 +65,7 @@ public class Question {
 
     public void setBaseView(ViewGroup baseView) { this.baseView = baseView; }
 
-    public ViewGroup createBaseView(Context cx){
+    public ViewGroup createBaseView(Context cx, SectionResponse sectionResponse){
         LayoutInflater inflater = (LayoutInflater)cx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
         baseView = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
 
