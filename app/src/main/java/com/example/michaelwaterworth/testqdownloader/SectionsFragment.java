@@ -41,6 +41,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     protected ViewGroup base;
     protected Questionnaire questionnaire;
     protected Response response;
+    protected ArrayList<SectionResponseLink> sectionResponseLinks;
 
     public SectionsFragment() {
     }
@@ -80,7 +81,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         ArrayList<Section> arrayOfSections = ((SectionsActivity) getActivity()).getSections();
 
         //Section Response Link links section and sectionresponse. Holding the View and the Db result.
-        ArrayList<SectionResponseLink> sectionResponseLinks = new ArrayList<>();
+        sectionResponseLinks = new ArrayList<>();
         //Link sections and section responses.
         int i = 0;
         while(i < arrayOfSections.size()){
@@ -120,6 +121,8 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         if(response.photo != null && !response.photo.isEmpty()){
             pageNext();
         }
+
+        getActivity().invalidateOptionsMenu();
 
         return base;
     }
@@ -237,6 +240,25 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
         inflater.inflate(R.menu.sections_fragment, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu (Menu menu) {
+        if (checkComplete())
+            menu.getItem(0).setEnabled(true);
+        else
+            menu.getItem(0).setEnabled(false);
+        return;
+    }
+
+    private boolean checkComplete(){
+        for(SectionResponseLink srl: sectionResponseLinks){
+            //Required and not complete Escape.
+            if(srl.section.isRequired() && ! srl.sectionResponse.isCompleted()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
