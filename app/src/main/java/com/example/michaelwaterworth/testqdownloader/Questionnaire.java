@@ -1,8 +1,6 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.database.Cursor;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.BaseColumns;
 
 import com.activeandroid.Model;
@@ -22,24 +20,10 @@ import java.util.List;
  */
 
 @Table(name = "Questionnaire", id = BaseColumns._ID)
-public class Questionnaire extends Model implements Parcelable {
-    public static final Creator<Questionnaire> CREATOR = new Creator<Questionnaire>() {
-        @Override
-        public Questionnaire createFromParcel(Parcel in) {
-            return new Questionnaire(in);
-        }
-
-        @Override
-        public Questionnaire[] newArray(int size) {
-            return new Questionnaire[size];
-        }
-    };
+public class Questionnaire extends Model{
 
     public static Questionnaire newInstance(Cursor c){
-//        Questionnaire ld = new Questionnaire()
-          int _id = c.getInt(c.getColumnIndex("_id"));
-//        ld.setId(_id);
-//        return ld;
+        int _id = c.getInt(c.getColumnIndex("_id"));
         return new Select()
                 .from(Questionnaire.class)
                 .where("_id = ?", _id)
@@ -103,13 +87,6 @@ public class Questionnaire extends Model implements Parcelable {
         query.execute();
     }
 
-    public Questionnaire(Parcel in) {
-        dateAdded = in.readLong();
-        name = in.readString();
-        serverId = in.readString();
-        questions = in.readString();
-    }
-
     public String getName() {
         return name;
     }
@@ -151,18 +128,5 @@ public class Questionnaire extends Model implements Parcelable {
 
     public void setDateAdded(Calendar rDate) {
         this.dateAdded = rDate.getTimeInMillis() / 1000;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int i) {
-        out.writeLong(dateAdded);
-        out.writeString(name);
-        out.writeString(serverId);
-        out.writeString(questions);
     }
 }
