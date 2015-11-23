@@ -40,14 +40,14 @@ public class UploadListFragment extends Fragment {
         // Attach cursor adapter to the ListView
         listView.setAdapter(adapter);
 
-        final String[] projection = {"_id", "DateAdded", "Questionnaire", "Photo", "Complete"};
+        final String[] projection = {"_id"};
 
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.UPLOADFRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
                         ContentProvider.createUri(Response.class, null),
-                        projection, "Complete = 1", null, null
+                        projection, "Finished = 1", null, null
                 );
             }
 

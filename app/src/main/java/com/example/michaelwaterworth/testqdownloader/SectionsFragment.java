@@ -85,7 +85,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         //Link sections and section responses.
         int i = 0;
         while(i < arrayOfSections.size()){
-            SectionResponseLink srl = new SectionResponseLink(response.items().get(i), arrayOfSections.get(i));
+            SectionResponseLink srl = new SectionResponseLink(response.getSectionResponses().get(i), arrayOfSections.get(i));
             sectionResponseLinks.add(srl);
             i++;
         }

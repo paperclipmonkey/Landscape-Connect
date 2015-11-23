@@ -91,11 +91,11 @@ public class QuestionnairesFragment extends Fragment {
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
         // Setup cursor adapter
-        QuestionnairesAdapter todoAdapter = new QuestionnairesAdapter(getContext(), null, true);
+        QuestionnairesAdapter questionnairesAdapter = new QuestionnairesAdapter(getContext(), null, true);
         // Attach cursor adapter to the ListView
-        listView.setAdapter(todoAdapter);
+        listView.setAdapter(questionnairesAdapter);
 
-        final String[] projection = {"_id", "DateAdded", "Name", "Description"};
+        final String[] projection = {"_id"};
 
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.LISTFRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
