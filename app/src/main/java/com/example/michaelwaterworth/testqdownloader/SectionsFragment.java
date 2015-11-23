@@ -95,7 +95,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         for(SectionResponseLink srl: sectionResponseLinks){
             //Set whether the section is complete
             if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
-                Log.d("Data", srl.sectionResponse.data);
+                Log.d("Section is Completed?", "" + srl.sectionResponse.isCompleted());
                 completedCount++;
             }
         }

@@ -81,7 +81,7 @@ public class Question extends Model{
 
     public void setBaseView(ViewGroup baseView) { this.baseView = baseView; }
 
-    public ViewGroup createBaseView(Context cx, SectionResponse sectionResponse){
+    public ViewGroup createBaseView(Context cx, QuestionResponse questionResponse){
         LayoutInflater inflater = (LayoutInflater)cx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
         baseView = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
 
@@ -93,6 +93,9 @@ public class Question extends Model{
         switch (getType()){
             case "textarea":
                 EditText textareaObj = new EditText(cx);
+                if(questionResponse != null && questionResponse.rData!= null){
+                    textareaObj.setText(questionResponse.rData);
+                }
                 view = textareaObj;
                 break;
             case "string":

@@ -7,6 +7,8 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
+import java.util.List;
+
 /**
  * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
@@ -21,9 +23,10 @@ public class SectionResponse extends Model{
     @Column(name = "Response")
     public Response response;
 
-    @Expose
-    @Column(name = "Data")
-    public String data;//Date & Time to be completed
+    // This method is optional, does not affect the foreign key creation.
+    public List<QuestionResponse> getQuestionResponses() {
+        return getMany(QuestionResponse.class, "SectionResponse");
+    }
 
     @Expose
     @Column(name = "Complete")

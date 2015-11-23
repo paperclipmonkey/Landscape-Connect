@@ -9,9 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.List;
 
 /**
@@ -63,9 +60,6 @@ public class SectionsActivity extends AppCompatActivity {
     }
 
     private void createResponse(){
-
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
         // Construct the array of sections
         List<Section> arrayOfSections = questionnaire.getSections();
 
@@ -74,18 +68,18 @@ public class SectionsActivity extends AppCompatActivity {
         //Get Id for Object
         response.save();
 
-        //TODO Remove length hack
-        for(Section sec : arrayOfSections){
-            if(sec == null){
-                arrayOfSections.remove(sec);
-            }
-        }
-
         int i = 0;
         while(i < arrayOfSections.size()){
             SectionResponse sectionResponse = new SectionResponse();
             sectionResponse.response = response;
             sectionResponse.save();
+
+            for(Question question: arrayOfSections.get(i).getQuestions()){
+                QuestionResponse questionResponse = new QuestionResponse();
+                questionResponse.question = question;
+                questionResponse.sectionResponse = sectionResponse;
+                questionResponse.save();
+            }
             i++;
         }
     }

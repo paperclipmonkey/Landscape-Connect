@@ -94,14 +94,13 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void sendResult(){
-
-        String res = "";
-
+        int i = 0;
         for(Question q: questionsArr){
-            res += q.getSerialisedAnswer();
+            //res += q.getSerialisedAnswer();
+            QuestionResponse qr = sectionResponse.getQuestionResponses().get(i);
+            qr.rData = q.getSerialisedAnswer();
+            i++;
         }
-
-        sectionResponse.data = res;
 
         //TODO - Check if section is complete.
         sectionResponse.complete = true;
@@ -112,8 +111,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     public void buildQuestionsView(List<Question> questions, ViewGroup base, SectionResponse sectionResponse){
-        for(Question question : questions){
-            base.addView(question.createBaseView(getContext(), sectionResponse));
+        int i = 0;
+        while(i < questions.size()){
+            Question question = questions.get(i);
+            base.addView(question.createBaseView(getContext(), sectionResponse.getQuestionResponses().get(i)));//TODO - Ordering
+            i++;
         }
     }
 }
