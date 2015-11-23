@@ -37,7 +37,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     static final int MY_PERMISSIONS_REQUEST_STORAGE = 4;
     static final int REQUEST_IMAGE_CAPTURE = 2;
-    static final int REQUEST_SECTION_DATA = 3;
     protected ViewFlipper flipper;
     protected ViewGroup base;
     protected Questionnaire questionnaire;
@@ -95,7 +94,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         for(SectionResponseLink srl: sectionResponseLinks){
             //Set whether the section is complete
             if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
-                Log.d("Section is Completed?", "" + srl.sectionResponse.isCompleted());
                 completedCount++;
             }
         }
@@ -268,7 +266,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             case R.id.action_upload:
                 response.setFinished();
                 response.save();
-                ((SectionsActivity) getActivity()).finish();
+                getActivity().finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

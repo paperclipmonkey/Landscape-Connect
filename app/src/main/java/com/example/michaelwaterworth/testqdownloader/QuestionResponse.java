@@ -1,12 +1,10 @@
 package com.example.michaelwaterworth.testqdownloader;
 
-import android.database.Cursor;
 import android.provider.BaseColumns;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -29,14 +27,6 @@ public class QuestionResponse extends Model {
 
     @Column(name = "SectionResponse")
     public SectionResponse sectionResponse;
-
-    public static QuestionResponse newInstance(Cursor c){
-        int _id = c.getInt(c.getColumnIndex("_id"));
-        return new Select()
-                .from(QuestionResponse.class)
-                .where("_id = ?", _id)
-                .executeSingle();
-    }
 
     //Complete meaning question has been answered
     public boolean isComplete(){

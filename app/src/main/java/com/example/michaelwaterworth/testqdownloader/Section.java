@@ -6,7 +6,6 @@ import android.util.Log;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
@@ -30,18 +29,9 @@ public class Section extends Model{
     @Expose
     public Question[] questions;
 
-
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
 
-    public static List<Section> getAll() {
-        // This is how you execute a query
-        return new Select()
-                .from(Section.class)
-                //.where("Category = ?", category.getId())
-                //.orderBy("Name ASC")
-                .execute();
-    }
 
     public String getTitle() {
         return title;

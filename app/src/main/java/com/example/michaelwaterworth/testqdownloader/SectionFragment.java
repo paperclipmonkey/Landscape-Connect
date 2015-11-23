@@ -64,7 +64,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         section = ((SectionsActivity) getActivity()).getSection(sectionNum);
         questionsArr = section.getQuestions();
         response = ((SectionsActivity) getActivity()).getResponse();
-        sectionResponse = response.items().get(sectionNum);
+        sectionResponse = response.getSectionResponses().get(sectionNum);
 
 
         //Build the UI

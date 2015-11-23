@@ -17,8 +17,8 @@ import android.widget.TextView;
  */
 class UploadsAdapter extends CursorAdapter {
 
-    public UploadsAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
+    public UploadsAdapter(Context context, Cursor c, boolean autoReQuery) {
+        super(context, c, autoReQuery);
     }
 
     @Override

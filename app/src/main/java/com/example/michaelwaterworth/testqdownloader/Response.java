@@ -26,7 +26,6 @@ public class Response extends Model {
     @Column(name = "Timestamp")
     public Long timestamp;//Date & Time to be completed
 
-
     @Expose
     @Column(name = "Questionnaire")
     public Questionnaire questionnaire;
@@ -35,12 +34,11 @@ public class Response extends Model {
     @Column(name = "Photo")
     public String photo;//Date & Time to be completed
 
-    // This method is optional, does not affect the foreign key creation.
-    public List<SectionResponse> items() {
+    public List<SectionResponse> getSectionResponses() {
         return getMany(SectionResponse.class, "Response");
     }
 
-    //Finished is when the user says it's finished. Ready for upload
+    //Finished is when all required sections are complete and the user says it's finished, ready for upload
     @Expose
     @Column(name = "Finished")
     public Boolean finished;
@@ -57,19 +55,6 @@ public class Response extends Model {
         Calendar rDate = Calendar.getInstance();
         rDate.setTimeInMillis(timestamp * 1000);
         return rDate;
-    }
-
-    //Complete when all of the required sections are completed.
-    //TODO - Optional sections
-    public boolean isComplete(){
-        for(SectionResponse sectionResponse: items()){
-            //if(sectionResponse.section.isRequired()){
-            if (!sectionResponse.complete){
-                return false;
-            }
-            //}
-        }
-        return true;
     }
 
     public void setFinished(){

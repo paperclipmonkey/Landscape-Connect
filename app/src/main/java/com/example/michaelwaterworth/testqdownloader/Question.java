@@ -25,6 +25,11 @@ import java.util.List;
  */
 @Table(name = "Question", id = BaseColumns._ID)
 public class Question extends Model{
+    public static final String QTYPE_STRING = "string";
+    public static final String QTYPE_MULTI = "multi";
+    public static final String QTYPE_RADIO = "radio";
+    public static final String QTYPE_TEXTAREA = "textarea";
+
     @Column(name = "id")
     private int id;
 
@@ -61,10 +66,6 @@ public class Question extends Model{
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public boolean isRequired() {
         return required;
     }
@@ -77,10 +78,6 @@ public class Question extends Model{
         return getMany(Choice.class, "Question");
     }
 
-    public ViewGroup getBaseView() { return baseView; }
-
-    public void setBaseView(ViewGroup baseView) { this.baseView = baseView; }
-
     public ViewGroup createBaseView(Context cx, QuestionResponse questionResponse){
         LayoutInflater inflater = (LayoutInflater)cx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
         baseView = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
@@ -89,32 +86,27 @@ public class Question extends Model{
         title.setText(getTitle());
 
         View view;
-        Log.d("Type", getType());
         switch (getType()){
-            case "textarea":
-                EditText textareaObj = new EditText(cx);
+            case QTYPE_TEXTAREA:
+                EditText textAreaObj = new EditText(cx);
                 if(questionResponse != null && questionResponse.rData!= null){
-                    textareaObj.setText(questionResponse.rData);
+                    textAreaObj.setText(questionResponse.rData);
                 }
-                view = textareaObj;
+                view = textAreaObj;
                 break;
-            case "string":
-                Log.d("String type", "string");
+            case QTYPE_STRING:
                 EditText stringObj = new EditText(cx);
                 stringObj.setLines(1);
                 view = stringObj;
                 break;
-            case "radio":
-                Log.d("Radio type", "radio");
+            case QTYPE_RADIO:
                 RadioGroup radioGroup = new RadioGroup(cx);
-                List<Choice> options = getChoices();
-                Log.d("Options size","" + options.size());
                 for(Choice option: getChoices()){
                     int index = getChoices().indexOf(option);
                     RadioButton radioButton = new RadioButton(cx);
                     radioButton.setText(option.choice);
                     radioButton.setId(index);
-                    //TODO - Add a delimeter so we can check against full responses
+                    //TODO - Add a delimiter so we can check against full responses
                     radioGroup.addView(radioButton);
                     if(questionResponse.rData != null && questionResponse.rData.contains(option.choice)){
                         radioGroup.check(index);
@@ -122,8 +114,7 @@ public class Question extends Model{
                 }
                 view = radioGroup;
                 break;
-            case "multi":
-                Log.d("Multi type", "multi");
+            case QTYPE_MULTI:
                 LinearLayout layout = new LinearLayout(cx);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 for(Choice option: getChoices()){
@@ -148,8 +139,8 @@ public class Question extends Model{
     public String getSerialisedAnswer(){
         int count;
         switch (type){
-            case "string":
-            case "textarea":
+            case QTYPE_STRING:
+            case QTYPE_TEXTAREA:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
                     View v = baseView.getChildAt(i);
@@ -158,7 +149,7 @@ public class Question extends Model{
                     }
                 }
                 break;
-            case "multi":
+            case QTYPE_MULTI:
                 String str = "";
                 //TODO clean up hack. Reliant on subview. Instead check if derived from ViewGroup and sub-drill?
                 ViewGroup answerBase = (ViewGroup) baseView.getChildAt(1);
@@ -172,7 +163,7 @@ public class Question extends Model{
                     }
                 }
                 return str;
-            case "radio":
+            case QTYPE_RADIO:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
                     View v = baseView.getChildAt(i);
@@ -185,14 +176,12 @@ public class Question extends Model{
                     }
                 }
                 break;
-            //TODO Test support for single line?
         }
         Log.e("question", "Error parsing results");
         return null;
     }
 
     public void saveQuestion(){
-        Log.d("Saving", "Question");
         this.save();
         if(choices != null){
         for(Choice choice: choices){
