@@ -110,9 +110,15 @@ public class Question extends Model{
                 List<Choice> options = getChoices();
                 Log.d("Options size","" + options.size());
                 for(Choice option: getChoices()){
+                    int index = getChoices().indexOf(option);
                     RadioButton radioButton = new RadioButton(cx);
                     radioButton.setText(option.choice);
+                    radioButton.setId(index);
+                    //TODO - Add a delimeter so we can check against full responses
                     radioGroup.addView(radioButton);
+                    if(questionResponse.rData != null && questionResponse.rData.contains(option.choice)){
+                        radioGroup.check(index);
+                    }
                 }
                 view = radioGroup;
                 break;
@@ -123,6 +129,9 @@ public class Question extends Model{
                 for(Choice option: getChoices()){
                     CheckBox checkBox = new CheckBox(cx);
                     checkBox.setText(option.choice);
+                    if(questionResponse.rData != null && questionResponse.rData.contains(option.choice)){
+                        checkBox.setChecked(true);
+                    }
                     layout.addView(checkBox);
                 }
                 view = layout;
@@ -131,10 +140,7 @@ public class Question extends Model{
                 view = new View(cx);
         }
 
-        //question.setBaseView(viewGroup);
-
         baseView.addView(view);
-
         return baseView;
     }
 
