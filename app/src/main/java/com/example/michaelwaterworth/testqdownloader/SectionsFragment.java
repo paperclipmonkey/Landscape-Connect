@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
@@ -78,7 +79,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         questionnaire = response.questionnaire;
 
         // Get the data source
-        ArrayList<Section> arrayOfSections = ((SectionsActivity) getActivity()).getSections();
+        List<Section> arrayOfSections = ((SectionsActivity) getActivity()).getQuestionnaire().getSections();
 
         //Section Response Link links section and sectionresponse. Holding the View and the Db result.
         sectionResponseLinks = new ArrayList<>();

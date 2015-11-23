@@ -304,7 +304,8 @@ public class QuestionnairesFragment extends Fragment {
         try {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             Questionnaire questionnaire = gson.fromJson(string, Questionnaire.class);
-            questionnaire.save();
+            questionnaire.saveQuestionnaire();
+
         } catch (Exception e){
             //TODO Add a message to the user here
             Log.d("Error",e.getLocalizedMessage());

@@ -10,7 +10,6 @@ import android.widget.Button;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
@@ -24,7 +23,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     protected Response response;
     protected SectionResponse sectionResponse;
     protected int sectionNum;
-    protected ArrayList<Question> questionsArr;
+    protected List<Question> questionsArr;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -44,7 +43,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //TODO Hijacking all options menu items from this Fragment
+        //TODO Hijacking all choice menu items from this Fragment
         super.onOptionsItemSelected(item);
         getFragmentManager().popBackStackImmediate();
         return true;

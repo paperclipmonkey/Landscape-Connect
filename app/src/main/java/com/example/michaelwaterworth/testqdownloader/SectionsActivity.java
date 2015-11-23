@@ -12,8 +12,7 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
@@ -21,7 +20,6 @@ import java.util.Arrays;
 public class SectionsActivity extends AppCompatActivity {
     private Response response;
     private Questionnaire questionnaire;
-    private Section[] sections;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,44 +55,19 @@ public class SectionsActivity extends AppCompatActivity {
 
     private void createQuestionnaireObject(Long questionnaireId){
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
-
-        String questions = questionnaire.getQuestions();
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        sections = gson.fromJson(questions, Section[].class);
     }
 
-    public ArrayList<Question> getSection(int sectionNum){
-        ArrayList<Question> questionsArr = new ArrayList<>(Arrays.asList(sections[sectionNum].getQuestions()));
-
-        //TODO remove length hack
-        for(Question sec : questionsArr){
-            if(sec == null){
-                questionsArr.remove(sec);
-            }
-        }
+    public List<Question> getSection(int sectionNum){
+        List<Question> questionsArr = questionnaire.getSections().get(sectionNum).getQuestions();
         return questionsArr;
     }
-
-    public ArrayList<Section> getSections(){
-        ArrayList<Section> sectionArrayList =  new ArrayList<>(Arrays.asList(sections));
-
-        //TODO Hack. Why is GSON returning empty array values
-        for(Section sec : sectionArrayList){
-            if(sec == null){
-                sectionArrayList.remove(sec);
-            }
-        }
-
-        return sectionArrayList;
-    }
-
 
     private void createResponse(){
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         // Construct the array of sections
-        ArrayList<Section> arrayOfSections = new ArrayList<>(Arrays.asList(gson.fromJson(questionnaire.getQuestions(), Section[].class)));
+        List<Section> arrayOfSections = questionnaire.getSections();
 
         response = new Response();
         response.questionnaire = questionnaire;

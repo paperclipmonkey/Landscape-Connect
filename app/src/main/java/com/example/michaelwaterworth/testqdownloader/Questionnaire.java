@@ -2,11 +2,11 @@ package com.example.michaelwaterworth.testqdownloader;
 
 import android.database.Cursor;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Delete;
 import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
@@ -50,8 +50,7 @@ public class Questionnaire extends Model{
     private String serverId;//Any serverId to be sent to the Task class
 
     @Expose
-    @Column(name = "Questions")
-    private String questions;//Bool has this Task already been used as a notification
+    private Section[] sections;
 
     public Questionnaire() {
         dateAdded = Calendar.getInstance().getTimeInMillis() / 1000;
@@ -77,14 +76,32 @@ public class Questionnaire extends Model{
     }
 
     public static void deleteFromIds(long[] ids) {
-        From query = new Delete()
+        From query = new Select()
                 .from(Questionnaire.class)
                 .where("_id = -1");
         for (long id: ids) {
             query.or("_id = ?", id);
             System.out.println(id);
         }
-        query.execute();
+        List<Questionnaire> qs = query.execute();
+
+        for (Questionnaire questionnaire: qs) {
+            List<Section> secList = questionnaire.getSections();
+            for(Section s: secList){
+                List<Question> queList =s.getQuestions();
+                for(Question question: queList){
+                    question.delete();
+                }
+                s.delete();
+            }
+
+            //Remove responses
+            List<Response> responses = questionnaire.getResponses();
+            for(Response response: responses){
+                response.delete();
+            }
+            questionnaire.delete();
+        }
     }
 
     public String getName() {
@@ -103,12 +120,16 @@ public class Questionnaire extends Model{
         this.description = description;
     }
 
-    public String getQuestions() {
-        return questions;
+    public List<Section> getSections() {
+        return getMany(Section.class, "Questionnaire");
     }
 
-    public void setQuestions(String questions) {
-        this.questions = questions;
+    public List<Response> getResponses() {
+        return getMany(Response.class, "Questionnaire");
+    }
+
+    public void setSections(Section[] sections) {
+        this.sections = sections;
     }
 
     public String getServerId() {
@@ -124,6 +145,15 @@ public class Questionnaire extends Model{
         rDate.setTimeInMillis(dateAdded * 1000);
 
         return rDate;
+    }
+
+    public void saveQuestionnaire(){
+        Log.d("Saving", "Questionnaire");
+        this.save();
+        for(Section section: sections){
+            section.questionnaire = this;
+            section.saveSection();
+        }
     }
 
     public void setDateAdded(Calendar rDate) {

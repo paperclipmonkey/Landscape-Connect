@@ -1,6 +1,7 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.content.Context;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,39 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
+
+import java.util.List;
 
 /**
  * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
-public class Question {
+@Table(name = "Question", id = BaseColumns._ID)
+public class Question extends Model{
+    @Column(name = "id")
+    private int id;
+
+    @Column(name = "Title")
     @Expose
     public String title;
+
+    @Column(name = "Type")
     @Expose
     public String type;
+
+    @Column(name = "Required")
     @Expose
     public boolean required;
+
     @Expose
-    public String[] options;
+    public Choice[] choices;
+
+    @Column(name = "Section" , onDelete = Column.ForeignKeyAction.CASCADE)
+    @Expose
+    public Section section;
 
     public ViewGroup baseView;
 
@@ -53,12 +73,8 @@ public class Question {
         this.required = required;
     }
 
-    public String[] getSelect() {
-        return options;
-    }
-
-    public void setSelect(String[] selectOptions) {
-        this.options = selectOptions;
+    public List<Choice> getChoices() {
+        return getMany(Choice.class, "Question");
     }
 
     public ViewGroup getBaseView() { return baseView; }
@@ -73,31 +89,37 @@ public class Question {
         title.setText(getTitle());
 
         View view;
+        Log.d("Type", getType());
         switch (getType()){
             case "textarea":
                 EditText textareaObj = new EditText(cx);
                 view = textareaObj;
                 break;
             case "string":
+                Log.d("String type", "string");
                 EditText stringObj = new EditText(cx);
                 stringObj.setLines(1);
                 view = stringObj;
                 break;
             case "radio":
+                Log.d("Radio type", "radio");
                 RadioGroup radioGroup = new RadioGroup(cx);
-                for(String option: getSelect()){
+                List<Choice> options = getChoices();
+                Log.d("Options size","" + options.size());
+                for(Choice option: getChoices()){
                     RadioButton radioButton = new RadioButton(cx);
-                    radioButton.setText(option);
+                    radioButton.setText(option.choice);
                     radioGroup.addView(radioButton);
                 }
                 view = radioGroup;
                 break;
             case "multi":
+                Log.d("Multi type", "multi");
                 LinearLayout layout = new LinearLayout(cx);
                 layout.setOrientation(LinearLayout.VERTICAL);
-                for(String option: getSelect()) {
+                for(Choice option: getChoices()){
                     CheckBox checkBox = new CheckBox(cx);
-                    checkBox.setText(option);
+                    checkBox.setText(option.choice);
                     layout.addView(checkBox);
                 }
                 view = layout;
@@ -158,5 +180,16 @@ public class Question {
         }
         Log.e("question", "Error parsing results");
         return null;
+    }
+
+    public void saveQuestion(){
+        Log.d("Saving", "Question");
+        this.save();
+        if(choices != null){
+        for(Choice choice: choices){
+            choice.question = this;
+            choice.save();
+        }
+        }
     }
 }
