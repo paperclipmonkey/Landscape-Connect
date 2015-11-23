@@ -15,6 +15,7 @@ import java.util.List;
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsActivity extends AppCompatActivity {
+    public static final String R_ID_KEY = "rId";
     private Response response;
     private Questionnaire questionnaire;
 
@@ -34,8 +35,12 @@ public class SectionsActivity extends AppCompatActivity {
         }
 
         //Create Response object to base this on
-        createQuestionnaireObject(getIntent().getLongExtra("id", -1));
-        createResponse();
+        loadQuestionnaire(getIntent().getLongExtra("id", -1));
+        if(savedInstanceState != null && savedInstanceState.getLong(R_ID_KEY, -1) != -1){
+            loadResponse(savedInstanceState.getLong(R_ID_KEY));
+        } else {
+            createResponse();
+        }
 
         Fragment fragment = new SectionsFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -50,12 +55,16 @@ public class SectionsActivity extends AppCompatActivity {
             });
     }
 
-    private void createQuestionnaireObject(Long questionnaireId){
+    private void loadQuestionnaire(Long questionnaireId){
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
     }
 
     public Section getSection(int sectionNum){
         return questionnaire.getSections().get(sectionNum);
+    }
+
+    private void loadResponse(Long rId){
+        response = Response.load(Response.class, rId);
     }
 
     private void createResponse(){
@@ -115,5 +124,11 @@ public class SectionsActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong(R_ID_KEY, response.getId());
+        super.onSaveInstanceState(outState);
     }
 }

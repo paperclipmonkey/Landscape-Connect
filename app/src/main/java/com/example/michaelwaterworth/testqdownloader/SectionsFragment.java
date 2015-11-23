@@ -42,33 +42,35 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     protected Questionnaire questionnaire;
     protected Response response;
     protected ArrayList<SectionResponseLink> sectionResponseLinks;
+    protected ProgressBar progressBar;
 
     public SectionsFragment() {
     }
 
     protected void setTaskProgress(int percentage){
-        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
-        if(progressBar != null) {
-            progressBar.setProgress(percentage);
-        }
+        Log.d("Progress", "" + percentage);
+        progressBar.setProgress(percentage);
     }
 
 
     public void pageNext(){
-        if(flipper != null) {
-            flipper.showNext();  // Switches to the next view
-        }
+        flipper.showNext();  // Switches to the next view
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
+        if(base == null) {
+            Log.d("Base", "Base null");
+            base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
+        }
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
 
         //View Flipper for switching between pages
         flipper = (ViewFlipper) base.findViewById(R.id.switcher);
+
+        progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
 
         Button b = (Button) base.findViewById(R.id.button_take_photo);
         b.setOnClickListener(this);
@@ -90,18 +92,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             i++;
         }
 
-        int completedCount = 0;
-        for(SectionResponseLink srl: sectionResponseLinks){
-            //Set whether the section is complete
-            if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
-                completedCount++;
-            }
-        }
-
-
-        int percentage = Math.round(((float) completedCount / (float) arrayOfSections.size())*100);
-        setTaskProgress(percentage);
-
         // Create the adapter to convert the array to views
         SectionAdapter adapter = new SectionAdapter(getContext(), sectionResponseLinks);
 
@@ -117,13 +107,29 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         });
 
         //Ensure we're on the right page based on the current Response status
-        if(response.photo != null && !response.photo.isEmpty()){
+        if(response.photo != null && !response.photo.isEmpty() && flipper.getDisplayedChild() == 0){
             pageNext();
         }
+
+        calculateTaskProgress();
 
         getActivity().invalidateOptionsMenu();
 
         return base;
+    }
+
+    protected void calculateTaskProgress(){
+        int completedCount = 0;
+        for(SectionResponseLink srl: sectionResponseLinks){
+            //Set whether the section is complete
+            if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
+                completedCount++;
+            }
+        }
+
+
+        int percentage = Math.round(((float) completedCount / (float) sectionResponseLinks.size())*100);
+        setTaskProgress(percentage);
     }
 
     @Override
