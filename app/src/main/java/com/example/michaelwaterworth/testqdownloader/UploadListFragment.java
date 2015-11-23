@@ -42,7 +42,7 @@ public class UploadListFragment extends Fragment {
 
         final String[] projection = {"_id", "DateAdded", "Questionnaire", "Photo", "Complete"};
 
-        getActivity().getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.UPLOADFRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),

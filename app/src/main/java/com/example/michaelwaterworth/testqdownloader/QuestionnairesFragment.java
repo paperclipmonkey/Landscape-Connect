@@ -97,7 +97,7 @@ public class QuestionnairesFragment extends Fragment {
 
         final String[] projection = {"_id", "DateAdded", "Name", "Description"};
 
-        getActivity().getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.LISTFRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
