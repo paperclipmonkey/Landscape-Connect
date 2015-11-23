@@ -23,14 +23,13 @@ public class SectionResponse extends Model{
     @Column(name = "Response")
     public Response response;
 
-    // This method is optional, does not affect the foreign key creation.
-    public List<QuestionResponse> getQuestionResponses() {
-        return getMany(QuestionResponse.class, "SectionResponse");
-    }
-
     @Expose
     @Column(name = "Complete")
     public boolean complete;
+
+    public List<QuestionResponse> getQuestionResponses() {
+        return getMany(QuestionResponse.class, "SectionResponse");
+    }
 
     public boolean isCompleted() { return complete; }
 

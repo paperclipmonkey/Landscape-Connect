@@ -54,9 +54,13 @@ public class SectionsActivity extends AppCompatActivity {
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
     }
 
-    public List<Question> getSection(int sectionNum){
+    public List<Question> getSectionQuestions(int sectionNum){
         List<Question> questionsArr = questionnaire.getSections().get(sectionNum).getQuestions();
         return questionsArr;
+    }
+
+    public Section getSection(int sectionNum){
+        return questionnaire.getSections().get(sectionNum);
     }
 
     private void createResponse(){

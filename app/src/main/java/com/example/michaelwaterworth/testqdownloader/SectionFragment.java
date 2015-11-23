@@ -21,6 +21,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
     protected ViewGroup base;
     protected Response response;
+    protected Section section;
     protected SectionResponse sectionResponse;
     protected int sectionNum;
     protected List<Question> questionsArr;
@@ -60,7 +61,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 //        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
 
         sectionNum = getArguments().getInt("section_num");
-        questionsArr = ((SectionsActivity) getActivity()).getSection(sectionNum);
+        section = ((SectionsActivity) getActivity()).getSection(sectionNum);
+        questionsArr = section.getQuestions();
         response = ((SectionsActivity) getActivity()).getResponse();
         sectionResponse = response.items().get(sectionNum);
 
@@ -103,7 +105,16 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
 
         //TODO - Check if section is complete.
-        sectionResponse.complete = true;
+        //Check if section required.
+        //If is then ensure all questions completed.
+        sectionResponse.setCompleted(true);
+        if(section.isRequired()) {
+            for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
+                if(!questionResponse.isComplete()){
+                    sectionResponse.setCompleted(false);
+                }
+            }
+        }
 
         sectionResponse.save();
 

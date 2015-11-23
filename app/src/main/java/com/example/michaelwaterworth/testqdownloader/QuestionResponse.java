@@ -40,6 +40,11 @@ public class QuestionResponse extends Model {
 
     //Complete meaning question has been answered
     public boolean isComplete(){
-        return ! this.rData.isEmpty();
+        if(this.rData != null){
+            if(!this.rData.isEmpty()){
+                return true;
+            }
+        }
+        return false;
     }
 }
