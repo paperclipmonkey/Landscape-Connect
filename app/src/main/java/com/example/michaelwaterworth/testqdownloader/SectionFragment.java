@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
+import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,6 +27,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     protected SectionResponse sectionResponse;
     protected int sectionNum;
     protected List<Question> questionsArr;
+    protected ViewFlipper flipper;
+    protected static int QUESTIONSPERPAGE = 3;
+    protected Button doneButton;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -58,7 +63,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
 
         //View Flipper for switching between pages
-//        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
+        flipper = (ViewFlipper) base.findViewById(R.id.section_page_switcher);
 
         sectionNum = getArguments().getInt("section_num");
         section = ((SectionsActivity) getActivity()).getSection(sectionNum);
@@ -66,12 +71,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         response = ((SectionsActivity) getActivity()).getResponse();
         sectionResponse = response.getSectionResponses().get(sectionNum);
 
+        doneButton = (Button) base.findViewById(R.id.section_button_next_done);
+        doneButton.setOnClickListener(this);
 
         //Build the UI
-        buildQuestionsView(questionsArr, (ViewGroup) base.findViewById(R.id.questions), sectionResponse);
-
-        Button doneButton = (Button) base.findViewById(R.id.section_button_done);
-        doneButton.setOnClickListener(this);
+        buildQuestionsView(questionsArr, flipper, sectionResponse);
 
         ImageViewTouch imageViewTouch = (ImageViewTouch) base.findViewById(R.id.section_image);
 
@@ -89,9 +93,23 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.section_button_done:
-                sendResult();
+            case R.id.section_button_next_done:
+                if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
+                    sendResult();
+                } else {
+                    flipper.setDisplayedChild(flipper.getDisplayedChild() + 1);
+                    ScrollView scrollView = (ScrollView) base;
+                    scrollView.fullScroll(View.FOCUS_UP);
+                    setButtonText();
+                }
                 break;
+        }
+    }
+
+    public void setButtonText(){
+        //Change the button text if this is the last page
+        if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
+            doneButton.setText(R.string.done);
         }
     }
 
@@ -121,12 +139,26 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         getFragmentManager().popBackStackImmediate();
     }
 
-    public void buildQuestionsView(List<Question> questions, ViewGroup base, SectionResponse sectionResponse){
+    public void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse){
         int i = 0;
+        int qppi = 1;
+
+        ViewGroup currrentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
+        flipper.addView(currrentBase);
+
         while(i < questions.size()){
+            if(qppi % (QUESTIONSPERPAGE + 1) == 0){
+                currrentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
+                flipper.addView(currrentBase);
+                qppi = 1;
+            }
             Question question = questions.get(i);
-            base.addView(question.createBaseView(getContext(), sectionResponse.getQuestionResponses().get(i)));//TODO - Ordering
+            currrentBase.addView(question.createBaseView(getContext(), sectionResponse.getQuestionResponses().get(i)));//TODO - Ordering
             i++;
+            qppi++;
         }
+
+        //To be done after building the UI
+        setButtonText();
     }
 }

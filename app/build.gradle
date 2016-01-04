@@ -30,7 +30,10 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.2'
     compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.android.gms:play-services:7.5.0'
     compile('com.afollestad.material-dialogs:core:0.8.4.2@aar') {
         transitive = true
     }
+    compile 'com.alexbbb:uploadservice:1.4'
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1' // (v4.5)
 }

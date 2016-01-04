@@ -46,6 +46,14 @@ public class Questionnaire extends Model{
     private String description;//Title to be used in notification
 
     @Expose
+    @Column(name = "IntroTitle")
+    private String introTitle;//Title to be used in notification
+
+    @Expose
+    @Column(name = "IntroDescription")
+    private String introDescription;//Title to be used in notification
+
+    @Expose
     @Column(name = "ServerId")
     private String serverId;//Any serverId to be sent to the Task class
 
@@ -119,6 +127,18 @@ public class Questionnaire extends Model{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getIntroTitle() {
+        return introTitle;
+    }
+    public void setIntroTitle(String introTitle) {
+        this.introTitle = introTitle;
+    }
+
+    public String getIntroDescription() {
+        return introDescription;
+    }
+    public void setIntroDescription(String introDescription) { this.introDescription = introDescription; }
 
     public List<Section> getSections() {
         return getMany(Section.class, "Questionnaire");

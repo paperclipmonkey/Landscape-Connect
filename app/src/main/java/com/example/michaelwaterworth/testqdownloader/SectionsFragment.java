@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -21,12 +21,16 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,21 +39,27 @@ import java.util.List;
  */
 public class SectionsFragment extends Fragment implements View.OnClickListener {
     static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    static final int MY_PERMISSIONS_REQUEST_STORAGE = 4;
     static final int REQUEST_IMAGE_CAPTURE = 2;
+    static final int MY_PERMISSIONS_REQUEST_STORAGE = 3;
+    static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
     protected ViewFlipper flipper;
     protected ViewGroup base;
     protected Questionnaire questionnaire;
     protected Response response;
     protected ArrayList<SectionResponseLink> sectionResponseLinks;
     protected ProgressBar progressBar;
+    protected LocationGetter locationGetter;
 
     public SectionsFragment() {
     }
 
     protected void setTaskProgress(int percentage){
         Log.d("Progress", "" + percentage);
+        progressBar.setIndeterminate(false);
         progressBar.setProgress(percentage);
+
+        TextView tv = (TextView) base.findViewById(R.id.testtext);
+        tv.setText("" + progressBar.getProgress());
     }
 
 
@@ -61,19 +71,19 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(base == null) {
-            Log.d("Base", "Base null");
+            //Log.d("Base", "Base null");
             base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
-        }
-        getActivity().setTitle(getActivity().getString(R.string.new_landscape));
-        setHasOptionsMenu(true);
 
-        //View Flipper for switching between pages
-        flipper = (ViewFlipper) base.findViewById(R.id.switcher);
+            //View Flipper for switching between pages
+            flipper = (ViewFlipper) base.findViewById(R.id.switcher);
+            Button b = (Button) base.findViewById(R.id.button_take_photo);
+            b.setOnClickListener(this);
+        }
 
         progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
 
-        Button b = (Button) base.findViewById(R.id.button_take_photo);
-        b.setOnClickListener(this);
+        getActivity().setTitle(getActivity().getString(R.string.new_landscape));
+        setHasOptionsMenu(true);
 
         response = ((SectionsActivity) getActivity()).getResponse();
 
@@ -115,11 +125,23 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         getActivity().invalidateOptionsMenu();
 
+        checkLocationPermissions();
+
+        buildIntroPage();
+
         return base;
     }
 
+    protected void buildIntroPage(){
+        TextView title = (TextView) base.findViewById(R.id.page1_intro_title);
+        TextView subTitle = (TextView) base.findViewById(R.id.page1_intro_desciprion);
+        title.setText(questionnaire.getIntroTitle());
+        subTitle.setText(questionnaire.getIntroDescription());
+        //page1_title, page1_subtitle
+    }
+
     protected void calculateTaskProgress(){
-        int completedCount = 0;
+        int completedCount = 1;
         for(SectionResponseLink srl: sectionResponseLinks){
             //Set whether the section is complete
             if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
@@ -127,8 +149,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-
-        int percentage = Math.round(((float) completedCount / (float) sectionResponseLinks.size())*100);
+        int percentage = Math.round(((float) completedCount / (float) (1 + sectionResponseLinks.size()))*100);//Photo included as task
         setTaskProgress(percentage);
     }
 
@@ -152,55 +173,48 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         checkPermissions();
     }
 
-    public void checkPermissions(){
+    public void checkLocationPermissions(){
         if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CAMERA)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.CAMERA)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                //TODO Add explanation
-                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-
-            } else {
-                // No explanation needed, we can request the permission.
-                requestPermissions(new String[]{Manifest.permission.CAMERA},
-                        MY_PERMISSIONS_REQUEST_CAMERA);
-            }
-        } else {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                // Should we show an explanation?
-                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                    // Show an expanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    //TODO Add explanation
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_STORAGE);
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_STORAGE);
-                }
-            } else {
-                takePhoto();
-            }
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_LOCATION);
+            return;
         }
+        /*
+        Start the location watcher
+        We can't do this until the permission requests have gone through
+         */
+        locationGetter = new LocationGetter(getContext());
+    }
+
+    public void checkPermissions(){
+        if (ContextCompat.checkSelfPermission(getActivity(),
+            Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                    MY_PERMISSIONS_REQUEST_CAMERA);
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(getActivity(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // No explanation needed, we can request the permission.
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_STORAGE);
+            return;
+        }
+
+        //We've cleared all of the Android permission system - Take the photo
+        takePhoto();
     }
 
     private void takePhoto(){
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -289,7 +303,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                     Log.d("TAG", "Permission Granted");
                     checkPermissions();
                 } else {
-                    Log.d("TAG", "Permission denied");
+                    Log.d("TAG", "Permission denied camera");
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -301,17 +315,53 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                     Log.d("TAG", "Permission Granted");
                     checkPermissions();
                 } else {
-                    Log.d("TAG", "Permission denied");
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    Log.d("TAG", "Permission denied storage");
+                }
+                return;
+            }
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("TAG", "Permission Granted location");
+                    checkLocationPermissions();
+                } else {
+                    Log.d("TAG", "Permission denied location");
                 }
                 return;
             }
         }
     }
 
+    public void getLocation(){
+        //Check if we can get location
+        LatLng latLng = locationGetter.getLocation();
+        Float accuracy = locationGetter.getAccurary();
+        Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
+        if(locationGetter.getAccurary() < 50){
+            locationGetter.cancel(true);
+            response.lat = latLng.latitude;
+            response.lng = latLng.longitude;
+            response.locAcc = accuracy;
+        } else {
+            Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
+            final Handler h = new Handler();
+            h.postDelayed(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    getLocation();
+                }
+            }, 1000); // 1 second delay (takes millis)
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        response.timestamp = Calendar.getInstance().getTimeInMillis();
+
+        getLocation();
+
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
             pageNext();
         }

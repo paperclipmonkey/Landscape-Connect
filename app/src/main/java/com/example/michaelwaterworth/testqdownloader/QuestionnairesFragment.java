@@ -25,6 +25,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
 import com.afollestad.materialdialogs.DialogAction;
@@ -38,7 +39,6 @@ import com.google.zxing.integration.android.IntentResult;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -243,8 +243,8 @@ public class QuestionnairesFragment extends Fragment {
         }
     }
 
-    public void showHideProgress(){
-        if(dialog != null){
+    public void showHideProgress(boolean show){
+        if(dialog != null || show == false){
             dialog.dismiss();
             dialog = null;
         } else {
@@ -282,7 +282,7 @@ public class QuestionnairesFragment extends Fragment {
         String jsonUrl = "http://3equals.co.uk/lc-json/" + url + ".json";
         Log.d("download", "Downloading JSON: " + jsonUrl);
         new DownloadToString().execute(jsonUrl);
-        showHideProgress();
+        showHideProgress(true);
     }
 
     @Override
@@ -299,26 +299,13 @@ public class QuestionnairesFragment extends Fragment {
         }
     }
 
-    public void parseJson(String string){
-        showHideProgress();
-        try {
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            Questionnaire questionnaire = gson.fromJson(string, Questionnaire.class);
-            questionnaire.saveQuestionnaire();
-
-        } catch (Exception e){
-            //TODO Add a message to the user here
-            Log.d("Error",e.getLocalizedMessage());
-        }
-    }
-
-
     /**
      * Background Async Task to download file
      * */
     class DownloadToString extends AsyncTask<String, String, String> {
         // Output stream
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
+
         /**
          * Before starting background thread Show Progress Bar Dialog
          * */
@@ -392,9 +379,17 @@ public class QuestionnairesFragment extends Fragment {
             // dismiss the dialog after the file was downloaded
             //dismissDialog(progress_bar_type);
             try {
-                parseJson(output.toString("UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+                String parsedString = output.toString("UTF-8");
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                Questionnaire questionnaire = gson.fromJson(parsedString, Questionnaire.class);
+                questionnaire.saveQuestionnaire();
+                showHideProgress(false);//Hide the progress spinner when fully finished.
+            } catch (Exception e){
+                Toast toast = Toast.makeText(getContext(), R.string.failed_to_download, Toast.LENGTH_SHORT);
+                toast.show();
+                //TODO Add a message to the user here
+                Log.d("Error",e.getLocalizedMessage());
+                showHideProgress(false);//Hide the progress spinner when fully finished.
             }
         }
     }

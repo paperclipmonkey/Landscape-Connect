@@ -26,13 +26,29 @@ public class Response extends Model {
     @Column(name = "Timestamp")
     public Long timestamp;//Date & Time to be completed
 
+    // - - - - - - Location fields - - - - - - - -
+
+    @Expose
+    @Column(name = "Lat")
+    public Double lat;//Date & Time to be completed
+
+    @Expose
+    @Column(name = "Lng")
+    public Double lng;//Date & Time to be completed
+
+    @Expose
+    @Column(name = "LocAcc")
+    public Float locAcc;//Date & Time to be completed
+
+    // - - - - - - End Location fields - - - - - - - -
+
     @Expose
     @Column(name = "Questionnaire")
     public Questionnaire questionnaire;
 
     @Expose
     @Column(name = "Photo")
-    public String photo;//Date & Time to be completed
+    public String photo;//File address to photo
 
     public List<SectionResponse> getSectionResponses() {
         return getMany(SectionResponse.class, "Response");
@@ -59,6 +75,5 @@ public class Response extends Model {
 
     public void setFinished(){
         this.finished = true;
-        this.timestamp = Calendar.getInstance().getTimeInMillis();
     }
 }
