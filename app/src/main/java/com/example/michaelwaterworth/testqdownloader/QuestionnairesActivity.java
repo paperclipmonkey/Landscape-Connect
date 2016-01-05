@@ -57,6 +57,10 @@ public class QuestionnairesActivity extends AppCompatActivity{
                         fragment = new QuestionnairesFragment();
                         setTitle(R.string.questionnaires);
                         break;
+                    case R.id.drawer_about:
+                        fragment = new AboutFragment();
+                        setTitle(R.string.about);
+                        break;
                     default:
                         fragment = new UploadListFragment();
                         setTitle("Upload Queue");
