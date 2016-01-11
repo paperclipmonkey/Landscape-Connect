@@ -50,7 +50,7 @@ public class Section extends Model{
         }
     }
 
-    public boolean isRequired() {
+    public boolean hasRequiredQuestions() {
         List<Question> questions = getMany(Question.class, "Section");
         for(Question q: questions){
             if(q.isRequired()){

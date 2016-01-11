@@ -300,7 +300,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     private boolean checkComplete(){
         for(SectionResponseLink srl: sectionResponseLinks){
             //Required and not complete Escape.
-            if(srl.section.isRequired() && ! srl.sectionResponse.isCompleted()) {
+            if(srl.section.hasRequiredQuestions() && ! srl.sectionResponse.isCompleted()) {
                 return false;
             }
         }
