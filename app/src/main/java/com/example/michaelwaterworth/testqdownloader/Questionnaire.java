@@ -98,6 +98,20 @@ public class Questionnaire extends Model{
         List<Questionnaire> qs = query.execute();
 
         for (Questionnaire questionnaire: qs) {
+            //Remove responses
+            List<Response> responses = questionnaire.getResponses();
+            for(Response response: responses){
+                List<SectionResponse> sectionResponses = response.getSectionResponses();
+                for(SectionResponse sectionResponse: sectionResponses){
+                    List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
+                    for(QuestionResponse questionResponse: questionResponses){
+                        questionResponse.delete();
+                    }
+                    sectionResponse.delete();
+                }
+                response.delete();
+            }
+
             List<Section> secList = questionnaire.getSections();
             for(Section s: secList){
                 List<Question> queList =s.getQuestions();
@@ -107,11 +121,6 @@ public class Questionnaire extends Model{
                 s.delete();
             }
 
-            //Remove responses
-            List<Response> responses = questionnaire.getResponses();
-            for(Response response: responses){
-                response.delete();
-            }
             questionnaire.delete();
         }
     }
