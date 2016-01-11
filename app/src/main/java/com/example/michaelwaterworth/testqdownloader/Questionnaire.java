@@ -47,11 +47,15 @@ public class Questionnaire extends Model{
 
     @Expose
     @Column(name = "IntroTitle")
-    private String introTitle;//Title to be used in notification
+    private String introTitle;//Title to be used when opening questionnaire
 
     @Expose
     @Column(name = "IntroDescription")
-    private String introDescription;//Title to be used in notification
+    private String introDescription;//Description to be used when opening questionnaire
+
+    @Expose
+    @Column(name = "IntroImage")
+    private String introImage;//Image to be used when opening questionnaire
 
     @Expose
     @Column(name = "ServerId")
@@ -139,6 +143,11 @@ public class Questionnaire extends Model{
         return introDescription;
     }
     public void setIntroDescription(String introDescription) { this.introDescription = introDescription; }
+
+    public String getIntroImage() {
+        return introImage;
+    }
+    public void setIntroImage(String introImage) { this.introImage = introImage; }
 
     public List<Section> getSections() {
         return getMany(Section.class, "Questionnaire");

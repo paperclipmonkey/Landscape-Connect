@@ -51,6 +51,8 @@ public class QuestionnairesFragment extends Fragment {
     protected QuestionnairesFragment mThis;
     protected ActionMode mActionMode;
     protected MaterialDialog dialog;
+    protected String TAG = "QuestionnairesFragment";
+
     private View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -263,25 +265,27 @@ public class QuestionnairesFragment extends Fragment {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d("TAG", "Permission Granted");
+                    Log.d(TAG, "Permission Granted");
                     getFabQr();
                 } else {
-                    Log.d("TAG", "Permission denied");
+                    Log.d(TAG, "Permission denied");
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
                 return;
             }
             default:
-                Log.d("TAG", "Unknown request code");
+                Log.d(TAG, "Unknown request code");
         }
     }
 
 
     public void addNewQs(String url){
-        String jsonUrl = "http://3equals.co.uk/lc-json/" + url + ".json";
-        Log.d("download", "Downloading JSON: " + jsonUrl);
-        new DownloadToString().execute(jsonUrl);
+        if(!url.startsWith("http", 0)){
+            url = getString(R.string.download_url) + url.toUpperCase() + ".json";
+        }
+        Log.d(TAG, "Downloading JSON: " + url);
+        new DownloadToString().execute(url);
         showHideProgress(true);
     }
 
@@ -290,9 +294,9 @@ public class QuestionnairesFragment extends Fragment {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null) {
             if(result.getContents() == null) {
-                Log.d("QRSCAN", "Cancelled from fragment");
+                Log.d(TAG, "Cancelled from fragment");
             } else {
-                Log.d("QRSCAN", "Scanned from fragment: " + result.getContents());
+                Log.d(TAG, "Scanned from fragment: " + result.getContents());
                 //TODO - Check is URL
                 addNewQs(result.getContents());
             }
@@ -324,6 +328,8 @@ public class QuestionnairesFragment extends Fragment {
             try {
                 URL url = new URL(f_url[0]);
                 URLConnection conection = url.openConnection();
+                conection.setRequestProperty("User-Agent", getString(R.string.user_agent_http));
+
                 conection.connect();
 
                 // this will be useful so that you can show a typical 0-100%
@@ -387,8 +393,7 @@ public class QuestionnairesFragment extends Fragment {
             } catch (Exception e){
                 Toast toast = Toast.makeText(getContext(), R.string.failed_to_download, Toast.LENGTH_SHORT);
                 toast.show();
-                //TODO Add a message to the user here
-                Log.d("Error",e.getLocalizedMessage());
+                Log.e(TAG,e.getLocalizedMessage());
                 showHideProgress(false);//Hide the progress spinner when fully finished.
             }
         }

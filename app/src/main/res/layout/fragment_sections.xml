@@ -35,13 +35,19 @@
 
             <TextView
                 android:id="@+id/page1_intro_desciprion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="57dp"
                 android:gravity="center"
                 android:layout_below="@id/page1_intro_title"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/page1_intro_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
 
             <LinearLayout
@@ -93,11 +99,12 @@
             android:orientation="vertical"
             android:weightSum="1">
 
-            <ProgressBar
-                android:id="@+id/task_progressbar"
+            <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/task_progressbar_holder"
                 android:layout_width="fill_parent"
-                android:layout_height="5dp"
-                style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal" />
+                android:layout_height="wrap_content">
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView2"

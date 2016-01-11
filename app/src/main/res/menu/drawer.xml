@@ -14,10 +14,10 @@
     </group>
 
     <group android:checkableBehavior="single" android:id="@+id/group_app">
-        <item
-            android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_action_settings"
-            android:title="@string/drawer_settings" />
+        <!--<item-->
+            <!--android:id="@+id/drawer_settings"-->
+            <!--android:icon="@drawable/ic_action_settings"-->
+            <!--android:title="@string/drawer_settings" />-->
         <item
             android:id="@+id/drawer_about"
             android:icon="@drawable/ic_action_info_outline"

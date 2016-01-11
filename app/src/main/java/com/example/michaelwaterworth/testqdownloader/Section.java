@@ -23,10 +23,6 @@ public class Section extends Model{
     public String title;
 
     @Expose
-    @Column(name = "Required")
-    public boolean required;
-
-    @Expose
     public Question[] questions;
 
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
@@ -55,10 +51,12 @@ public class Section extends Model{
     }
 
     public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
+        List<Question> questions = getMany(Question.class, "Section");
+        for(Question q: questions){
+            if(q.isRequired()){
+                return true;
+            }
+        }
+        return false;
     }
 }

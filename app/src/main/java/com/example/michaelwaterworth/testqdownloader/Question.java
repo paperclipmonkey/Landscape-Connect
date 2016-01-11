@@ -55,7 +55,10 @@ public class Question extends Model{
     public ViewGroup baseView;
 
     public String getTitle() {
-        return title;
+        if(this.required) {
+            return title;
+        }
+        return title + " (Optional)";
     }
 
     public void setTitle(String title) {

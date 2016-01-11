@@ -3,6 +3,8 @@ package com.example.michaelwaterworth.testqdownloader;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -55,11 +59,22 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
     protected void setTaskProgress(int percentage){
         Log.d("Progress", "" + percentage);
+
+        //Remove old progress bar from the UI
+        ViewGroup progressHolder = (ViewGroup) base.findViewById(R.id.task_progressbar_holder);
+        progressHolder.removeAllViews();
+
+        ViewGroup child = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.progress_bar, null);
+
+        progressBar = (ProgressBar) child.findViewById(R.id.task_progressbar);
+
         progressBar.setIndeterminate(false);
         progressBar.setProgress(percentage);
 
-        TextView tv = (TextView) base.findViewById(R.id.testtext);
-        tv.setText("" + progressBar.getProgress());
+        progressHolder.addView(child);
+
+        //TextView tv = (TextView) base.findViewById(R.id.testtext);
+        //tv.setText("" + progressBar.getProgress());
     }
 
 
@@ -80,7 +95,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             b.setOnClickListener(this);
         }
 
-        progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
+        //progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
 
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
@@ -135,8 +150,20 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     protected void buildIntroPage(){
         TextView title = (TextView) base.findViewById(R.id.page1_intro_title);
         TextView subTitle = (TextView) base.findViewById(R.id.page1_intro_desciprion);
+        ImageView image = (ImageView) base.findViewById(R.id.page1_intro_image);
         title.setText(questionnaire.getIntroTitle());
         subTitle.setText(questionnaire.getIntroDescription());
+        if(questionnaire.getIntroImage() != null){
+            Log.d("Qs", "intro image");
+            int introEnd = questionnaire.getIntroImage().indexOf(",");
+            byte[] decodedString = Base64.decode(questionnaire.getIntroImage().substring(introEnd), Base64.DEFAULT);//Remove metadata from the start of the string
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            image.setImageBitmap(decodedByte);
+            //image.setImageResource(R.drawable.hi_res_icon);
+        } else {
+            Log.d("Qs", "No intro image");
+        }
+
         //page1_title, page1_subtitle
     }
 

@@ -2,12 +2,14 @@ package com.example.michaelwaterworth.testqdownloader;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.squareup.picasso.Picasso;
@@ -94,6 +96,23 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.section_button_next_done:
+                //check if all the questions on the page have been completed
+                serialiseData();
+                for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
+                    //Check all questions on pages up to the current page
+                    Log.d("SectionFragment", "Flipper Index: " + flipper.getDisplayedChild());
+                    if(questionResponse.question.isRequired()) {
+                        if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + 1 * QUESTIONSPERPAGE)) {
+                            Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
+                            if (!questionResponse.isComplete()) {
+                                Toast.makeText(getContext(), R.string.please_complete, Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                    }
+                }
+
+
                 if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
                     sendResult();
                 } else {
@@ -113,7 +132,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void sendResult(){
+    public void serialiseData(){
         int i = 0;
         for(Question q: questionsArr){
             //res += q.getSerialisedAnswer();
@@ -121,6 +140,10 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             qr.rData = q.getSerialisedAnswer();
             i++;
         }
+    }
+
+    public void sendResult(){
+        serialiseData();
 
         //TODO - Check if section is complete.
         //Check if section required.
