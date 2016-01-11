@@ -149,9 +149,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         //Check if section required.
         //If is then ensure all questions completed.
         sectionResponse.setCompleted(true);
-        if(section.isRequired()) {
-            for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
-                if(!questionResponse.isComplete()){
+        for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
+            if(questionResponse.question.isRequired()) {
+                if (!questionResponse.isComplete()) {
                     sectionResponse.setCompleted(false);
                 }
             }
