@@ -19,6 +19,6 @@ public class Choice extends Model{
     @Expose
     public String choice;
 
-    @Column(name = "Question")
+    @Column(name = "Question", onDelete = Column.ForeignKeyAction.CASCADE)
     public Question question;
 }

@@ -20,7 +20,7 @@ public class SectionResponse extends Model{
     public String title;//Date & Time to be completed
 
     @Expose
-    @Column(name = "Response")
+    @Column(name = "Response", onDelete = Column.ForeignKeyAction.CASCADE)
     public Response response;
 
     @Expose

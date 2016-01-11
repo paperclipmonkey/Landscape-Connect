@@ -43,7 +43,7 @@ public class Response extends Model {
     // - - - - - - End Location fields - - - - - - - -
 
     @Expose
-    @Column(name = "Questionnaire")
+    @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
 
     @Expose
