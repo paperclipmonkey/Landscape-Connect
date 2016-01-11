@@ -12,8 +12,4 @@ public class SectionResponseLink {
         this.sectionResponse = sectionResponse;
         this.section = section;
     }
-
-    boolean isComplete(){
-        return sectionResponse.isCompleted();
-    }
 }
