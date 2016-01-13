@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".QuestionnairesActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,7 +15,6 @@
         android:id="@+id/contentFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_weight="1" />
+        android:layout_below="@id/toolbar"/>
 
 </RelativeLayout>
