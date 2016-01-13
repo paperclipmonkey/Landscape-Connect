@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="false"
@@ -44,6 +45,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".QuestionnairesActivity" />
         </activity>
+
+        <!-- Upload Service and task -->
+        <service
+            android:name=".LSUploadService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+
+        <!-- Start the service on boot -->
+        <receiver android:name=".BootReceiver"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+
     </application>
 
 </manifest>
