@@ -10,7 +10,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
 
 public class QuestionnairesActivity extends AppCompatActivity{
     public static final int LISTFRAGMENT = 0;
@@ -107,5 +110,61 @@ public class QuestionnairesActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private static final String TAG = "AndroidUploadService";
+
+    private final UploadServiceBroadcastReceiver uploadReceiver =
+        new UploadServiceBroadcastReceiver() {
+
+            // you can override this progress method if you want to get
+            // the completion progress in percent (0 to 100)
+            // or if you need to know exactly how many bytes have been transferred
+            // override the method below this one
+            @Override
+            public void onProgress(String uploadId, int progress) {
+                Log.i(TAG, "The progress of the upload with ID "
+                        + uploadId + " is: " + progress);
+            }
+
+            @Override
+            public void onProgress(final String uploadId,
+                                   final long uploadedBytes,
+                                   final long totalBytes) {
+                Log.i(TAG, "Upload with ID " + uploadId +
+                        " uploaded bytes: " + uploadedBytes
+                        + ", total: " + totalBytes);
+            }
+
+            @Override
+            public void onError(String uploadId, Exception exception) {
+                Log.e(TAG, "Error in upload with ID: " + uploadId + ". "
+                        + exception.getLocalizedMessage(), exception);
+            }
+
+            @Override
+            public void onCompleted(String uploadId,
+                                    int serverResponseCode,
+                                    String serverResponseMessage) {
+                Log.i(TAG, "Upload with ID " + uploadId
+                        + " has been completed with HTTP " + serverResponseCode
+                        + ". Response from server: " + serverResponseMessage);
+
+                //If your server responds with a JSON, you can parse it
+                //from serverResponseMessage string using a library
+                //such as org.json (embedded in Android) or Google's gson
+            }
+        };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uploadReceiver.register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        uploadReceiver.unregister(this);
     }
 }
