@@ -135,9 +135,10 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     public void serialiseData(){
         int i = 0;
         for(Question q: questionsArr){
-            //res += q.getSerialisedAnswer();
+            // 1 - 1 mapping between questions and question responses. Messy but it works.
             QuestionResponse qr = sectionResponse.getQuestionResponses().get(i);
             qr.rData = q.getSerialisedAnswer();
+            qr.save();
             i++;
         }
     }

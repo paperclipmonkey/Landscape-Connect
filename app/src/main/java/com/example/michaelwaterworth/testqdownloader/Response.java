@@ -67,10 +67,29 @@ public class Response extends Model {
                 .executeSingle();
     }
 
+    public static List<Response> getFinishedResponses(){
+        return new Select()
+                .from(Response.class)
+                .where("Finished = ?", true)
+                .execute();
+    }
+
     public Calendar getDateCompleted() {
         Calendar rDate = Calendar.getInstance();
         rDate.setTimeInMillis(timestamp * 1000);
         return rDate;
+    }
+
+    public void deleteFull() {
+        List<SectionResponse> sectionResponses = getSectionResponses();
+        for (SectionResponse sectionResponse : sectionResponses) {
+            List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
+            for (QuestionResponse questionResponse : questionResponses) {
+                questionResponse.delete();
+            }
+            sectionResponse.delete();
+        }
+        this.delete();
     }
 
     public void setFinished(){
