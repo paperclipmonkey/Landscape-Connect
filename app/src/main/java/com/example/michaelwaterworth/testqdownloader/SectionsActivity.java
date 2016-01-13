@@ -76,19 +76,18 @@ public class SectionsActivity extends AppCompatActivity {
         //Get Id for Object
         response.save();
 
-        int i = 0;
-        while(i < arrayOfSections.size()){
+        for(Section section: arrayOfSections){
             SectionResponse sectionResponse = new SectionResponse();
+            sectionResponse.title = section.title;//Copy title from section to section response
             sectionResponse.response = response;
             sectionResponse.save();
 
-            for(Question question: arrayOfSections.get(i).getQuestions()){
+            for(Question question: section.getQuestions()){
                 QuestionResponse questionResponse = new QuestionResponse();
                 questionResponse.question = question;
                 questionResponse.sectionResponse = sectionResponse;
                 questionResponse.save();
             }
-            i++;
         }
     }
 

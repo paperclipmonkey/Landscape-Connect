@@ -101,15 +101,16 @@ public class Questionnaire extends Model{
             //Remove responses
             List<Response> responses = questionnaire.getResponses();
             for(Response response: responses){
-                List<SectionResponse> sectionResponses = response.getSectionResponses();
-                for(SectionResponse sectionResponse: sectionResponses){
-                    List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
-                    for(QuestionResponse questionResponse: questionResponses){
-                        questionResponse.delete();
-                    }
-                    sectionResponse.delete();
-                }
-                response.delete();
+                /* Code moved to response object */
+//                List<SectionResponse> sectionResponses = response.getSectionResponses();
+//                for(SectionResponse sectionResponse: sectionResponses){
+//                    List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
+//                    for(QuestionResponse questionResponse: questionResponses){
+//                        questionResponse.delete();
+//                    }
+//                    sectionResponse.delete();
+//                }
+                response.deleteFull();
             }
 
             List<Section> secList = questionnaire.getSections();

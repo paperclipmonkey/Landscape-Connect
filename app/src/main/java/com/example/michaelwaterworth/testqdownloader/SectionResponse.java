@@ -17,7 +17,7 @@ public class SectionResponse extends Model{
 
     @Expose
     @Column(name = "Title")
-    public String title;//Date & Time to be completed
+    public String title;//Title of completed section
 
     @Expose
     @Column(name = "Response", onDelete = Column.ForeignKeyAction.CASCADE)
