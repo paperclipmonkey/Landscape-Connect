@@ -313,6 +313,11 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             case R.id.action_upload:
                 response.setFinished();
                 response.save();
+
+                //Start the upload service...
+                Intent serviceIntent = new Intent(getContext(), LSUploadService.class);
+                getContext().startService(serviceIntent);
+
                 getActivity().finish();
                 return true;
             default:
