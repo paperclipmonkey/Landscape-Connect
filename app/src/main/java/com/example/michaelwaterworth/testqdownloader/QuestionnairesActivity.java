@@ -16,7 +16,9 @@ import android.view.MenuItem;
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
 
 public class QuestionnairesActivity extends AppCompatActivity{
-    public static final int LIST_FRAGMENT = 0;
+    private static final String TAG = "QuestionnairesActivity";
+
+    public static final int QUESTIONNAIRES_FRAGMENT = 0;
     public static final int UPLOAD_FRAGMENT = 1;
 
     private DrawerLayout mDrawerLayout;
@@ -66,9 +68,8 @@ public class QuestionnairesActivity extends AppCompatActivity{
                         break;
                     default:
                         fragment = new UploadListFragment();
-                        setTitle("Upload Queue");
+                        setTitle(getString(R.string.upload_queue));
                         break;
-
                 }
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contentFragment, fragment);
@@ -77,17 +78,21 @@ public class QuestionnairesActivity extends AppCompatActivity{
             }
         });
 
-        switchFragment(LIST_FRAGMENT);
+        switchFragment(QUESTIONNAIRES_FRAGMENT);
     }
 
     private void switchFragment(int fragmentId){
         Fragment fragment;
-        if(fragmentId == 0){
+        if(fragmentId == QUESTIONNAIRES_FRAGMENT) {
             setTitle(R.string.questionnaires);
-            fragment =  new QuestionnairesFragment();
-        } else {
+            fragment = new QuestionnairesFragment();
+        }
+        else if(fragmentId == UPLOAD_FRAGMENT){
             setTitle(R.string.upload_queue);
             fragment = new UploadListFragment();
+        } else {
+            setTitle(R.string.about);
+            fragment = new AboutFragment();
         }
 
         FragmentManager fm = getSupportFragmentManager();
@@ -111,8 +116,6 @@ public class QuestionnairesActivity extends AppCompatActivity{
 
         return super.onOptionsItemSelected(item);
     }
-
-    private static final String TAG = "AndroidUploadService";
 
     private final UploadServiceBroadcastReceiver uploadReceiver =
         new UploadServiceBroadcastReceiver() {

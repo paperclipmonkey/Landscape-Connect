@@ -30,6 +30,8 @@
 
     <string name="question_sections">Question sections</string>
     <string name="please_complete">"Please complete all required questions</string>
+    <string name="optional">Optional</string>
+    <string name="required">Required</string>
 
     <string name="upload_queue">Upload Queue</string>
 
@@ -44,4 +46,9 @@
     <string name="about">About</string>
     <string name="about_title">Landscape Connect</string>
     <string name="about_description">"Landscape Connect is developed by Rate my View as a companion product to allow greater understanding of landscape perceptions. It can be used by landscape stakeholders instead of traditional questionnaires.\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\nInstall a questionnaire to get started."</string>
+
+    <string name="uploading_title">"Uploading"</string>
+    <string name="uploading_description">"Saved responses"</string>
+    <string name="upload_successful">" upload(s) successful"</string>
+    <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
 </resources>

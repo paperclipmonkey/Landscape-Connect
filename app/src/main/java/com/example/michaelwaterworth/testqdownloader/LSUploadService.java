@@ -107,20 +107,14 @@ public class LSUploadService extends Service {
                 R.drawable.hi_res_icon);
 
         Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle("Landscape Connect")
-                .setTicker("Uploading")
-                .setContentText("Saved views")
+                .setContentTitle(getString(R.string.app_name))
+                .setTicker(getString(R.string.uploading_title))
+                .setContentText(getString(R.string.uploading_description))
                 .setSmallIcon(R.drawable.hi_res_icon)
                 .setLargeIcon(
                         Bitmap.createScaledBitmap(icon, 128, 128, false))
                 .setContentIntent(pendingIntent)
                 .setOngoing(true).build();
-//                .addAction(android.R.drawable.ic_media_previous,
-//                        "Previous", previousIntent)
-//                .addAction(android.R.drawable.ic_media_play, "Play",
-//                        playIntent)
-//                .addAction(android.R.drawable.ic_media_next, "Next",
-//                        nextIntent).build();
         startForeground(0, notification);
 
         return START_STICKY;
@@ -171,8 +165,8 @@ public class LSUploadService extends Service {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.hi_res_icon)
-                        .setContentTitle("" + completedUploads + " upload(s) successful")
-                        .setContentText("Thanks for completing the questionnaire");
+                        .setContentTitle("" + completedUploads + getString(R.string.upload_successful))
+                        .setContentText(getString(R.string.upload_thanks));
 
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, QuestionnairesActivity.class);

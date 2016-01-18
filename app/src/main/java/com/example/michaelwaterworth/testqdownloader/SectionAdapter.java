@@ -32,9 +32,9 @@ class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
 
         TextView required = (TextView) convertView.findViewById(R.id.section_row_description);
 
-        String isRequired = "Optional";
+        String isRequired = getContext().getString(R.string.optional);
         if(srl.section.hasRequiredQuestions()){
-            isRequired = "Required";
+            isRequired = getContext().getString(R.string.required);
         }
         required.setText(isRequired);
 

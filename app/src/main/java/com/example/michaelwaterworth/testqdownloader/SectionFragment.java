@@ -39,12 +39,6 @@ private ViewGroup base;
 //            progressBar.setProgress(percentage);
 //        }
 //    }
-//
-//    public void pageNext(){
-//        if(flipper != null) {
-//            flipper.showNext();  // Switches to the next view
-//        }
-//    }
 
     public SectionFragment() {
     }

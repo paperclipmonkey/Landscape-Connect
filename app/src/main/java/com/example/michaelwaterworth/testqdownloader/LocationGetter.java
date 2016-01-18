@@ -1,9 +1,12 @@
 package com.example.michaelwaterworth.testqdownloader;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -16,7 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
  * Created by michaelwaterworth on 15/12/2015. Copyright Michael Waterworth
  */
 public class LocationGetter extends AsyncTask<String, String, String> implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     private final String TAG = "Location";
     private GoogleApiClient mGoogleApiClient;
     private final Context mContext;
@@ -24,7 +27,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     private float accuracy;
 
 
-    public LocationGetter (Context context){
+    public LocationGetter(Context context) {
         mContext = context;
         buildGoogleApiClient();
     }
@@ -105,7 +108,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         destruct();
     }
 
-    private void destruct(){
+    private void destruct() {
         Log.i(TAG, "destruct");
         // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
         if (mGoogleApiClient.isConnected()) {
@@ -113,6 +116,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
             mGoogleApiClient.disconnect();
         }
     }
+
     /**
      * Requests location updates from the FusedLocationApi.
      */
@@ -120,8 +124,18 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         Log.i(TAG, "startLocationUpdates");
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        if(mGoogleApiClient.isConnected()){
+        if (mGoogleApiClient.isConnected()) {
             Log.i(TAG, "startLocationUpdatesConnected");
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }
@@ -139,7 +153,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
 
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,this );
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
 //    @Override
@@ -179,6 +193,16 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         // moves to a new location, and then changes the device orientation, the original location
         // is displayed as the activity is re-created.
         if (mCurrentLocation == null) {
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             //updateUI();
