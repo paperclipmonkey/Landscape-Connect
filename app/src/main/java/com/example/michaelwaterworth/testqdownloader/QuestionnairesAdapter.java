@@ -15,8 +15,8 @@ import android.widget.TextView;
  */
 class QuestionnairesAdapter extends CursorAdapter {
 
-    public QuestionnairesAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
+    public QuestionnairesAdapter(Context context, Cursor c, boolean autoReQuery) {
+        super(context, c, autoReQuery);
     }
 
     @Override

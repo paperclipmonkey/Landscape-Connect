@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.view.ActionMode;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,13 +46,12 @@ import java.net.URLConnection;
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class QuestionnairesFragment extends Fragment {
-    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    protected QuestionnairesFragment mThis;
-    protected ActionMode mActionMode;
-    protected MaterialDialog dialog;
-    protected String TAG = "QuestionnairesFragment";
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private QuestionnairesFragment mThis;
+    private MaterialDialog dialog;
+    private final String TAG = "QuestionnairesFragment";
 
-    private View.OnClickListener fabClickListener = new View.OnClickListener() {
+    private final View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
         //Close the FAB menu
@@ -66,7 +64,7 @@ public class QuestionnairesFragment extends Fragment {
                 new MaterialDialog.Builder(getContext())
                         .title(R.string.add_code_dialog_title)
                         .content(R.string.add_code_dialog_content)
-                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_CLASS_TEXT)
+                        .inputType(InputType.TYPE_CLASS_TEXT)
                         .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
                             @Override
                             public void onInput(MaterialDialog dialog, CharSequence input) {
@@ -99,7 +97,7 @@ public class QuestionnairesFragment extends Fragment {
 
         final String[] projection = {"_id"};
 
-        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.LISTFRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
+        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.LIST_FRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
                 return new CursorLoader(getActivity(),
@@ -200,8 +198,8 @@ public class QuestionnairesFragment extends Fragment {
             }
         });
 
-        //Registed handlers for FAB events
-        FloatingActionMenu floatingActionMenu = (FloatingActionMenu) base.findViewById(R.id.fab_menu);
+        //Registered handlers for FAB events
+        //FloatingActionMenu floatingActionMenu = (FloatingActionMenu) base.findViewById(R.id.fab_menu);
 
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
@@ -224,7 +222,7 @@ public class QuestionnairesFragment extends Fragment {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.CAMERA)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
+                // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 //TODO Add explanation
@@ -245,8 +243,8 @@ public class QuestionnairesFragment extends Fragment {
         }
     }
 
-    public void showHideProgress(boolean show){
-        if(dialog != null || show == false){
+    private void showHideProgress(boolean show){
+        if(dialog != null && !show){
             dialog.dismiss();
             dialog = null;
         } else {
@@ -280,7 +278,7 @@ public class QuestionnairesFragment extends Fragment {
     }
 
 
-    public void addNewQs(String url){
+    private void addNewQs(String url){
         if(!url.startsWith("http", 0)){
             url = getString(R.string.download_url) + url.toUpperCase() + ".json";
         }
@@ -310,14 +308,14 @@ public class QuestionnairesFragment extends Fragment {
         // Output stream
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-        /**
-         * Before starting background thread Show Progress Bar Dialog
-         * */
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //showDialog(progress_bar_type);
-        }
+//        /**
+//         * Before starting background thread Show Progress Bar Dialog
+//         * */
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            //showDialog(progress_bar_type);
+//        }
 
         /**
          * Downloading file in background thread
@@ -327,15 +325,15 @@ public class QuestionnairesFragment extends Fragment {
             int count;
             try {
                 URL url = new URL(f_url[0]);
-                URLConnection conection = url.openConnection();
-                conection.setRequestProperty("User-Agent", getString(R.string.user_agent_http));
+                URLConnection connection = url.openConnection();
+                connection.setRequestProperty("User-Agent", getString(R.string.user_agent_http));
 
-                conection.connect();
+                connection.connect();
 
                 // this will be useful so that you can show a typical 0-100%
                 // progress bar
 
-                int lenghtOfFile = conection.getContentLength();
+                int lengthOfFile = connection.getContentLength();
 
                 // download the file
                 InputStream input = new BufferedInputStream(url.openStream(),
@@ -349,7 +347,7 @@ public class QuestionnairesFragment extends Fragment {
                     total += count;
                     // publishing the progress....
                     // After this onProgressUpdate will be called
-                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+                    publishProgress("" + (int) ((total * 100) / lengthOfFile));
 
                     // writing data to buffer
                     output.write(data, 0, count);

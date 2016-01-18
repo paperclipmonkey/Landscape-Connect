@@ -15,7 +15,7 @@ import java.util.List;
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsActivity extends AppCompatActivity {
-    public static final String R_ID_KEY = "rId";
+    private static final String R_ID_KEY = "rId";
     private Response response;
     private Questionnaire questionnaire;
 

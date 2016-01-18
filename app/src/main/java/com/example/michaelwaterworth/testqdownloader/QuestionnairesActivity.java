@@ -16,8 +16,8 @@ import android.view.MenuItem;
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
 
 public class QuestionnairesActivity extends AppCompatActivity{
-    public static final int LISTFRAGMENT = 0;
-    public static final int UPLOADFRAGMENT = 1;
+    public static final int LIST_FRAGMENT = 0;
+    public static final int UPLOAD_FRAGMENT = 1;
 
     private DrawerLayout mDrawerLayout;
 
@@ -77,10 +77,10 @@ public class QuestionnairesActivity extends AppCompatActivity{
             }
         });
 
-        switchFragment(LISTFRAGMENT);
+        switchFragment(LIST_FRAGMENT);
     }
 
-    public void switchFragment(int fragmentId){
+    private void switchFragment(int fragmentId){
         Fragment fragment;
         if(fragmentId == 0){
             setTitle(R.string.questionnaires);

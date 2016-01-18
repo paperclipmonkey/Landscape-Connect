@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by michaelwaterworth on 03/11/2015. Copyright Michael Waterworth
  */
-public class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
+class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
     public SectionAdapter(Context context, ArrayList<SectionResponseLink> users) {
         super(context, 0, users);
     }

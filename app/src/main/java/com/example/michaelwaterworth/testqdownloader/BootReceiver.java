@@ -10,8 +10,8 @@ import android.content.Intent;
 public class BootReceiver extends BroadcastReceiver {
     /**
      * Called whenever the device reboots. Ensures the service is running.
-     * @param context
-     * @param intent
+     * @param context Android context for start
+     * @param intent Intent used to fire broadcast
      */
     @Override
     public void onReceive(Context context, Intent intent) {

@@ -17,9 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class LocationGetter extends AsyncTask<String, String, String> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener{
-    private String TAG = "Location";
+    private final String TAG = "Location";
     private GoogleApiClient mGoogleApiClient;
-    private Context mContext;
+    private final Context mContext;
     private LatLng position;
     private float accuracy;
 
@@ -32,23 +32,23 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
-    protected LocationRequest mLocationRequest;
+    private LocationRequest mLocationRequest;
 
     /**
      * Represents a geographical location.
      */
-    protected Location mCurrentLocation;
+    private Location mCurrentLocation;
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
-    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
 
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
      * than this value.
      */
-    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
 
@@ -56,7 +56,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the
      * LocationServices API.
      */
-    protected synchronized void buildGoogleApiClient() {
+    private synchronized void buildGoogleApiClient() {
         Log.i(TAG, "Building GoogleApiClient");
         mGoogleApiClient = new GoogleApiClient.Builder(mContext)
                 .addConnectionCallbacks(this)
@@ -80,7 +80,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
      * These settings are appropriate for mapping applications that show real-time location
      * updates.
      */
-    protected void createLocationRequest() {
+    private void createLocationRequest() {
         Log.i(TAG, "createLocationRequest");
 
         mLocationRequest = new LocationRequest();
@@ -105,7 +105,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         destruct();
     }
 
-    protected void destruct(){
+    private void destruct(){
         Log.i(TAG, "destruct");
         // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
         if (mGoogleApiClient.isConnected()) {
@@ -116,7 +116,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     /**
      * Requests location updates from the FusedLocationApi.
      */
-    protected void startLocationUpdates() {
+    private void startLocationUpdates() {
         Log.i(TAG, "startLocationUpdates");
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
@@ -130,7 +130,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     /**
      * Removes location updates from the FusedLocationApi.
      */
-    protected void stopLocationUpdates() {
+    private void stopLocationUpdates() {
         Log.i(TAG, "stopLocationUpdates");
 
         // It is a good practice to remove location requests when the activity is in a paused or
@@ -153,12 +153,6 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     @Override
     protected String doInBackground(String... params) {
         return null;
-    }
-
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
 
@@ -232,7 +226,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         return position;
     }
 
-    public Float getAccurary(){
+    public Float getAccuracy(){
         return accuracy;
     }
 

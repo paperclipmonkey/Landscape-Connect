@@ -1,6 +1,7 @@
 package com.example.michaelwaterworth.testqdownloader;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,27 +38,28 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsFragment extends Fragment implements View.OnClickListener {
-    static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 2;
-    static final int MY_PERMISSIONS_REQUEST_STORAGE = 3;
-    static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
-    protected ViewFlipper flipper;
-    protected ViewGroup base;
-    protected Questionnaire questionnaire;
-    protected Response response;
-    protected ArrayList<SectionResponseLink> sectionResponseLinks;
-    protected ProgressBar progressBar;
-    protected LocationGetter locationGetter;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
+    private static final int MY_PERMISSIONS_REQUEST_STORAGE = 3;
+    private static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
+    private ViewFlipper flipper;
+    private ViewGroup base;
+    private Questionnaire questionnaire;
+    private Response response;
+    private ArrayList<SectionResponseLink> sectionResponseLinks;
+    private ProgressBar progressBar;
+    private LocationGetter locationGetter;
 
     public SectionsFragment() {
     }
 
-    protected void setTaskProgress(int percentage){
+    private void setTaskProgress(int percentage){
         Log.d("Progress", "" + percentage);
 
         //Remove old progress bar from the UI
@@ -72,13 +74,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         progressBar.setProgress(percentage);
 
         progressHolder.addView(child);
-
-        //TextView tv = (TextView) base.findViewById(R.id.testtext);
-        //tv.setText("" + progressBar.getProgress());
     }
 
 
-    public void pageNext(){
+    private void pageNext(){
         flipper.showNext();  // Switches to the next view
     }
 
@@ -147,7 +146,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         return base;
     }
 
-    protected void buildIntroPage(){
+    private void buildIntroPage(){
         TextView title = (TextView) base.findViewById(R.id.page1_intro_title);
         TextView subTitle = (TextView) base.findViewById(R.id.page1_intro_desciprion);
         ImageView image = (ImageView) base.findViewById(R.id.page1_intro_image);
@@ -167,7 +166,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         //page1_title, page1_subtitle
     }
 
-    protected void calculateTaskProgress(){
+    private void calculateTaskProgress(){
         int completedCount = 1;
         for(SectionResponseLink srl: sectionResponseLinks){
             //Set whether the section is complete
@@ -192,15 +191,15 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void openSection(int section_id){
+    private void openSection(int section_id){
         ((SectionsActivity)getActivity()).switchToSection(section_id);
     }
 
-    public void buttonTakePhoto(View view) {
+    private void buttonTakePhoto(View view) {
         checkPermissions();
     }
 
-    public void checkLocationPermissions(){
+    private void checkLocationPermissions(){
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -216,7 +215,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         locationGetter = new LocationGetter(getContext());
     }
 
-    public void checkPermissions(){
+    private void checkPermissions(){
         if (ContextCompat.checkSelfPermission(getActivity(),
             Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED) {
@@ -264,7 +263,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
@@ -294,7 +293,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             menu.getItem(0).setEnabled(true);
         else
             menu.getItem(0).setEnabled(false);
-        return;
     }
 
     private boolean checkComplete(){
@@ -359,17 +357,16 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                 } else {
                     Log.d("TAG", "Permission denied location");
                 }
-                return;
             }
         }
     }
 
-    public void getLocation(){
+    private void getLocation(){
         //Check if we can get location
         LatLng latLng = locationGetter.getLocation();
-        Float accuracy = locationGetter.getAccurary();
+        Float accuracy = locationGetter.getAccuracy();
         Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
-        if(locationGetter.getAccurary() < 50){
+        if(locationGetter.getAccuracy() < 50){
             locationGetter.cancel(true);
             response.lat = latLng.latitude;
             response.lng = latLng.longitude;
@@ -394,7 +391,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         getLocation();
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             pageNext();
         }
     }

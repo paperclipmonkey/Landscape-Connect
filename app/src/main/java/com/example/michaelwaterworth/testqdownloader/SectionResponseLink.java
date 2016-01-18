@@ -5,9 +5,9 @@ package com.example.michaelwaterworth.testqdownloader;
  */
 public class SectionResponseLink {
     //Holds a link between sections and section responses
-    //Not used in JSON or Db - purely for UI and listitems
-    SectionResponse sectionResponse;
-    Section section;
+    //Not used in JSON or Db - purely for UI and listItems
+    final SectionResponse sectionResponse;
+    final Section section;
 
     public SectionResponseLink(SectionResponse sectionResponse, Section section){
         this.sectionResponse = sectionResponse;

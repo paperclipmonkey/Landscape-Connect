@@ -23,15 +23,15 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
 //    protected ViewFlipper flipper;
-    protected ViewGroup base;
-    protected Response response;
-    protected Section section;
-    protected SectionResponse sectionResponse;
-    protected int sectionNum;
-    protected List<Question> questionsArr;
-    protected ViewFlipper flipper;
-    protected static int QUESTIONSPERPAGE = 3;
-    protected Button doneButton;
+private ViewGroup base;
+    private Response response;
+    private Section section;
+    private SectionResponse sectionResponse;
+    private int sectionNum;
+    private List<Question> questionsArr;
+    private ViewFlipper flipper;
+    private static final int QUESTIONS_PER_PAGE = 3;
+    private Button doneButton;
 
 //    protected void setTaskProgress(int percentage){
 //        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
@@ -102,7 +102,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     //Check all questions on pages up to the current page
                     Log.d("SectionFragment", "Flipper Index: " + flipper.getDisplayedChild());
                     if(questionResponse.question.isRequired()) {
-                        if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + 1 * QUESTIONSPERPAGE)) {
+                        if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + QUESTIONS_PER_PAGE)) {
                             Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
                             if (!questionResponse.isComplete()) {
                                 Toast.makeText(getContext(), R.string.please_complete, Toast.LENGTH_LONG).show();
@@ -125,14 +125,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void setButtonText(){
+    private void setButtonText(){
         //Change the button text if this is the last page
         if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
             doneButton.setText(R.string.done);
         }
     }
 
-    public void serialiseData(){
+    private void serialiseData(){
         int i = 0;
         for(Question q: questionsArr){
             // 1 - 1 mapping between questions and question responses. Messy but it works.
@@ -143,7 +143,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void sendResult(){
+    private void sendResult(){
         serialiseData();
 
         //TODO - Check if section is complete.
@@ -163,21 +163,21 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         getFragmentManager().popBackStackImmediate();
     }
 
-    public void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse){
+    private void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse){
         int i = 0;
         int qppi = 1;
 
-        ViewGroup currrentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
-        flipper.addView(currrentBase);
+        ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
+        flipper.addView(currentBase);
 
         while(i < questions.size()){
-            if(qppi % (QUESTIONSPERPAGE + 1) == 0){
-                currrentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
-                flipper.addView(currrentBase);
+            if(qppi % (QUESTIONS_PER_PAGE + 1) == 0){
+                currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
+                flipper.addView(currentBase);
                 qppi = 1;
             }
             Question question = questions.get(i);
-            currrentBase.addView(question.createBaseView(getContext(), sectionResponse.getQuestionResponses().get(i)));//TODO - Ordering
+            currentBase.addView(question.createBaseView(getContext(), sectionResponse.getQuestionResponses().get(i)));//TODO - Ordering
             i++;
             qppi++;
         }

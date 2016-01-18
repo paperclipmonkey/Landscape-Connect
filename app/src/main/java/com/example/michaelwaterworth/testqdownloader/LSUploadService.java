@@ -26,9 +26,9 @@ import java.util.List;
  * and data to upload. Kicks off the static upload task
  */
 public class LSUploadService extends Service {
-    String TAG = "LSUploadService";
-    Response uploadingResponse;
-    int completedUploads = 0;
+    private final String TAG = "LSUploadService";
+    private Response uploadingResponse;
+    private int completedUploads = 0;
 
     private final UploadServiceBroadcastReceiver uploadReceiver =
             new UploadServiceBroadcastReceiver() {
@@ -116,11 +116,11 @@ public class LSUploadService extends Service {
                 .setContentIntent(pendingIntent)
                 .setOngoing(true).build();
 //                .addAction(android.R.drawable.ic_media_previous,
-//                        "Previous", ppreviousIntent)
+//                        "Previous", previousIntent)
 //                .addAction(android.R.drawable.ic_media_play, "Play",
-//                        pplayIntent)
+//                        playIntent)
 //                .addAction(android.R.drawable.ic_media_next, "Next",
-//                        pnextIntent).build();
+//                        nextIntent).build();
         startForeground(0, notification);
 
         return START_STICKY;
@@ -133,7 +133,7 @@ public class LSUploadService extends Service {
         Log.i(TAG, "In onDestroy");
     }
 
-    protected void checkForPendingUploads() {
+    private void checkForPendingUploads() {
         List<Response> responseList = Response.getFinishedResponses();
         Log.d("Upload", "Waiting responses: " + responseList.size());
         if (responseList.size() > 0) {
@@ -145,11 +145,11 @@ public class LSUploadService extends Service {
         }
     }
 
-    protected void stop(){
+    private void stop(){
         stopSelf();
     }
 
-    protected void redoOrNotify(){
+    private void redoOrNotify(){
         Log.d(TAG, "redoOrNotify");
         if(Response.getFinishedResponses().size() > 0){
             checkForPendingUploads();
@@ -159,13 +159,13 @@ public class LSUploadService extends Service {
         }
     }
 
-    protected void removeUploaded(){
+    private void removeUploaded(){
         Log.d(TAG, "removeUploaded");
         completedUploads++;//Add to count
         uploadingResponse.deleteFull();
     }
 
-    public void buildSuccessNotification() {
+    private void buildSuccessNotification() {
         Log.d(TAG, "buildSuccessNotification");
 
         NotificationCompat.Builder mBuilder =
@@ -205,9 +205,9 @@ public class LSUploadService extends Service {
     /**
      * Start a new upload
      *
-     * @param context
+     * @param context Context used to start service
      */
-    protected void upload(Context context, Response response) {
+    private void upload(Context context, Response response) {
         Log.d(TAG, "Uploading");
         AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
@@ -273,7 +273,7 @@ public class LSUploadService extends Service {
 //        }
 //
 //        /**
-//         * Receiving status notifcations from the system.
+//         * Receiving status notifications from the system.
 //         * If complete call onCompleted
 //         * @param context
 //         * @param intent
