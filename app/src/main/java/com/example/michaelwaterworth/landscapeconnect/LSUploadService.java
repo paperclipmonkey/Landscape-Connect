@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.testqdownloader;
+package com.example.michaelwaterworth.landscapeconnect;
 
 import android.app.Notification;
 import android.app.NotificationManager;

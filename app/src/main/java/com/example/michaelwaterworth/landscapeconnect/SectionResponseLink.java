@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.testqdownloader;
+package com.example.michaelwaterworth.landscapeconnect;
 
 /**
  * Created by michaelwaterworth on 16/11/2015. Copyright Michael Waterworth

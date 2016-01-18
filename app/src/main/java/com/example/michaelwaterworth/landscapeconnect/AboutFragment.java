@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.testqdownloader;
+package com.example.michaelwaterworth.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
