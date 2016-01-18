@@ -22,15 +22,15 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
-//    protected ViewFlipper flipper;
-private ViewGroup base;
+    private static final int QUESTIONS_PER_PAGE = 3;
+    //    protected ViewFlipper flipper;
+    private ViewGroup base;
     private Response response;
     private Section section;
     private SectionResponse sectionResponse;
     private int sectionNum;
     private List<Question> questionsArr;
     private ViewFlipper flipper;
-    private static final int QUESTIONS_PER_PAGE = 3;
     private Button doneButton;
 
 //    protected void setTaskProgress(int percentage){
@@ -95,7 +95,7 @@ private ViewGroup base;
                 for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
                     //Check all questions on pages up to the current page
                     Log.d("SectionFragment", "Flipper Index: " + flipper.getDisplayedChild());
-                    if(questionResponse.question.isRequired()) {
+                    if (questionResponse.question.isRequired()) {
                         if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + QUESTIONS_PER_PAGE)) {
                             Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
                             if (!questionResponse.isComplete()) {
@@ -107,7 +107,7 @@ private ViewGroup base;
                 }
 
 
-                if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
+                if (flipper.getDisplayedChild() + 1 == flipper.getChildCount()) {
                     sendResult();
                 } else {
                     flipper.setDisplayedChild(flipper.getDisplayedChild() + 1);
@@ -119,16 +119,16 @@ private ViewGroup base;
         }
     }
 
-    private void setButtonText(){
+    private void setButtonText() {
         //Change the button text if this is the last page
-        if(flipper.getDisplayedChild() + 1 == flipper.getChildCount()){
+        if (flipper.getDisplayedChild() + 1 == flipper.getChildCount()) {
             doneButton.setText(R.string.done);
         }
     }
 
-    private void serialiseData(){
+    private void serialiseData() {
         int i = 0;
-        for(Question q: questionsArr){
+        for (Question q : questionsArr) {
             // 1 - 1 mapping between questions and question responses. Messy but it works.
             QuestionResponse qr = sectionResponse.getQuestionResponses().get(i);
             qr.rData = q.getSerialisedAnswer();
@@ -137,7 +137,7 @@ private ViewGroup base;
         }
     }
 
-    private void sendResult(){
+    private void sendResult() {
         serialiseData();
 
         //TODO - Check if section is complete.
@@ -145,7 +145,7 @@ private ViewGroup base;
         //If is then ensure all questions completed.
         sectionResponse.setCompleted(true);
         for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
-            if(questionResponse.question.isRequired()) {
+            if (questionResponse.question.isRequired()) {
                 if (!questionResponse.isComplete()) {
                     sectionResponse.setCompleted(false);
                 }
@@ -157,15 +157,15 @@ private ViewGroup base;
         getFragmentManager().popBackStackImmediate();
     }
 
-    private void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse){
+    private void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse) {
         int i = 0;
         int qppi = 1;
 
         ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
         flipper.addView(currentBase);
 
-        while(i < questions.size()){
-            if(qppi % (QUESTIONS_PER_PAGE + 1) == 0){
+        while (i < questions.size()) {
+            if (qppi % (QUESTIONS_PER_PAGE + 1) == 0) {
                 currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
                 flipper.addView(currentBase);
                 qppi = 1;

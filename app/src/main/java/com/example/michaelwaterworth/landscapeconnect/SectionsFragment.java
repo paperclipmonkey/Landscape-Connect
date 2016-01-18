@@ -59,7 +59,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public SectionsFragment() {
     }
 
-    private void setTaskProgress(int percentage){
+    private void setTaskProgress(int percentage) {
         Log.d("Progress", "" + percentage);
 
         //Remove old progress bar from the UI
@@ -77,14 +77,14 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void pageNext(){
+    private void pageNext() {
         flipper.showNext();  // Switches to the next view
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(base == null) {
+        if (base == null) {
             //Log.d("Base", "Base null");
             base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
 
@@ -110,7 +110,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         sectionResponseLinks = new ArrayList<>();
         //Link sections and section responses.
         int i = 0;
-        while(i < arrayOfSections.size()){
+        while (i < arrayOfSections.size()) {
             SectionResponseLink srl = new SectionResponseLink(response.getSectionResponses().get(i), arrayOfSections.get(i));
             sectionResponseLinks.add(srl);
             i++;
@@ -131,7 +131,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         });
 
         //Ensure we're on the right page based on the current Response status
-        if(response.photo != null && !response.photo.isEmpty() && flipper.getDisplayedChild() == 0){
+        if (response.photo != null && !response.photo.isEmpty() && flipper.getDisplayedChild() == 0) {
             pageNext();
         }
 
@@ -146,13 +146,13 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         return base;
     }
 
-    private void buildIntroPage(){
+    private void buildIntroPage() {
         TextView title = (TextView) base.findViewById(R.id.page1_intro_title);
         TextView subTitle = (TextView) base.findViewById(R.id.page1_intro_desciprion);
         ImageView image = (ImageView) base.findViewById(R.id.page1_intro_image);
         title.setText(questionnaire.getIntroTitle());
         subTitle.setText(questionnaire.getIntroDescription());
-        if(questionnaire.getIntroImage() != null){
+        if (questionnaire.getIntroImage() != null) {
             Log.d("Qs", "intro image");
             int introEnd = questionnaire.getIntroImage().indexOf(",");
             byte[] decodedString = Base64.decode(questionnaire.getIntroImage().substring(introEnd), Base64.DEFAULT);//Remove metadata from the start of the string
@@ -166,16 +166,16 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         //page1_title, page1_subtitle
     }
 
-    private void calculateTaskProgress(){
+    private void calculateTaskProgress() {
         int completedCount = 1;
-        for(SectionResponseLink srl: sectionResponseLinks){
+        for (SectionResponseLink srl : sectionResponseLinks) {
             //Set whether the section is complete
-            if(srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
+            if (srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
                 completedCount++;
             }
         }
 
-        int percentage = Math.round(((float) completedCount / (float) (1 + sectionResponseLinks.size()))*100);//Photo included as task
+        int percentage = Math.round(((float) completedCount / (float) (1 + sectionResponseLinks.size())) * 100);//Photo included as task
         setTaskProgress(percentage);
     }
 
@@ -191,15 +191,15 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void openSection(int section_id){
-        ((SectionsActivity)getActivity()).switchToSection(section_id);
+    private void openSection(int section_id) {
+        ((SectionsActivity) getActivity()).switchToSection(section_id);
     }
 
     private void buttonTakePhoto(View view) {
         checkPermissions();
     }
 
-    private void checkLocationPermissions(){
+    private void checkLocationPermissions() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -215,10 +215,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         locationGetter = new LocationGetter(getContext());
     }
 
-    private void checkPermissions(){
+    private void checkPermissions() {
         if (ContextCompat.checkSelfPermission(getActivity(),
-            Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
 
             // No explanation needed, we can request the permission.
             requestPermissions(new String[]{Manifest.permission.CAMERA},
@@ -226,8 +226,8 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (ContextCompat.checkSelfPermission(getActivity(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
             // No explanation needed, we can request the permission.
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -239,7 +239,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         takePhoto();
     }
 
-    private void takePhoto(){
+    private void takePhoto() {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -288,17 +288,17 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onPrepareOptionsMenu (Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
         if (checkComplete())
             menu.getItem(0).setEnabled(true);
         else
             menu.getItem(0).setEnabled(false);
     }
 
-    private boolean checkComplete(){
-        for(SectionResponseLink srl: sectionResponseLinks){
+    private boolean checkComplete() {
+        for (SectionResponseLink srl : sectionResponseLinks) {
             //Required and not complete Escape.
-            if(srl.section.hasRequiredQuestions() && ! srl.sectionResponse.isCompleted()) {
+            if (srl.section.hasRequiredQuestions() && !srl.sectionResponse.isCompleted()) {
                 return false;
             }
         }
@@ -361,12 +361,12 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getLocation(){
+    private void getLocation() {
         //Check if we can get location
         LatLng latLng = locationGetter.getLocation();
         Float accuracy = locationGetter.getAccuracy();
         Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
-        if(locationGetter.getAccuracy() < 50){
+        if (locationGetter.getAccuracy() < 50) {
             locationGetter.cancel(true);
             response.lat = latLng.latitude;
             response.lng = latLng.longitude;
@@ -374,11 +374,9 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         } else {
             Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
             final Handler h = new Handler();
-            h.postDelayed(new Runnable()
-            {
+            h.postDelayed(new Runnable() {
                 @Override
-                public void run()
-                {
+                public void run() {
                     getLocation();
                 }
             }, 1000); // 1 second delay (takes millis)

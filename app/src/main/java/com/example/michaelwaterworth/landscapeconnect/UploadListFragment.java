@@ -47,12 +47,12 @@ public class UploadListFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((CursorAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((CursorAdapter) listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((CursorAdapter)listView.getAdapter()).swapCursor(null);
+                ((CursorAdapter) listView.getAdapter()).swapCursor(null);
             }
         });
 

@@ -47,36 +47,35 @@ import java.net.URLConnection;
  */
 public class QuestionnairesFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
+    private final String TAG = "QuestionnairesFragment";
     private QuestionnairesFragment mThis;
     private MaterialDialog dialog;
-    private final String TAG = "QuestionnairesFragment";
-
     private final View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-        //Close the FAB menu
-        FloatingActionMenu fabMenu = (FloatingActionMenu) v.getParent();
-        fabMenu.close(true);
+            //Close the FAB menu
+            FloatingActionMenu fabMenu = (FloatingActionMenu) v.getParent();
+            fabMenu.close(true);
 
-        switch (v.getId()) {
-            //Link button pressed
-            case R.id.fab_link:
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.add_code_dialog_title)
-                        .content(R.string.add_code_dialog_content)
-                        .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(MaterialDialog dialog, CharSequence input) {
-                                addNewQs(input.toString());
-                            }
-                        }).show();
-                break;
-            //QR button pressed
-            case R.id.fab_qr:
-                getFabQr();
-                break;
-        }
+            switch (v.getId()) {
+                //Link button pressed
+                case R.id.fab_link:
+                    new MaterialDialog.Builder(getContext())
+                            .title(R.string.add_code_dialog_title)
+                            .content(R.string.add_code_dialog_content)
+                            .inputType(InputType.TYPE_CLASS_TEXT)
+                            .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
+                                @Override
+                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                    addNewQs(input.toString());
+                                }
+                            }).show();
+                    break;
+                //QR button pressed
+                case R.id.fab_qr:
+                    getFabQr();
+                    break;
+            }
         }
     };
 
@@ -108,12 +107,12 @@ public class QuestionnairesFragment extends Fragment {
 
             @Override
             public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((CursorAdapter)listView.getAdapter()).swapCursor(cursor);
+                ((CursorAdapter) listView.getAdapter()).swapCursor(cursor);
             }
 
             @Override
             public void onLoaderReset(Loader<Cursor> arg0) {
-                ((CursorAdapter)listView.getAdapter()).swapCursor(null);
+                ((CursorAdapter) listView.getAdapter()).swapCursor(null);
             }
         });
 
@@ -190,7 +189,7 @@ public class QuestionnairesFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 // ListView Clicked item index
-                Cursor c = (Cursor)adapterView.getItemAtPosition(position);
+                Cursor c = (Cursor) adapterView.getItemAtPosition(position);
                 Questionnaire questionnaire = Questionnaire.newInstance(c);
                 Intent intent = new Intent(getActivity(), SectionsActivity.class);
                 intent.putExtra("id", questionnaire.getId());
@@ -212,7 +211,7 @@ public class QuestionnairesFragment extends Fragment {
         return base;
     }
 
-    private void getFabQr(){
+    private void getFabQr() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA)
@@ -232,7 +231,7 @@ public class QuestionnairesFragment extends Fragment {
             } else {
                 // No explanation needed, we can request the permission.
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
-                    MY_PERMISSIONS_REQUEST_CAMERA);
+                        MY_PERMISSIONS_REQUEST_CAMERA);
             }
         } else {
             IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
@@ -243,16 +242,16 @@ public class QuestionnairesFragment extends Fragment {
         }
     }
 
-    private void showHideProgress(boolean show){
-        if(dialog != null && !show){
+    private void showHideProgress(boolean show) {
+        if (dialog != null && !show) {
             dialog.dismiss();
             dialog = null;
         } else {
             dialog = new MaterialDialog.Builder(getContext())
-                .title(R.string.downloading_questionnaire)
-                .content(R.string.please_wait)
-                .progress(true, 0)
-                .show();
+                    .title(R.string.downloading_questionnaire)
+                    .content(R.string.please_wait)
+                    .progress(true, 0)
+                    .show();
         }
     }
 
@@ -278,8 +277,8 @@ public class QuestionnairesFragment extends Fragment {
     }
 
 
-    private void addNewQs(String url){
-        if(!url.startsWith("http", 0)){
+    private void addNewQs(String url) {
+        if (!url.startsWith("http", 0)) {
             url = getString(R.string.download_url) + url.toUpperCase() + ".json";
         }
         Log.d(TAG, "Downloading JSON: " + url);
@@ -290,8 +289,8 @@ public class QuestionnairesFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
+        if (result != null) {
+            if (result.getContents() == null) {
                 Log.d(TAG, "Cancelled from fragment");
             } else {
                 Log.d(TAG, "Scanned from fragment: " + result.getContents());
@@ -303,7 +302,7 @@ public class QuestionnairesFragment extends Fragment {
 
     /**
      * Background Async Task to download file
-     * */
+     */
     class DownloadToString extends AsyncTask<String, String, String> {
         // Output stream
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -319,7 +318,7 @@ public class QuestionnairesFragment extends Fragment {
 
         /**
          * Downloading file in background thread
-         * */
+         */
         @Override
         protected String doInBackground(String... f_url) {
             int count;
@@ -369,7 +368,7 @@ public class QuestionnairesFragment extends Fragment {
 
         /**
          * Updating progress bar
-         * */
+         */
         protected void onProgressUpdate(String... progress) {
             // setting progress percentage
             //pDialog.setProgress(Integer.parseInt(progress[0]));
@@ -377,7 +376,7 @@ public class QuestionnairesFragment extends Fragment {
 
         /**
          * After completing background task Dismiss the progress dialog
-         * **/
+         **/
         @Override
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after the file was downloaded
@@ -388,10 +387,10 @@ public class QuestionnairesFragment extends Fragment {
                 Questionnaire questionnaire = gson.fromJson(parsedString, Questionnaire.class);
                 questionnaire.saveQuestionnaire();
                 showHideProgress(false);//Hide the progress spinner when fully finished.
-            } catch (Exception e){
+            } catch (Exception e) {
                 Toast toast = Toast.makeText(getContext(), R.string.failed_to_download, Toast.LENGTH_SHORT);
                 toast.show();
-                Log.e(TAG,e.getLocalizedMessage());
+                Log.e(TAG, e.getLocalizedMessage());
                 showHideProgress(false);//Hide the progress spinner when fully finished.
             }
         }

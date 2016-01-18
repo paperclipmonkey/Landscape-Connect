@@ -14,20 +14,16 @@ import java.util.List;
  * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "Section", id = BaseColumns._ID)
-public class Section extends Model{
-    @Column(name = "id")
-    private int id;
-
+public class Section extends Model {
     @Expose
     @Column(name = "Title")
     public String title;
-
     @Expose
     public Question[] questions;
-
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
-
+    @Column(name = "id")
+    private int id;
 
     public String getTitle() {
         return title;
@@ -41,10 +37,10 @@ public class Section extends Model{
         return getMany(Question.class, "Section");
     }
 
-    public void saveSection(){
+    public void saveSection() {
         Log.d("Saving", "Section");
         this.save();
-        for(Question question: questions){
+        for (Question question : questions) {
             question.section = this;
             question.saveQuestion();
         }
@@ -52,8 +48,8 @@ public class Section extends Model{
 
     public boolean hasRequiredQuestions() {
         List<Question> questions = getMany(Question.class, "Section");
-        for(Question q: questions){
-            if(q.isRequired()){
+        for (Question q : questions) {
+            if (q.isRequired()) {
                 return true;
             }
         }

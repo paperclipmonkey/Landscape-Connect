@@ -33,13 +33,13 @@ class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
         TextView required = (TextView) convertView.findViewById(R.id.section_row_description);
 
         String isRequired = getContext().getString(R.string.optional);
-        if(srl.section.hasRequiredQuestions()){
+        if (srl.section.hasRequiredQuestions()) {
             isRequired = getContext().getString(R.string.required);
         }
         required.setText(isRequired);
 
         ImageView isCompleted = (ImageView) convertView.findViewById(R.id.section_row_done);
-        if(srl.sectionResponse.isCompleted()){
+        if (srl.sectionResponse.isCompleted()) {
             isCompleted.setVisibility(View.VISIBLE);
         } else {
             isCompleted.setVisibility(View.GONE);

@@ -36,7 +36,7 @@ public class SectionsActivity extends AppCompatActivity {
 
         //Create Response object to base this on
         loadQuestionnaire(getIntent().getLongExtra("id", -1));
-        if(savedInstanceState != null && savedInstanceState.getLong(R_ID_KEY, -1) != -1){
+        if (savedInstanceState != null && savedInstanceState.getLong(R_ID_KEY, -1) != -1) {
             loadResponse(savedInstanceState.getLong(R_ID_KEY));
         } else {
             createResponse();
@@ -48,26 +48,26 @@ public class SectionsActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         getSupportFragmentManager().addOnBackStackChangedListener(
-            new FragmentManager.OnBackStackChangedListener() {
-                public void onBackStackChanged() {
-                    // Update your UI here.
-                }
-            });
+                new FragmentManager.OnBackStackChangedListener() {
+                    public void onBackStackChanged() {
+                        // Update your UI here.
+                    }
+                });
     }
 
-    private void loadQuestionnaire(Long questionnaireId){
+    private void loadQuestionnaire(Long questionnaireId) {
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireId);
     }
 
-    public Section getSection(int sectionNum){
+    public Section getSection(int sectionNum) {
         return questionnaire.getSections().get(sectionNum);
     }
 
-    private void loadResponse(Long rId){
+    private void loadResponse(Long rId) {
         response = Response.load(Response.class, rId);
     }
 
-    private void createResponse(){
+    private void createResponse() {
         // Construct the array of sections
         List<Section> arrayOfSections = questionnaire.getSections();
 
@@ -76,13 +76,13 @@ public class SectionsActivity extends AppCompatActivity {
         //Get Id for Object
         response.save();
 
-        for(Section section: arrayOfSections){
+        for (Section section : arrayOfSections) {
             SectionResponse sectionResponse = new SectionResponse();
             sectionResponse.title = section.title;//Copy title from section to section response
             sectionResponse.response = response;
             sectionResponse.save();
 
-            for(Question question: section.getQuestions()){
+            for (Question question : section.getQuestions()) {
                 QuestionResponse questionResponse = new QuestionResponse();
                 questionResponse.question = question;
                 questionResponse.sectionResponse = sectionResponse;
@@ -91,13 +91,15 @@ public class SectionsActivity extends AppCompatActivity {
         }
     }
 
-    public Questionnaire getQuestionnaire(){ return this.questionnaire; }
+    public Questionnaire getQuestionnaire() {
+        return this.questionnaire;
+    }
 
-    public Response getResponse(){
+    public Response getResponse() {
         return this.response;
     }
 
-    public void switchToSection(int section){
+    public void switchToSection(int section) {
         Fragment fragment = new SectionFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("section_num", section);

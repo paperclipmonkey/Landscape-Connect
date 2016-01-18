@@ -20,40 +20,34 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public class LocationGetter extends AsyncTask<String, String, String> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
-    private final String TAG = "Location";
-    private GoogleApiClient mGoogleApiClient;
-    private final Context mContext;
-    private LatLng position;
-    private float accuracy;
-
-
-    public LocationGetter(Context context) {
-        mContext = context;
-        buildGoogleApiClient();
-    }
-
-    /**
-     * Stores parameters for requests to the FusedLocationProviderApi.
-     */
-    private LocationRequest mLocationRequest;
-
-    /**
-     * Represents a geographical location.
-     */
-    private Location mCurrentLocation;
-
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
-
     /**
      * The fastest rate for active location updates. Exact. Updates will never be more frequent
      * than this value.
      */
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    private final String TAG = "Location";
+    private final Context mContext;
+    private GoogleApiClient mGoogleApiClient;
+    private LatLng position;
+    private float accuracy;
+    /**
+     * Stores parameters for requests to the FusedLocationProviderApi.
+     */
+    private LocationRequest mLocationRequest;
+    /**
+     * Represents a geographical location.
+     */
+    private Location mCurrentLocation;
 
+    public LocationGetter(Context context) {
+        mContext = context;
+        buildGoogleApiClient();
+    }
 
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the
@@ -221,7 +215,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         mCurrentLocation = location;
         position = new LatLng(location.getLatitude(), location.getLongitude());
         accuracy = location.getAccuracy();
-        if(location.getAccuracy() < 10) {
+        if (location.getAccuracy() < 10) {
             stopLocationUpdates();
         }
         //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -246,11 +240,11 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
-    public LatLng getLocation(){
+    public LatLng getLocation() {
         return position;
     }
 
-    public Float getAccuracy(){
+    public Float getAccuracy() {
         return accuracy;
     }
 

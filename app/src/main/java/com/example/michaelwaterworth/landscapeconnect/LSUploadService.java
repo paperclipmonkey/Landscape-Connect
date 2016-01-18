@@ -139,21 +139,21 @@ public class LSUploadService extends Service {
         }
     }
 
-    private void stop(){
+    private void stop() {
         stopSelf();
     }
 
-    private void redoOrNotify(){
+    private void redoOrNotify() {
         Log.d(TAG, "redoOrNotify");
-        if(Response.getFinishedResponses().size() > 0){
+        if (Response.getFinishedResponses().size() > 0) {
             checkForPendingUploads();
-        } else if(completedUploads > 0){
+        } else if (completedUploads > 0) {
             //Notify the user how many uploads have completed and all done.
             buildSuccessNotification();
         }
     }
 
-    private void removeUploaded(){
+    private void removeUploaded() {
         Log.d(TAG, "removeUploaded");
         completedUploads++;//Add to count
         uploadingResponse.deleteFull();

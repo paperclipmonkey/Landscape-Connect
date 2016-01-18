@@ -19,47 +19,36 @@ import java.util.List;
 @Table(name = "Responses", id = BaseColumns._ID)
 public class Response extends Model {
 
-    @Column(name = "id")
-    private int id;
-
     @Expose
     @Column(name = "Timestamp")
     public Long timestamp;//Date & Time to be completed
-
-    // - - - - - - Location fields - - - - - - - -
-
     @Expose
     @Column(name = "Lat")
     public Double lat;//Date & Time to be completed
 
+    // - - - - - - Location fields - - - - - - - -
     @Expose
     @Column(name = "Lng")
     public Double lng;//Date & Time to be completed
-
     @Expose
     @Column(name = "LocAcc")
     public Float locAcc;//Date & Time to be completed
-
-    // - - - - - - End Location fields - - - - - - - -
-
     @Expose
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
 
+    // - - - - - - End Location fields - - - - - - - -
     @Expose
     @Column(name = "Photo")
     public String photo;//File address to photo
-
-    public List<SectionResponse> getSectionResponses() {
-        return getMany(SectionResponse.class, "Response");
-    }
-
     //Finished is when all required sections are complete and the user says it's finished, ready for upload
     @Expose
     @Column(name = "Finished")
     public Boolean finished;
+    @Column(name = "id")
+    private int id;
 
-    public static Response newInstance(Cursor c){
+    public static Response newInstance(Cursor c) {
         int _id = c.getInt(c.getColumnIndex("_id"));
         return new Select()
                 .from(Response.class)
@@ -67,11 +56,15 @@ public class Response extends Model {
                 .executeSingle();
     }
 
-    public static List<Response> getFinishedResponses(){
+    public static List<Response> getFinishedResponses() {
         return new Select()
                 .from(Response.class)
                 .where("Finished = ?", true)
                 .execute();
+    }
+
+    public List<SectionResponse> getSectionResponses() {
+        return getMany(SectionResponse.class, "Response");
     }
 
     public Calendar getDateCompleted() {
@@ -92,7 +85,7 @@ public class Response extends Model {
         this.delete();
     }
 
-    public void setFinished(){
+    public void setFinished() {
         this.finished = true;
     }
 }

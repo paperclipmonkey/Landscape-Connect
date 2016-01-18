@@ -20,52 +20,44 @@ import java.util.List;
  */
 
 @Table(name = "Questionnaire", id = BaseColumns._ID)
-public class Questionnaire extends Model{
-
-    public static Questionnaire newInstance(Cursor c){
-        int _id = c.getInt(c.getColumnIndex("_id"));
-        return new Select()
-                .from(Questionnaire.class)
-                .where("_id = ?", _id)
-                .executeSingle();
-    }
+public class Questionnaire extends Model {
 
     @Column(name = "id")
     private int id;
-
     @Expose
     @Column(name = "DateAdded")
     private Long dateAdded;//Date & Time to be completed
-
     @Expose
     @Column(name = "Name")
     private String name;//Name of class to be run
-
     @Expose
     @Column(name = "Description")
     private String description;//Title to be used in notification
-
     @Expose
     @Column(name = "IntroTitle")
     private String introTitle;//Title to be used when opening questionnaire
-
     @Expose
     @Column(name = "IntroDescription")
     private String introDescription;//Description to be used when opening questionnaire
-
     @Expose
     @Column(name = "IntroImage")
     private String introImage;//Image to be used when opening questionnaire
-
     @Expose
     @Column(name = "ServerId")
     private String serverId;//Any serverId to be sent to the Task class
-
     @Expose
     private Section[] sections;
 
     public Questionnaire() {
         dateAdded = Calendar.getInstance().getTimeInMillis() / 1000;
+    }
+
+    public static Questionnaire newInstance(Cursor c) {
+        int _id = c.getInt(c.getColumnIndex("_id"));
+        return new Select()
+                .from(Questionnaire.class)
+                .where("_id = ?", _id)
+                .executeSingle();
     }
 
     public static List<Questionnaire> getAll() {
@@ -80,7 +72,7 @@ public class Questionnaire extends Model{
         From query = new Select()
                 .from(Questionnaire.class)
                 .where("_id = -1");
-        for (long id: ids) {
+        for (long id : ids) {
             query.or("_id = ?", id);
             System.out.println(id);
         }
@@ -91,16 +83,16 @@ public class Questionnaire extends Model{
         From query = new Select()
                 .from(Questionnaire.class)
                 .where("_id = -1");
-        for (long id: ids) {
+        for (long id : ids) {
             query.or("_id = ?", id);
             System.out.println(id);
         }
         List<Questionnaire> qs = query.execute();
 
-        for (Questionnaire questionnaire: qs) {
+        for (Questionnaire questionnaire : qs) {
             //Remove responses
             List<Response> responses = questionnaire.getResponses();
-            for(Response response: responses){
+            for (Response response : responses) {
                 /* Code moved to response object */
 //                List<SectionResponse> sectionResponses = response.getSectionResponses();
 //                for(SectionResponse sectionResponse: sectionResponses){
@@ -114,9 +106,9 @@ public class Questionnaire extends Model{
             }
 
             List<Section> secList = questionnaire.getSections();
-            for(Section s: secList){
-                List<Question> queList =s.getQuestions();
-                for(Question question: queList){
+            for (Section s : secList) {
+                List<Question> queList = s.getQuestions();
+                for (Question question : queList) {
                     question.delete();
                 }
                 s.delete();
@@ -145,6 +137,7 @@ public class Questionnaire extends Model{
     public String getIntroTitle() {
         return introTitle;
     }
+
     public void setIntroTitle(String introTitle) {
         this.introTitle = introTitle;
     }
@@ -152,23 +145,29 @@ public class Questionnaire extends Model{
     public String getIntroDescription() {
         return introDescription;
     }
-    public void setIntroDescription(String introDescription) { this.introDescription = introDescription; }
+
+    public void setIntroDescription(String introDescription) {
+        this.introDescription = introDescription;
+    }
 
     public String getIntroImage() {
         return introImage;
     }
-    public void setIntroImage(String introImage) { this.introImage = introImage; }
+
+    public void setIntroImage(String introImage) {
+        this.introImage = introImage;
+    }
 
     public List<Section> getSections() {
         return getMany(Section.class, "Questionnaire");
     }
 
-    public List<Response> getResponses() {
-        return getMany(Response.class, "Questionnaire");
-    }
-
     public void setSections(Section[] sections) {
         this.sections = sections;
+    }
+
+    public List<Response> getResponses() {
+        return getMany(Response.class, "Questionnaire");
     }
 
     public String getServerId() {
@@ -186,16 +185,16 @@ public class Questionnaire extends Model{
         return rDate;
     }
 
-    public void saveQuestionnaire(){
+    public void setDateAdded(Calendar rDate) {
+        this.dateAdded = rDate.getTimeInMillis() / 1000;
+    }
+
+    public void saveQuestionnaire() {
         Log.d("Saving", "Questionnaire");
         this.save();
-        for(Section section: sections){
+        for (Section section : sections) {
             section.questionnaire = this;
             section.saveSection();
         }
-    }
-
-    public void setDateAdded(Calendar rDate) {
-        this.dateAdded = rDate.getTimeInMillis() / 1000;
     }
 }

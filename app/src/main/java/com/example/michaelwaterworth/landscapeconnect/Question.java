@@ -24,38 +24,31 @@ import java.util.List;
  * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "Question", id = BaseColumns._ID)
-public class Question extends Model{
+public class Question extends Model {
     public static final String QTYPE_STRING = "string";
     public static final String QTYPE_MULTI = "multi";
     public static final String QTYPE_RADIO = "radio";
     public static final String QTYPE_TEXTAREA = "textarea";
-
-    @Column(name = "id")
-    private int id;
-
     @Column(name = "Title")
     @Expose
     public String title;
-
     @Column(name = "Type")
     @Expose
     public String type;
-
     @Column(name = "Required")
     @Expose
     public boolean required;
-
     @Expose
     public Choice[] choices;
-
-    @Column(name = "Section" , onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "Section", onDelete = Column.ForeignKeyAction.CASCADE)
     @Expose
     public Section section;
-
     public ViewGroup baseView;
+    @Column(name = "id")
+    private int id;
 
     public String getTitle() {
-        if(this.required) {
+        if (this.required) {
             return title;
         }
         return title + " (Optional)";
@@ -81,18 +74,18 @@ public class Question extends Model{
         return getMany(Choice.class, "Question");
     }
 
-    public ViewGroup createBaseView(Context cx, QuestionResponse questionResponse){
-        LayoutInflater inflater = (LayoutInflater)cx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
+    public ViewGroup createBaseView(Context cx, QuestionResponse questionResponse) {
+        LayoutInflater inflater = (LayoutInflater) cx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);// Identify and inflate the new view you seek to project on the current view.
         baseView = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
 
         TextView title = (TextView) baseView.findViewById(R.id.question_question);
         title.setText(getTitle());
 
         View view;
-        switch (getType()){
+        switch (getType()) {
             case QTYPE_TEXTAREA:
                 EditText textAreaObj = new EditText(cx);
-                if(questionResponse != null && questionResponse.rData!= null){
+                if (questionResponse != null && questionResponse.rData != null) {
                     textAreaObj.setText(questionResponse.rData);
                 }
                 view = textAreaObj;
@@ -104,14 +97,14 @@ public class Question extends Model{
                 break;
             case QTYPE_RADIO:
                 RadioGroup radioGroup = new RadioGroup(cx);
-                for(Choice option: getChoices()){
+                for (Choice option : getChoices()) {
                     int index = getChoices().indexOf(option);
                     RadioButton radioButton = new RadioButton(cx);
                     radioButton.setText(option.choice);
                     radioButton.setId(index);
                     //TODO - Add a delimiter so we can check against full responses
                     radioGroup.addView(radioButton);
-                    if(questionResponse.rData != null && questionResponse.rData.contains(option.choice)){
+                    if (questionResponse.rData != null && questionResponse.rData.contains(option.choice)) {
                         radioGroup.check(index);
                     }
                 }
@@ -120,10 +113,10 @@ public class Question extends Model{
             case QTYPE_MULTI:
                 LinearLayout layout = new LinearLayout(cx);
                 layout.setOrientation(LinearLayout.VERTICAL);
-                for(Choice option: getChoices()){
+                for (Choice option : getChoices()) {
                     CheckBox checkBox = new CheckBox(cx);
                     checkBox.setText(option.choice);
-                    if(questionResponse.rData != null && questionResponse.rData.contains(option.choice)){
+                    if (questionResponse.rData != null && questionResponse.rData.contains(option.choice)) {
                         checkBox.setChecked(true);
                     }
                     layout.addView(checkBox);
@@ -139,9 +132,9 @@ public class Question extends Model{
     }
 
 
-    public String getSerialisedAnswer(){
+    public String getSerialisedAnswer() {
         int count;
-        switch (type){
+        switch (type) {
             case QTYPE_STRING:
             case QTYPE_TEXTAREA:
                 count = baseView.getChildCount();
@@ -160,7 +153,7 @@ public class Question extends Model{
                     View v = answerBase.getChildAt(i);
                     if (v instanceof CheckBox) {
                         CheckBox checkBox = (CheckBox) v;
-                        if(checkBox.isChecked()){
+                        if (checkBox.isChecked()) {
                             str += checkBox.getText().toString();
                         }
                     }
@@ -173,9 +166,10 @@ public class Question extends Model{
                     if (v instanceof RadioGroup) {
                         RadioGroup radioGroup = (RadioGroup) v;
                         int selId = radioGroup.getCheckedRadioButtonId();
-                        if(selId != -1) {
+                        if (selId != -1) {
                             return ((RadioButton) v.findViewById(selId)).getText().toString();
-                        } return null;
+                        }
+                        return null;
                     }
                 }
                 break;
@@ -184,13 +178,13 @@ public class Question extends Model{
         return null;
     }
 
-    public void saveQuestion(){
+    public void saveQuestion() {
         this.save();
-        if(choices != null){
-        for(Choice choice: choices){
-            choice.question = this;
-            choice.save();
-        }
+        if (choices != null) {
+            for (Choice choice : choices) {
+                choice.question = this;
+                choice.save();
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ public class SectionResponseLink {
     final SectionResponse sectionResponse;
     final Section section;
 
-    public SectionResponseLink(SectionResponse sectionResponse, Section section){
+    public SectionResponseLink(SectionResponse sectionResponse, Section section) {
         this.sectionResponse = sectionResponse;
         this.section = section;
     }

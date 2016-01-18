@@ -13,7 +13,7 @@ import java.util.List;
  * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "SectionResponse", id = BaseColumns._ID)
-public class SectionResponse extends Model{
+public class SectionResponse extends Model {
 
     @Expose
     @Column(name = "Title")
@@ -31,7 +31,9 @@ public class SectionResponse extends Model{
         return getMany(QuestionResponse.class, "SectionResponse");
     }
 
-    public boolean isCompleted() { return complete; }
+    public boolean isCompleted() {
+        return complete;
+    }
 
     public void setCompleted(boolean complete) {
         this.complete = complete;
