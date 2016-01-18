@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TestQDownloader.iml" filepath="$PROJECT_DIR$/TestQDownloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LandscapeConnect.iml" filepath="$PROJECT_DIR$/LandscapeConnect.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
