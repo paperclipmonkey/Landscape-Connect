@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

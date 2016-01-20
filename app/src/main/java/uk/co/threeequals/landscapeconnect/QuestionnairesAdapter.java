@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.co.threeequals.landscapeconnect.R;
 
 /**
  * Attaches Data objects to Lists.

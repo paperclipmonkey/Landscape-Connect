@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.provider.BaseColumns;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.co.threeequals.landscapeconnect.R;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;

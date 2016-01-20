@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.Manifest;
 import android.app.Activity;
@@ -29,6 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.co.threeequals.landscapeconnect.R;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;

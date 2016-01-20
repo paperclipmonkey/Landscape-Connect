@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Attaches Data objects to Lists.
- * Adapter supplies stylised Data
+ * Attaches Response objects to Lists.
+ * Styles pending uploads ready for display
  */
-class UploadsAdapter extends CursorAdapter {
+class ResponseAdapter extends CursorAdapter {
 
-    public UploadsAdapter(Context context, Cursor c, boolean autoReQuery) {
+    public ResponseAdapter(Context context, Cursor c, boolean autoReQuery) {
         super(context, c, autoReQuery);
     }
 

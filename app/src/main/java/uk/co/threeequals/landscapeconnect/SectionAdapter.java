@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.co.threeequals.landscapeconnect.R;
 
 import java.util.ArrayList;
 

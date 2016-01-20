@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
+import com.co.threeequals.landscapeconnect.R;
 
 public class QuestionnairesActivity extends AppCompatActivity {
     public static final int QUESTIONNAIRES_FRAGMENT = 0;

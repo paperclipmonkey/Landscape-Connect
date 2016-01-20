@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -17,6 +17,7 @@ import android.util.Log;
 import com.alexbbb.uploadservice.AllCertificatesAndHostsTruster;
 import com.alexbbb.uploadservice.MultipartUploadRequest;
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
+import com.co.threeequals.landscapeconnect.R;
 
 import java.io.FileNotFoundException;
 import java.util.List;

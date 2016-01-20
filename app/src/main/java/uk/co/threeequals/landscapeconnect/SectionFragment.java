@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.co.threeequals.landscapeconnect.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

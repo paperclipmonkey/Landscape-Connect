@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -16,11 +16,13 @@ import com.activeandroid.content.ContentProvider;
 
 
 /**
+ * Show a list of pending uploads.
+ * Displayed in the QuestionnairesActivity
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
-public class UploadListFragment extends Fragment {
+public class ResponseListFragment extends Fragment {
 
-    public UploadListFragment() {
+    public ResponseListFragment() {
     }
 
     @Override
@@ -30,7 +32,7 @@ public class UploadListFragment extends Fragment {
         final ListView listView = (ListView) base.findViewById(R.id.uploadlist);
 
         // Setup cursor adapter
-        UploadsAdapter adapter = new UploadsAdapter(getContext(), null, true);
+        ResponseAdapter adapter = new ResponseAdapter(getContext(), null, true);
         // Attach cursor adapter to the ListView
         listView.setAdapter(adapter);
 

@@ -1,4 +1,4 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.Manifest;
 import android.content.Intent;
@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.activeandroid.content.ContentProvider;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.co.threeequals.landscapeconnect.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,8 +1,9 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.content.Intent;
 
 import com.alexbbb.uploadservice.UploadService;
+import com.co.threeequals.landscapeconnect.BuildConfig;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 

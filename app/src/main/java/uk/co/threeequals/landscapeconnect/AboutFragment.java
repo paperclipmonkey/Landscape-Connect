@@ -1,10 +1,12 @@
-package com.example.michaelwaterworth.landscapeconnect;
+package uk.co.threeequals.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.co.threeequals.landscapeconnect.R;
 
 /**
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
