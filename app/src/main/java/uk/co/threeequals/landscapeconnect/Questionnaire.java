@@ -15,7 +15,14 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Base class for a task object in the database
+ * Base class for a Questionnaire object
+ * Relationships in the database are:
+ * Section
+ *      Question
+ *          Choice
+ * Response
+ *      SectionResponse
+ *          QuestionResponse
  * Created by michaelwaterworth on 30/07/15. Copyright Michael Waterworth
  */
 

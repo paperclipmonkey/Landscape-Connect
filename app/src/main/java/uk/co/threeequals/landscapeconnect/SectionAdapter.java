@@ -8,11 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.co.threeequals.landscapeconnect.R;
-
 import java.util.ArrayList;
 
 /**
+ * Section Adapter is used to display Sections in a list
  * Created by michaelwaterworth on 03/11/2015. Copyright Michael Waterworth
  */
 class SectionAdapter extends ArrayAdapter<SectionResponseLink> {

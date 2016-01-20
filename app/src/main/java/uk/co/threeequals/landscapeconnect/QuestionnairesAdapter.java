@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.co.threeequals.landscapeconnect.R;
-
 /**
- * Attaches Data objects to Lists.
+ * Attaches Questionnaires to Lists.
  * Adapter supplies stylised Data
  */
 class QuestionnairesAdapter extends CursorAdapter {

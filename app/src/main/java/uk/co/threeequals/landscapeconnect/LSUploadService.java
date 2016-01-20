@@ -17,14 +17,13 @@ import android.util.Log;
 import com.alexbbb.uploadservice.AllCertificatesAndHostsTruster;
 import com.alexbbb.uploadservice.MultipartUploadRequest;
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
-import com.co.threeequals.landscapeconnect.R;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
- * Called from the Scheduler Service when there are no more scheduled tasks left
- * and data to upload. Kicks off the static upload task
+ * Uploads data from the app to the website
+ * Run as a background service with sticky foreground - Shows notification during upload
  */
 public class LSUploadService extends Service {
     private final String TAG = "LSUploadService";

@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.co.threeequals.landscapeconnect.R;
-
 /**
+ * Display the about page as part of a fragment
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class AboutFragment extends Fragment {

@@ -11,6 +11,8 @@ import com.google.gson.annotations.Expose;
 import java.util.List;
 
 /**
+ * Section Model
+ * Sections are a constituent of Questionnaires used to hold a series of questions
  * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "Section", id = BaseColumns._ID)

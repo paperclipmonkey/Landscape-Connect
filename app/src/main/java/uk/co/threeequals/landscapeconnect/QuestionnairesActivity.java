@@ -14,8 +14,12 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
-import com.co.threeequals.landscapeconnect.R;
 
+/**
+ * First Activity shown on load
+ * Displays a list of questionnaires
+ * Also shows a left hand burger menu
+ */
 public class QuestionnairesActivity extends AppCompatActivity {
     public static final int QUESTIONNAIRES_FRAGMENT = 0;
     public static final int UPLOAD_FRAGMENT = 1;
@@ -107,7 +111,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                         setTitle(R.string.about);
                         break;
                     default:
-                        fragment = new UploadListFragment();
+                        fragment = new ResponseListFragment();
                         setTitle(getString(R.string.upload_queue));
                         break;
                 }
@@ -128,7 +132,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
             fragment = new QuestionnairesFragment();
         } else if (fragmentId == UPLOAD_FRAGMENT) {
             setTitle(R.string.upload_queue);
-            fragment = new UploadListFragment();
+            fragment = new ResponseListFragment();
         } else {
             setTitle(R.string.about);
             fragment = new AboutFragment();

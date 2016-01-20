@@ -29,7 +29,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.co.threeequals.landscapeconnect.R;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
@@ -42,6 +41,8 @@ import java.util.List;
 import java.util.Locale;
 
 /**
+ * Fragment that is displayed when starting a new response
+ * Takes image, grabs location, lists sections, saves response
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsFragment extends Fragment implements View.OnClickListener {

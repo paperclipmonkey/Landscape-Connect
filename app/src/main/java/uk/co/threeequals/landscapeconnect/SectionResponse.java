@@ -10,6 +10,9 @@ import com.google.gson.annotations.Expose;
 import java.util.List;
 
 /**
+ * Section Response model
+ * Models section and QuestionResponses to sections
+ * Internally holds Title and doesn't link to the original Section
  * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "SectionResponse", id = BaseColumns._ID)

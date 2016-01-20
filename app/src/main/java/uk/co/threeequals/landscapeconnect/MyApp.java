@@ -3,11 +3,11 @@ package uk.co.threeequals.landscapeconnect;
 import android.content.Intent;
 
 import com.alexbbb.uploadservice.UploadService;
-import com.co.threeequals.landscapeconnect.BuildConfig;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 /**
+ * Base class for the App which initialises all of the libraries
  * Created by michaelwaterworth on 04/01/2016. Copyright Michael Waterworth
  */
 public class MyApp extends com.activeandroid.app.Application {

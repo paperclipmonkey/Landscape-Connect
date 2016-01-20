@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.activeandroid.content.ContentProvider;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.co.threeequals.landscapeconnect.R;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,6 +43,8 @@ import java.net.URLConnection;
 
 
 /**
+ * Shows questionnaires in the questionnaires activity
+ * Loaded as the default page then uses an adapter coupled to a viewlist to show questionnaires
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class QuestionnairesFragment extends Fragment {

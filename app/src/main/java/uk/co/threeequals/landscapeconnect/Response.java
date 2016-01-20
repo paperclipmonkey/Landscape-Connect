@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
+ * Responses Model as used to save Questionnaire Responses
  * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
 

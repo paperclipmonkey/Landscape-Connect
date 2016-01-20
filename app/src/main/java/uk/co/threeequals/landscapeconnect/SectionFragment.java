@@ -12,7 +12,6 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.co.threeequals.landscapeconnect.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,11 +19,12 @@ import java.util.List;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 /**
+ * Section Fragment shows a list of questions that can be answered
+ * Works with a viewflipper to allow paging
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int QUESTIONS_PER_PAGE = 3;
-    //    protected ViewFlipper flipper;
     private ViewGroup base;
     private Response response;
     private Section section;

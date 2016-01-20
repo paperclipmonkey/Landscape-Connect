@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
+ * Load on device reboot. Fires the Upload Service to check for pending uploads
  * Created by michaelwaterworth on 30/07/15. Copyright Michael Waterworth
  */
 public class BootReceiver extends BroadcastReceiver {

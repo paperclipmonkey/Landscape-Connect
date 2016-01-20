@@ -9,11 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.co.threeequals.landscapeconnect.R;
-
 import java.util.List;
 
 /**
+ * Used to collect a response from the user
+ * Holds the fragments that do the heavy lifting
+ * Provides helper functions for loading the Questionnaire
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsActivity extends AppCompatActivity {

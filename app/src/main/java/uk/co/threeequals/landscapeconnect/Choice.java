@@ -8,6 +8,7 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
 /**
+ * Choices are subojects of questions - Used to hold an individual choice for a question. Normalised dataset
  * Created by michaelwaterworth on 22/11/2015. Copyright Michael Waterworth
  */
 @Table(name = "Choice", id = BaseColumns._ID)
