@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.michaelwaterworth.landscapeconnect">
+    package="uk.co.threeequals.landscapeconnect">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:allowBackup="false"
         tools:replace="android:allowBackup"
         android:icon="@mipmap/mic_launcher"
-        android:name="com.example.michaelwaterworth.landscapeconnect.MyApp"
+        android:name="uk.co.threeequals.landscapeconnect.MyApp"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
@@ -23,14 +23,14 @@
         <meta-data android:name="AA_DB_NAME" android:value="ls.db" />
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
 
-        <provider android:authorities="com.example.michaelwaterworth.landscapeconnect" android:exported="false" android:name="com.activeandroid.content.ContentProvider" />
+        <provider android:authorities="uk.co.threeequals.landscapeconnect" android:exported="false" android:name="com.activeandroid.content.ContentProvider" />
 
         <!--<meta-data-->
             <!--android:name="AA_MODELS"-->
             <!--android:value="com.myapp.model.Item, com.myapp.model.Category" />-->
 
         <activity
-            android:name="com.example.michaelwaterworth.landscapeconnect.QuestionnairesActivity"
+            android:name="uk.co.threeequals.landscapeconnect.QuestionnairesActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,22 +39,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.michaelwaterworth.landscapeconnect.SectionsActivity"
+            android:name="uk.co.threeequals.landscapeconnect.SectionsActivity"
             android:label="@string/app_name">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.michaelwaterworth.landscapeconnect.QuestionnairesActivity" />
+                android:value="uk.co.threeequals.landscapeconnect.QuestionnairesActivity" />
         </activity>
 
         <!-- Upload Service and task -->
         <service
-            android:name="com.example.michaelwaterworth.landscapeconnect.LSUploadService"
+            android:name="uk.co.threeequals.landscapeconnect.LSUploadService"
             android:enabled="true"
             android:exported="false" >
         </service>
 
         <!-- Start the service on boot -->
-        <receiver android:name="com.example.michaelwaterworth.landscapeconnect.BootReceiver"
+        <receiver android:name="uk.co.threeequals.landscapeconnect.BootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "com.example.michaelwaterworth.landscapeconnect"
+        applicationId "uk.co.threeequals.landscapeconnect"
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
@@ -30,16 +30,14 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.2'
     compile 'com.google.code.gson:gson:2.4'
-    compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.alexbbb:uploadservice:1.6'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1'
     compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar'
     compile 'com.google.zxing:core:3.2.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.google.android.gms:play-services-ads:8.4.0'
-    compile 'com.google.android.gms:play-services-auth:8.4.0'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
 }
 
 
