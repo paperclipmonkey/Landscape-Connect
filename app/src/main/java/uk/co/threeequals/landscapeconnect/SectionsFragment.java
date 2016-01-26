@@ -25,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -55,7 +54,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     private Questionnaire questionnaire;
     private Response response;
     private ArrayList<SectionResponseLink> sectionResponseLinks;
-    private ProgressBar progressBar;
+    //private ProgressBar progressBar;
     private LocationGetter locationGetter;
 
     public SectionsFragment() {
@@ -64,18 +63,18 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     private void setTaskProgress(int percentage) {
         Log.d("Progress", "" + percentage);
 
-        //Remove old progress bar from the UI
-        ViewGroup progressHolder = (ViewGroup) base.findViewById(R.id.task_progressbar_holder);
-        progressHolder.removeAllViews();
-
-        ViewGroup child = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.progress_bar, null);
-
-        progressBar = (ProgressBar) child.findViewById(R.id.task_progressbar);
-
-        progressBar.setIndeterminate(false);
-        progressBar.setProgress(percentage);
-
-        progressHolder.addView(child);
+//        //Remove old progress bar from the UI
+//        ViewGroup progressHolder = (ViewGroup) base.findViewById(R.id.task_progressbar_holder);
+//        progressHolder.removeAllViews();
+//
+//        ViewGroup child = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.progress_bar, null);
+//
+//        progressBar = (ProgressBar) child.findViewById(R.id.task_progressbar);
+//
+//        progressBar.setIndeterminate(false);
+//        progressBar.setProgress(percentage);
+//
+//        progressHolder.addView(child);
     }
 
 
