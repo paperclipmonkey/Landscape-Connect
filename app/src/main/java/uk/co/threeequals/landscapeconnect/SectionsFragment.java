@@ -387,11 +387,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        response.timestamp = Calendar.getInstance().getTimeInMillis();
-
-        getLocation();
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            getLocation();
+            response.timestamp = Calendar.getInstance().getTimeInMillis();
             pageNext();
         }
     }
