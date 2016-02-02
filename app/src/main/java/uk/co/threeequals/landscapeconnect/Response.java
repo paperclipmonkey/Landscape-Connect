@@ -33,7 +33,7 @@ public class Response extends Model {
     public Double lng;//Date & Time to be completed
     @Expose
     @Column(name = "LocAcc")
-    public Float locAcc;//Date & Time to be completed
+    public Float locAcc;//Location accuracy
     @Expose
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
