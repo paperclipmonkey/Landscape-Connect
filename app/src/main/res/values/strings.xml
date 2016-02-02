@@ -20,8 +20,17 @@
     <string name="delete_dialog_positive">Delete</string>
     <string name="delete_dialog_negative">Cancel</string>
 
+    <!-- Questionnaire Page -->
+    <string name="installed">Installed:</string>
+    <string name="published">Published:</string>
+    <string name="description">Description:</string>
+    <string name="website">Website:</string>
+    <string name="pending_uploads">Pending upload(s)</string>
+
+
     <string name="downloading_questionnaire">Downloading Questionnaire</string>
     <string name="please_wait">Please wait</string>
+    <string name="new_response">New Response</string>
     <string name="new_landscape">New Landscape</string>
     <string name="new_landscape_take_photo_button">Take Photo</string>
 

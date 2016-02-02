@@ -193,7 +193,8 @@ public class QuestionnairesFragment extends Fragment {
                 // ListView Clicked item index
                 Cursor c = (Cursor) adapterView.getItemAtPosition(position);
                 Questionnaire questionnaire = Questionnaire.newInstance(c);
-                Intent intent = new Intent(getActivity(), SectionsActivity.class);
+
+                Intent intent = new Intent(getContext(), QuestionnaireActivity.class);
                 intent.putExtra("id", questionnaire.getId());
                 startActivity(intent);
             }

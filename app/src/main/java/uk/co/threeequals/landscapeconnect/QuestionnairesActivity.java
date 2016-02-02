@@ -1,5 +1,7 @@
 package uk.co.threeequals.landscapeconnect;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -123,7 +125,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                         setTitle(getString(R.string.upload_queue));
                         break;
                 }
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contentFragment, fragment);
                 fragmentTransaction.commit();
                 return true;
@@ -155,12 +157,20 @@ public class QuestionnairesActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void switchToQuestionnaire(int questionnaire) {
+        Intent intent = new Intent(this, QuestionnaireActivity.class);
+        intent.putExtra("id", questionnaire);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        super.onOptionsItemSelected(item);
 
         switch (id) {
             case android.R.id.home:
