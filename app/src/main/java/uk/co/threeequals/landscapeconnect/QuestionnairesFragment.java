@@ -282,7 +282,7 @@ public class QuestionnairesFragment extends Fragment {
 
     private void addNewQs(String url) {
         if (!url.startsWith("http", 0)) {
-            url = getString(R.string.download_url) + url.toUpperCase() + ".json";
+            url = getString(R.string.base_url) + getString(R.string.download_url_fragment) + url.toUpperCase() + ".json";
         }
         Log.d(TAG, "Downloading JSON: " + url);
         new DownloadToString().execute(url);

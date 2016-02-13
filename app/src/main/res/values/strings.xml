@@ -1,7 +1,6 @@
 <resources>
-    <string name="download_url">http://3equals.co.uk/lc-json/</string>
-    <string name="base_url">http://192.168.1.79:3000/</string>
-    <string name="upload_path">upload/multipart</string>
+    <string name="download_url_fragment">questionnaires/</string>
+    <string name="base_url">http://landscape-connect-beta.herokuapp.com/</string>
     <string name="user_agent_http">LandscapeConnectV1</string>
     <string name="app_name">Landscape Connect</string>
     <string name="action_settings">Settings</string>

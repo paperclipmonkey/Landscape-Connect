@@ -206,7 +206,7 @@ public class LSUploadService extends Service {
         AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
-                context.getString(R.string.base_url) + context.getString(R.string.upload_path));
+                context.getString(R.string.base_url) + "/api/questionnaires/" + response.questionnaire.getServerId() + "/responses/");
     /*
      * parameter-name: is the name of the parameter that will contain file's data.
      * Pass "uploaded_file" if you're using the test PHP script
@@ -228,9 +228,24 @@ public class LSUploadService extends Service {
         for (SectionResponse sectionResponse : responseList) {
             List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
             for (QuestionResponse questionResponse : questionResponses) {
-                request.addParameter(sectionResponse.title + "/" + questionResponse.question.getTitle(), questionResponse.rData);
+                request.addParameter("data[" + sectionResponse.title + "/" + questionResponse.question.getTitle() + "]", questionResponse.rData);
             }
         }
+
+
+//        public Long timestamp;//Date & Time to be completed
+//        public Double lat;//Date & Time to be completed
+//        public Double lng;//Date & Time to be completed
+//        public Float locAcc;//Location accuracy
+//        public Questionnaire questionnaire;
+//        public String photo;//File address to photo
+//        public Boolean finished;
+//        private int id;
+
+        request.addParameter("questionnaire", response.questionnaire.getServerId());
+        request.addParameter("lat", response.lat.toString());
+        request.addParameter("lng", response.lng.toString());
+        request.addParameter("locAcc", response.locAcc.toString());
 
 //        //configure the notification
 //        request.setNotificationConfig(R.drawable.app_icon_silhouette,

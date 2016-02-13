@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-        <!-- Intro screen -->
+         <!-- Intro screen -->
         <RelativeLayout
             android:id="@+id/welcome_page"
             android:layout_width="match_parent"
@@ -110,7 +110,6 @@
             android:id="@+id/sections_page"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -123,6 +122,7 @@
 
             <TextView
                 android:id="@+id/textView2"
+                android:layout_margin="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/question_sections"
