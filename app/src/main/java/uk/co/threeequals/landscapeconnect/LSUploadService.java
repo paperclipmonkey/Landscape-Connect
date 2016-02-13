@@ -62,15 +62,20 @@ public class LSUploadService extends Service {
                 public void onCompleted(String uploadId,
                                         int serverResponseCode,
                                         String serverResponseMessage) {
-                    Log.i(TAG, "Upload with ID " + uploadId
-                            + " has been completed with HTTP " + serverResponseCode
-                            + ". Response from server: " + serverResponseMessage);
+                    if(serverResponseCode == 200) {//Success HTTP status code
+                        Log.i(TAG, "Upload with ID " + uploadId
+                                + " has been completed with HTTP " + serverResponseCode
+                                + ". Response from server: " + serverResponseMessage);
 
-                    Log.d(TAG, "Completed LS Upload");
+                        Log.d(TAG, "Completed LS Upload");
 
-                    removeUploaded();
-                    redoOrNotify();
-
+                        removeUploaded();
+                        redoOrNotify();
+                    } else {
+                        Log.e(TAG, "Upload error");
+                        Log.e(TAG, "UploadId: " + uploadId);
+                        Log.e(TAG, "Response: " + serverResponseMessage);
+                    }
                     //If your server responds with a JSON, you can parse it
                     //from serverResponseMessage string using a library
                     //such as org.json (embedded in Android) or Google's gson
@@ -218,7 +223,7 @@ public class LSUploadService extends Service {
         //Add files for upload
         try {
             String filename = response.photo.substring(response.photo.indexOf(":") + 1);
-            request.addFileToUpload(filename, "file", response.photo, "image/jpeg");
+            request.addFileToUpload(filename, "photo", response.photo, "image/jpeg");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -233,6 +238,8 @@ public class LSUploadService extends Service {
         }
 
 
+
+
 //        public Long timestamp;//Date & Time to be completed
 //        public Double lat;//Date & Time to be completed
 //        public Double lng;//Date & Time to be completed
@@ -242,10 +249,11 @@ public class LSUploadService extends Service {
 //        public Boolean finished;
 //        private int id;
 
-        request.addParameter("questionnaire", response.questionnaire.getServerId());
+        request.addParameter("timestamp", "" + response.getDateCompleted().getTimeInMillis());
         request.addParameter("lat", response.lat.toString());
         request.addParameter("lng", response.lng.toString());
         request.addParameter("locAcc", response.locAcc.toString());
+        request.addParameter("questionnaire", response.questionnaire.getServerId());
 
 //        //configure the notification
 //        request.setNotificationConfig(R.drawable.app_icon_silhouette,
