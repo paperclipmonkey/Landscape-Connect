@@ -206,7 +206,7 @@ public class LSUploadService extends Service {
         AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
-                context.getString(R.string.base_url) + "/api/questionnaires/" + response.questionnaire.getServerId() + "/responses/");
+                context.getString(R.string.base_url) + "api/questionnaires/" + response.questionnaire.getServerId() + "/responses/");
     /*
      * parameter-name: is the name of the parameter that will contain file's data.
      * Pass "uploaded_file" if you're using the test PHP script

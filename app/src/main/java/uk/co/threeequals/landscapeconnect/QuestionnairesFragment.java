@@ -338,7 +338,7 @@ public class QuestionnairesFragment extends Fragment {
                 int lengthOfFile = connection.getContentLength();
 
                 // download the file
-                InputStream input = new BufferedInputStream(url.openStream(),
+                InputStream input = new BufferedInputStream(connection.getInputStream(),
                         8192);
 
                 byte data[] = new byte[1024];
