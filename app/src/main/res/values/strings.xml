@@ -23,7 +23,8 @@
     <string name="installed">Installed:</string>
     <string name="published">Published:</string>
     <string name="description">Description:</string>
-    <string name="website">Website:</string>
+    <string name="shortcode">Short code:</string>
+    <string name="website">Find out more about this questionnaire:</string>
     <string name="pending_uploads">Pending upload(s)</string>
 
 

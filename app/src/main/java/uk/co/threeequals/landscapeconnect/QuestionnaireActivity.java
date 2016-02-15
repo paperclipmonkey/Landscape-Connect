@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+
 /**
  * Created by michaelwaterworth on 28/01/2016. Copyright Michael Waterworth
  */
@@ -48,13 +50,17 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
 
         TextView descriptionView = (TextView) findViewById(R.id.questionnaire_details_description);
-        TextView publishedView = (TextView) findViewById(R.id.questionnaire_details_published);
         TextView installedView = (TextView) findViewById(R.id.questionnaire_details_installed);
         TextView websiteView = (TextView) findViewById(R.id.questionnaire_details_website);
+        TextView shortCodeView = (TextView) findViewById(R.id.questionnaire_details_shortcode);
+
+        DateFormat df = DateFormat.getDateInstance();
 
         descriptionView.setText(questionnaire.getDescription());
-        //publishedView.setText(questionnaire.getDescription());
-        websiteView.setText(questionnaire.getServerId());
+        installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
+        websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
+        shortCodeView.setText(questionnaire.getServerId());
+
 
         //nextButton = (Button) findViewById(R.id.section_button_next_done);
         //nextButton.setOnClickListener(this);
