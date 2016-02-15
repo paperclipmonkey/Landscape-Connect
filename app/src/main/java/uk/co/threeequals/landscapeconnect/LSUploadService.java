@@ -248,12 +248,16 @@ public class LSUploadService extends Service {
 //        public String photo;//File address to photo
 //        public Boolean finished;
 //        private int id;
+        try {
+            request.addParameter("timestamp", "" + response.getDateCompleted().getTimeInMillis());
 
-        request.addParameter("timestamp", "" + response.getDateCompleted().getTimeInMillis());
-        request.addParameter("lat", response.lat.toString());
-        request.addParameter("lng", response.lng.toString());
-        request.addParameter("locAcc", response.locAcc.toString());
-        request.addParameter("questionnaire", response.questionnaire.getServerId());
+            request.addParameter("lat", response.lat.toString());
+            request.addParameter("lng", response.lng.toString());
+            request.addParameter("locAcc", response.locAcc.toString());
+            request.addParameter("questionnaire", response.questionnaire.getServerId());
+        } catch(Exception e){
+            Log.e(TAG, e.getLocalizedMessage());
+        }
 
 //        //configure the notification
 //        request.setNotificationConfig(R.drawable.app_icon_silhouette,
