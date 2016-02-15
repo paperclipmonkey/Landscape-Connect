@@ -2,17 +2,25 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -32,11 +40,15 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
      */
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    private static final int REQUEST_CHECK_SETTINGS = 11;
     private final String TAG = "Location";
     private final Context mContext;
     private GoogleApiClient mGoogleApiClient;
     private LatLng position;
     private float accuracy;
+
+    public static final String INTENT_STATUS = "Status";
+    public static final String INTENT_STATUS_STATUS = "StatusObj";
     /**
      * Stores parameters for requests to the FusedLocationProviderApi.
      */
@@ -204,9 +216,47 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
             //updateUI();
         }
 
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+
+        PendingResult<LocationSettingsResult> result =
+                LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                        builder.build());
+
+        result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+            @Override
+            public void onResult(LocationSettingsResult result) {
+                final com.google.android.gms.common.api.Status status = result.getStatus();
+                final LocationSettingsStates states = result.getLocationSettingsStates();
+                switch (status.getStatusCode()) {
+                    case LocationSettingsStatusCodes.SUCCESS:
+                        // All location settings are satisfied. The client can
+                        // initialize location requests here.
+                        break;
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied, but this can be fixed
+                        // by showing the user a dialog.
+                        notifyUiFailedConnection(status);
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // Location settings are not satisfied. However, we have no way
+                        // to fix the settings so we won't show the dialog.
+                       // ...
+                        break;
+                }
+            }
+        });
+
         startLocationUpdates();
     }
 
+    private void notifyUiFailedConnection(com.google.android.gms.common.api.Status status) {
+        Log.d(TAG, "Sending out location not gettable event");
+        Intent intent = new Intent(INTENT_STATUS);
+        intent.putExtra(INTENT_STATUS_STATUS, status);
+        //intent.putExtra(FIT_EXTRA_NOTIFY_FAILED_INTENT, result.getResolution());
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+    }
 
     /**
      * Callback that fires when the location changes.

@@ -1,13 +1,22 @@
 package uk.co.threeequals.landscapeconnect;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.google.android.gms.common.api.Status;
 
 import java.util.List;
 
@@ -19,6 +28,8 @@ import java.util.List;
  */
 public class SectionsActivity extends AppCompatActivity {
     private static final String R_ID_KEY = "rId";
+    private static final int MY_REQUEST_CHECK_SETTINGS = 5;
+    private static final String TAG = "SectionsActivity";
     private Response response;
     private Questionnaire questionnaire;
 
@@ -56,6 +67,9 @@ public class SectionsActivity extends AppCompatActivity {
                         // Update your UI here.
                     }
                 });
+
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.registerReceiver(mStatusReceiver, new IntentFilter(LocationGetter.INTENT_STATUS));
     }
 
     private void loadQuestionnaire(Long questionnaireId) {
@@ -129,6 +143,27 @@ public class SectionsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "got intent from Broadcast receiver");
+            // Get extra data included in the Intent
+            if (intent.hasExtra(LocationGetter.INTENT_STATUS_STATUS)) {
+
+                try{
+                    // Show the dialog by calling startResolutionForResult(),
+                    // and check the result in onActivityResult().
+                    Status status = intent.getParcelableExtra(LocationGetter.INTENT_STATUS_STATUS);
+                    status.startResolutionForResult(
+                            SectionsActivity.this,
+                            MY_REQUEST_CHECK_SETTINGS);
+                } catch (IntentSender.SendIntentException e) {
+                    // Ignore the error.
+                }
+            }
+        }
+    };
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
