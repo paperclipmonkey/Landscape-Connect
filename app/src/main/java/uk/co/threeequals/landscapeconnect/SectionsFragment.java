@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -365,6 +366,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     private void getLocation() {
         //Check if we can get location
         LatLng latLng = locationGetter.getLocation();
+        if(latLng == null){
+            Toast.makeText(getContext(), "Can't grab location", Toast.LENGTH_LONG).show();
+            return;
+        }
         Float accuracy = locationGetter.getAccuracy();
         Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
         if (locationGetter.getAccuracy() < 50) {
