@@ -377,6 +377,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             response.lat = latLng.latitude;
             response.lng = latLng.longitude;
             response.locAcc = accuracy;
+            response.save();
         } else {
             Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
             final Handler h = new Handler();
@@ -395,6 +396,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             getLocation();
             response.timestamp = Calendar.getInstance().getTimeInMillis();
+            response.save();
             pageNext();
         }
     }
