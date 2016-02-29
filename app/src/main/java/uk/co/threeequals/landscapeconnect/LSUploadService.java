@@ -18,7 +18,6 @@ import com.alexbbb.uploadservice.AllCertificatesAndHostsTruster;
 import com.alexbbb.uploadservice.MultipartUploadRequest;
 import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -224,7 +223,7 @@ public class LSUploadService extends Service {
         try {
             String filename = response.photo.substring(response.photo.indexOf(":") + 1);
             request.addFileToUpload(filename, "photo", response.photo, "image/jpeg");
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
