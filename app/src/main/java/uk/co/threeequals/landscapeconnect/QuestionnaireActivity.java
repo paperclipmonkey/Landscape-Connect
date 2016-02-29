@@ -82,7 +82,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.clear();
-        MenuInflater mInflater =  new MenuInflater(getApplicationContext());
+        MenuInflater mInflater =  getMenuInflater();
         mInflater.inflate(R.menu.questionnaire_fragment, menu);
         return true;
     }
