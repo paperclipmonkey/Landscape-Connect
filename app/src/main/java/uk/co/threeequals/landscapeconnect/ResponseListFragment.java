@@ -30,6 +30,8 @@ public class ResponseListFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View base = inflater.inflate(R.layout.fragment_upload, container, false);
         final ListView listView = (ListView) base.findViewById(R.id.uploadlist);
+        listView.setEmptyView(base.findViewById(R.id.emptyElement));
+
 
         // Setup cursor adapter
         ResponseAdapter adapter = new ResponseAdapter(getContext(), null, true);

@@ -60,4 +60,5 @@
     <string name="uploading_description">"Saved responses"</string>
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
+    <string name="upload_queue_empty">Complete a questionnaire\n to see it in the upload queue</string>
 </resources>
