@@ -54,7 +54,7 @@
     <string name="fa_compass_spin">" {fa-compass spin}"</string>
     <string name="about">About</string>
     <string name="about_title">Landscape Connect</string>
-    <string name="about_description">"Landscape Connect is developed by Rate my View as a companion product to allow greater understanding of landscape perceptions. It can be used by landscape stakeholders instead of traditional questionnaires.\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\nInstall a questionnaire to get started."</string>
+    <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\n It allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nInstall a questionnaire to get started."</string>
 
     <string name="uploading_title">"Uploading"</string>
     <string name="uploading_description">"Saved responses"</string>
