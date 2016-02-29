@@ -125,14 +125,38 @@ def takeActivityScreenshot(activity):
 
 
 	# - - - - - - - - - - - NEW RESPONSE PAGE 1 - - - - - - - - - - - - - -
-	device.touch(1000, 150, 'DOWN_AND_UP')
+	device.touch(1000, 150, 'DOWN_AND_UP')#Click ... menu button
 	MonkeyRunner.sleep(0.5)
-	device.touch(1000, 150, 'DOWN_AND_UP')
+	device.touch(1000, 150, 'DOWN_AND_UP')#Click new response
+	MonkeyRunner.sleep(0.5)
+	device.touch(800, 1080, 'DOWN_AND_UP')#Allow access to location
+
 	# Wait for the activity to start
 	MonkeyRunner.sleep(1)
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
 	result.writeToFile('screenshots/' + activity + '-response-1.png','png')
+
+	
+	# - - - - - - - - - - - NEW RESPONSE PAGE 2 - - - - - - - - - - - - - -
+	device.touch(550, 600, 'DOWN_AND_UP')#New photo button
+	# Wait for the activity to start
+	MonkeyRunner.sleep(0.5)
+	device.touch(800, 1100, 'DOWN_AND_UP')#Allow access button 1
+	MonkeyRunner.sleep(0.5)
+	device.touch(800, 1100, 'DOWN_AND_UP')#Allow access button 2
+	MonkeyRunner.sleep(3)
+	device.touch(550, 1600, 'DOWN_AND_UP')#Take photo button 1
+	MonkeyRunner.sleep(3)
+	device.touch(550, 1600, 'DOWN_AND_UP')#Take photo button 2
+
+	MonkeyRunner.sleep(2)
+
+
+	result = device.takeSnapshot()
+	# Writes the screenshot to a file
+	result.writeToFile('screenshots/' + activity + '-response-2.png','png')
+
 
 takeActivityScreenshot(package + '.QuestionnairesActivity')
