@@ -7,7 +7,7 @@ device = MonkeyRunner.waitForConnection()
 
 # Installs the Android package. Notice that this method returns a boolean, so you can test
 # to see if the installation worked.
-device.installPackage('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/app/build/outputs/apk/app-debug.apk')
+device.installPackage('app/build/outputs/apk/app-debug.apk')
 
 # sets a variable with the package's internal name
 package = 'uk.co.threeequals.landscapeconnect'
@@ -38,7 +38,7 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '.png','png')
+	result.writeToFile('screenshots/' + activity + '.png','png')
 
 
 	# - - - - - - - - - - - MENU PAGE - - - - - - - - - - - - - -
@@ -49,7 +49,7 @@ def takeActivityScreenshot(activity):
 
 	result2 = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result2.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-menu.png','png')
+	result2.writeToFile('screenshots/' + activity + '-menu.png','png')
 
 	# - - - - - - - - - - - UPLOAD QUEUE - - - - - - - - - - - - - -
 	device.touch(100, 690, 'DOWN_AND_UP')
@@ -60,7 +60,7 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-uploads.png','png')
+	result.writeToFile('screenshots/' + activity + '-uploads.png','png')
 
 	# - - - - - - - - - - - ABOUT QUEUE - - - - - - - - - - - - - -
 	device.touch(100, 100, 'DOWN_AND_UP')
@@ -72,7 +72,7 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-about.png','png')
+	result.writeToFile('screenshots/' + activity + '-about.png','png')
 
 	# - - - - - - - - - - - INSTALL QUESTIONNAIRE PAGE - - - - - - - - - - - - - -
 	device.touch(100, 100, 'DOWN_AND_UP')#Menu
@@ -84,34 +84,34 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-install-1.png','png')
+	result.writeToFile('screenshots/' + activity + '-install-1.png','png')
 
 	device.touch(950, 1475, 'DOWN_AND_UP')#Code button
 	MonkeyRunner.sleep(0.5)
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-install-2.png','png')
+	result.writeToFile('screenshots/' + activity + '-install-2.png','png')
 
 	device.type('2F5A5\n')#Text entered
 	MonkeyRunner.sleep(0.5)
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-install-3.png','png')
+	result.writeToFile('screenshots/' + activity + '-install-3.png','png')
 
 	device.touch(850, 800, 'DOWN_AND_UP')#OK button
 	# Wait for the activity to start
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-install-4.png','png')
+	result.writeToFile('screenshots/' + activity + '-install-4.png','png')
 
 	MonkeyRunner.sleep(7)#Wait for questionnaire to install
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-install-5.png','png')
+	result.writeToFile('screenshots/' + activity + '-install-5.png','png')
 
 
 	# - - - - - - - - - - - QUESTIONNAIRE PAGE - - - - - - - - - - - - - -
@@ -121,7 +121,7 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-questionnaire.png','png')
+	result.writeToFile('screenshots/' + activity + '-questionnaire.png','png')
 
 
 	# - - - - - - - - - - - NEW RESPONSE PAGE 1 - - - - - - - - - - - - - -
@@ -133,6 +133,6 @@ def takeActivityScreenshot(activity):
 
 	result = device.takeSnapshot()
 	# Writes the screenshot to a file
-	result.writeToFile('/Users/michaelwaterworth/Dropbox/landscape-connect/LandscapeConnect/screenshots/' + activity + '-response-1.png','png')
+	result.writeToFile('screenshots/' + activity + '-response-1.png','png')
 
 takeActivityScreenshot(package + '.QuestionnairesActivity')
