@@ -298,6 +298,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     }
 
     private boolean checkComplete() {
+        if(response.photo == null || response.photo.length() < 1) return false;//Questionnaire not complete until it has a photo
         for (SectionResponseLink srl : sectionResponseLinks) {
             //Required and not complete Escape.
             if (srl.section.hasRequiredQuestions() && !srl.sectionResponse.isCompleted()) {
