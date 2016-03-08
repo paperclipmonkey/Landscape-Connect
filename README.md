@@ -10,3 +10,7 @@ It's designed to work with a JSON Api which is described in the Api documentatio
 ##Testing
 ADB Monkey can be used to perform automated monkey testing on the app:
  `adb shell monkey -p uk.co.threeequals.landscapeconnect -v 15000`
+ 
+ 
+Additionally MonkeyRunner can be used to take screenshots of the app:
+`./monkeyrunner ~/Dropbox/landscape-connect/LandscapeConnect/screenshots.py`
