@@ -50,7 +50,8 @@
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:layout_below="@+id/page1_intro_title"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_centerHorizontal="true"
+                        style="@style/Base.TextAppearance.AppCompat.Body1" />
 
                     <ImageView
                         android:id="@+id/page1_intro_image"
