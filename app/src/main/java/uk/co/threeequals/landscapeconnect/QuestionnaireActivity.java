@@ -69,7 +69,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            //actionBar.setTitle("New Landscape");
+            actionBar.setTitle(questionnaire.getName());
             actionBar.setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
