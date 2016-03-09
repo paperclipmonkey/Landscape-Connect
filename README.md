@@ -13,4 +13,4 @@ ADB Monkey can be used to perform automated monkey testing on the app:
  
  
 Additionally MonkeyRunner can be used to take screenshots of the app:
-`./monkeyrunner ~/Dropbox/landscape-connect/LandscapeConnect/screenshots.py`
+`monkeyrunner screenshots.py `
