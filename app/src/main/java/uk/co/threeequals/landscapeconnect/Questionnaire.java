@@ -53,6 +53,9 @@ public class Questionnaire extends Model {
     @Column(name = "ServerId")
     private String serverId;//Any serverId to be sent to the Task class
     @Expose
+    @Column(name = "UploadUrl")
+    private String uploadUrl;//Any serverId to be sent to the Task class
+    @Expose
     private Section[] sections;
 
     public Questionnaire() {
@@ -183,6 +186,14 @@ public class Questionnaire extends Model {
 
     public void setServerId(String serverId) {
         this.serverId = serverId;
+    }
+
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+
+    public void setUploadUrl(String uploadUrl) {
+        this.uploadUrl = uploadUrl;
     }
 
     public Calendar getDateAdded() {
