@@ -54,6 +54,14 @@
                 android:value="uk.co.threeequals.landscapeconnect.QuestionnairesActivity" />
         </activity>
 
+        <activity
+            android:name="uk.co.threeequals.landscapeconnect.IntroActivity"
+            android:label="@string/app_name">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.threeequals.landscapeconnect.QuestionnairesActivity" />
+        </activity>
+
         <!-- Upload Service and task -->
         <service
             android:name="uk.co.threeequals.landscapeconnect.LSUploadService"

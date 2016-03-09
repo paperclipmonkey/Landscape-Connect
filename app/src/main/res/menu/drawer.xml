@@ -22,6 +22,11 @@
             android:id="@+id/drawer_about"
             android:icon="@drawable/ic_action_info_outline"
             android:title="@string/drawer_about" />
+
+        <item
+            android:id="@+id/drawer_intro"
+            android:icon="@drawable/ic_action_info_outline"
+            android:title="@string/drawer_how_it_works" />
     </group>
 
 </menu>

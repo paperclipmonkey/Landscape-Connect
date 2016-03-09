@@ -120,6 +120,10 @@ public class QuestionnairesActivity extends AppCompatActivity {
                         fragment = new AboutFragment();
                         setTitle(R.string.about);
                         break;
+                    case R.id.drawer_intro:
+                        Intent intent = new Intent(getBaseContext(), IntroActivity.class);
+                        startActivity(intent);
+                        return true;
                     default:
                         fragment = new ResponseListFragment();
                         setTitle(getString(R.string.upload_queue));
