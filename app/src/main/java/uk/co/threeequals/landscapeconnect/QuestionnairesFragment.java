@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -44,7 +45,7 @@ import java.net.URLConnection;
 
 /**
  * Shows questionnaires in the questionnaires activity
- * Loaded as the default page then uses an adapter coupled to a viewlist to show questionnaires
+ * Loaded as the default page then uses an adapter coupled to a ViewList to show questionnaires
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class QuestionnairesFragment extends Fragment {
@@ -68,7 +69,7 @@ public class QuestionnairesFragment extends Fragment {
                             .inputType(InputType.TYPE_CLASS_TEXT)
                             .input(R.string.add_code_dialog_hint, R.string.add_code_dialog_prefill, new MaterialDialog.InputCallback() {
                                 @Override
-                                public void onInput(MaterialDialog dialog, CharSequence input) {
+                                public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                     addNewQs(input.toString());
                                 }
                             }).show();
@@ -155,7 +156,7 @@ public class QuestionnairesFragment extends Fragment {
                                 .negativeText(R.string.delete_dialog_negative)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                         //Delete the IDs specified
                                         Questionnaire.deleteFromIds(ids);
                                     }
@@ -268,7 +269,7 @@ public class QuestionnairesFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.

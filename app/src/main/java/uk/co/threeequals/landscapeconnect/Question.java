@@ -27,10 +27,10 @@ import java.util.List;
  */
 @Table(name = "Question", id = BaseColumns._ID)
 public class Question extends Model {
-    public static final String QTYPE_STRING = "string";
-    public static final String QTYPE_MULTI = "multi";
-    public static final String QTYPE_RADIO = "radio";
-    public static final String QTYPE_TEXTAREA = "textarea";
+    public static final String QUESTION_TYPE_STRING = "string";
+    public static final String QUESTION_TYPE_MULTI = "multi";
+    public static final String QUESTION_TYPE_RADIO = "radio";
+    public static final String QUESTION_TYPE_TEXTAREA = "textarea";
     @Column(name = "Title")
     @Expose
     public String title;
@@ -85,19 +85,19 @@ public class Question extends Model {
 
         View view;
         switch (getType()) {
-            case QTYPE_TEXTAREA:
+            case QUESTION_TYPE_TEXTAREA:
                 EditText textAreaObj = new EditText(cx);
                 if (questionResponse != null && questionResponse.rData != null) {
                     textAreaObj.setText(questionResponse.rData);
                 }
                 view = textAreaObj;
                 break;
-            case QTYPE_STRING:
+            case QUESTION_TYPE_STRING:
                 EditText stringObj = new EditText(cx);
                 stringObj.setLines(1);
                 view = stringObj;
                 break;
-            case QTYPE_RADIO:
+            case QUESTION_TYPE_RADIO:
                 RadioGroup radioGroup = new RadioGroup(cx);
                 for (Choice option : getChoices()) {
                     int index = getChoices().indexOf(option);
@@ -112,7 +112,7 @@ public class Question extends Model {
                 }
                 view = radioGroup;
                 break;
-            case QTYPE_MULTI:
+            case QUESTION_TYPE_MULTI:
                 LinearLayout layout = new LinearLayout(cx);
                 layout.setOrientation(LinearLayout.VERTICAL);
                 for (Choice option : getChoices()) {
@@ -137,8 +137,8 @@ public class Question extends Model {
     public String getSerialisedAnswer() {
         int count;
         switch (type) {
-            case QTYPE_STRING:
-            case QTYPE_TEXTAREA:
+            case QUESTION_TYPE_STRING:
+            case QUESTION_TYPE_TEXTAREA:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
                     View v = baseView.getChildAt(i);
@@ -147,7 +147,7 @@ public class Question extends Model {
                     }
                 }
                 break;
-            case QTYPE_MULTI:
+            case QUESTION_TYPE_MULTI:
                 String str = "";
                 //TODO clean up hack. Reliant on subview. Instead check if derived from ViewGroup and sub-drill?
                 ViewGroup answerBase = (ViewGroup) baseView.getChildAt(1);
@@ -161,7 +161,7 @@ public class Question extends Model {
                     }
                 }
                 return str;
-            case QTYPE_RADIO:
+            case QUESTION_TYPE_RADIO:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
                     View v = baseView.getChildAt(i);

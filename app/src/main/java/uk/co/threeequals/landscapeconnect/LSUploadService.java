@@ -77,7 +77,7 @@ public class LSUploadService extends Service {
                     }
                     //If your server responds with a JSON, you can parse it
                     //from serverResponseMessage string using a library
-                    //such as org.json (embedded in Android) or Google's gson
+                    //such as org.json (embedded in Android) or Google's GSON
                 }
             };
 

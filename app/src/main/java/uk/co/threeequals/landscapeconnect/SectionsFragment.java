@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
@@ -108,7 +109,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         // Get the data source
         List<Section> arrayOfSections = ((SectionsActivity) getActivity()).getQuestionnaire().getSections();
 
-        //Section Response Link links section and sectionresponse. Holding the View and the Db result.
+        //Section Response Link links Section and SectionResponse. Holding the View and the Db result.
         sectionResponseLinks = new ArrayList<>();
         //Link sections and section responses.
         int i = 0;
@@ -328,7 +329,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
