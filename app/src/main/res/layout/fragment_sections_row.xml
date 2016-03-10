@@ -29,5 +29,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:background="@drawable/ic_action_done" />
+        android:background="@drawable/ic_action_done"
+        android:contentDescription="@string/cont_desc_section_comp"/>
 </RelativeLayout>

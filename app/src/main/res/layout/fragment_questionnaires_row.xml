@@ -6,9 +6,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
-    android:background="@drawable/bkg"
-    >
+    android:paddingTop="8dp">
 
     <TextView
         android:id="@+id/qs_row_title"
@@ -42,5 +40,6 @@
     <ImageView
         android:id="@+id/qs_row_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cont_desc_questionnaire_row"/>
 </RelativeLayout>

@@ -67,4 +67,11 @@
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
     <string name="upload_queue_empty">Complete a questionnaire\n to see it in the upload queue</string>
+
+    <!--Content description strings-->
+    <string name="cont_desc_header_img">Header Image</string>
+    <string name="cont_desc_questionnaire_row">Questionnaire</string>
+    <string name="cont_desc_sections_intro">Section intro</string>
+    <string name="cont_desc_section_comp">Section completed?</string>
+    <string name="cont_desc_response_photo">User photo</string>
 </resources>

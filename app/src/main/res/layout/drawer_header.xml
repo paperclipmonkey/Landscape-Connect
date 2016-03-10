@@ -15,16 +15,18 @@
         android:layout_gravity="center_horizontal"
         android:src="@drawable/hi_res_icon"
         android:scaleType="fitStart"
-        android:alpha="0.2"
+        android:alpha="0.3"
         android:layout_above="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
-        android:layout_marginLeft="150dp"
-        android:layout_marginStart="261dp"
-        android:layout_marginTop="-50dp"
-        android:layout_marginBottom="-100dp"
-        android:layout_marginRight="-50dp"
+        android:contentDescription="@string/cont_desc_header_img"
         android:layout_alignParentEnd="true" />
+
+    <!--android:layout_marginLeft="150dp"-->
+    <!--android:layout_marginStart="261dp"-->
+    <!--android:layout_marginTop="-50dp"-->
+    <!--android:layout_marginBottom="-100dp"-->
+    <!--android:layout_marginRight="-50dp"-->
 
     <TextView
         android:layout_width="match_parent"

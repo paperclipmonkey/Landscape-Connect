@@ -11,7 +11,8 @@
     <ImageView
         android:id="@+id/response_row_image"
         android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_height="56dp"
+        android:contentDescription="@string/cont_desc_response_photo"/>
 
     <RelativeLayout android:layout_height="wrap_content"
         android:layout_width="wrap_content">
