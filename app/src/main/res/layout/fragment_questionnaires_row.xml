@@ -6,7 +6,9 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    android:background="@drawable/bkg"
+    >
 
     <TextView
         android:id="@+id/qs_row_title"

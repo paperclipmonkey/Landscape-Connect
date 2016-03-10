@@ -21,7 +21,7 @@ class QuestionnairesAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.qs_row, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.fragment_questionnaires_row, parent, false);
     }
 
     @Override

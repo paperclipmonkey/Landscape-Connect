@@ -21,11 +21,6 @@
         <!--android:layout_height="5dp"-->
         <!--style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal" />-->
 
-    <!--<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/switcher"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="fill_parent">-->
-
         <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/section_page_switcher"
             android:layout_width="fill_parent"
@@ -40,6 +35,5 @@
             android:layout_gravity="center_horizontal"
             android:longClickable="true"
             android:text="@string/next" />
-    <!--</ViewFlipper>-->
     </LinearLayout>
 </ScrollView>

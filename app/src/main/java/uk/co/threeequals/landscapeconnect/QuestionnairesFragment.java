@@ -88,11 +88,11 @@ public class QuestionnairesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mThis = this;
-        final View base = inflater.inflate(R.layout.fragment_list, container, false);
+        final View base = inflater.inflate(R.layout.fragment_questionnaires, container, false);
         final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
         // Setup cursor adapter
-        QuestionnairesAdapter questionnairesAdapter = new QuestionnairesAdapter(getContext(), null, true);
+        final QuestionnairesAdapter questionnairesAdapter = new QuestionnairesAdapter(getContext(), null, true);
         // Attach cursor adapter to the ListView
         listView.setAdapter(questionnairesAdapter);
 
@@ -126,7 +126,6 @@ public class QuestionnairesFragment extends Fragment {
 //        // Assign adapter to ListView
 //        listView.setAdapter(adapter);
 
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             int selectedCount = 0;
 
@@ -181,9 +180,18 @@ public class QuestionnairesFragment extends Fragment {
                 } else {
                     selectedCount--;
                 }
-                //ListView listView = (ListView) base.findViewById(R.id.qslist);
-                //listView.getChildAt(i).setSelected(b);
+
+                ListView listView = (ListView) base.findViewById(R.id.qslist);
+                View v = listView.getChildAt(i);
+
+                v.setSelected(b);
+
+                Log.d(TAG, "Setting selected " + i + " to:" + b);
+
                 actionMode.setTitle(selectedCount + getActivity().getString(R.string.space_selected));
+
+                //final long[] ids = listView.getCheckedItemIds();
+                //questionnairesAdapter.notifyDataSetChanged();
             }
         });
 

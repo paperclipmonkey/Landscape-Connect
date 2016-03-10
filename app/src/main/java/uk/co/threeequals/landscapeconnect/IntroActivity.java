@@ -17,7 +17,7 @@ public class IntroActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.intro_activity);
+        setContentView(R.layout.activity_intro);
 
         flipper = (ViewFlipper) findViewById(R.id.intro_flipper);
 

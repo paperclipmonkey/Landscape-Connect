@@ -23,7 +23,7 @@ class ResponseAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return LayoutInflater.from(context).inflate(R.layout.response_row, parent, false);
+        return LayoutInflater.from(context).inflate(R.layout.fragment_upload_response, parent, false);
     }
 
     @Override
