@@ -286,7 +286,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        inflater.inflate(R.menu.sections_fragment, menu);
+        inflater.inflate(R.menu.sections_menubar, menu);
     }
 
     @Override

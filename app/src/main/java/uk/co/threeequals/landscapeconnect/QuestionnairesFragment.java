@@ -133,7 +133,7 @@ public class QuestionnairesFragment extends Fragment {
             public boolean onCreateActionMode(android.view.ActionMode actionMode, Menu menu) {
                 // Inflate the menu for the CAB
                 MenuInflater inflater = actionMode.getMenuInflater();
-                inflater.inflate(R.menu.menu_list, menu);
+                inflater.inflate(R.menu.questionnaires_actions, menu);
                 return true;
             }
 
