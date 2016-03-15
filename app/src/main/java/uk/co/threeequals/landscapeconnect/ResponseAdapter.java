@@ -2,7 +2,6 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Attaches Response objects to Lists.
@@ -35,10 +36,11 @@ class ResponseAdapter extends CursorAdapter {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.response_row_image);
 
+        Picasso.with(context).load(ti.photo).into(imageView);
 
-        Uri uri = Uri.parse(ti.photo);
-
-        MyApp.loadBitmap(uri,imageView);
+//        Uri uri = Uri.parse(ti.photo);
+//
+//        MyApp.loadBitmap(uri,imageView);
 
 //        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
 //        imageView.setImageURI(uri);
