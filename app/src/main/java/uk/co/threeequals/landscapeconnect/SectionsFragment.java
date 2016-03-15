@@ -314,6 +314,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.id.action_upload:
                 response.setFinished();
+                response.percentUploaded = 0;
                 response.save();
 
                 //Start the upload service...

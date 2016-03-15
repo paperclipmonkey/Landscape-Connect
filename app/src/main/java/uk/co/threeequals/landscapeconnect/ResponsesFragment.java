@@ -22,6 +22,8 @@ import com.activeandroid.content.ContentProvider;
  */
 public class ResponsesFragment extends Fragment {
 
+    private static final String TAG = "ResponseFragment";
+
     public ResponsesFragment() {
     }
 
@@ -34,7 +36,7 @@ public class ResponsesFragment extends Fragment {
 
 
         // Setup cursor adapter
-        ResponseAdapter adapter = new ResponseAdapter(getContext(), null, true);
+        ResponsesAdapter adapter = new ResponsesAdapter(getContext(), null, true);
         // Attach cursor adapter to the ListView
         listView.setAdapter(adapter);
 

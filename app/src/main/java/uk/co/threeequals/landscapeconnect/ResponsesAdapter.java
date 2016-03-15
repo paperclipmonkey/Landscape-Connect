@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -17,6 +18,7 @@ import com.squareup.picasso.Picasso;
  * Styles pending uploads ready for display
  */
 class ResponsesAdapter extends CursorAdapter {
+    String TAG = "ResponsesAdapter";
 
     public ResponsesAdapter(Context context, Cursor c, boolean autoReQuery) {
         super(context, c, autoReQuery);
@@ -29,25 +31,31 @@ class ResponsesAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Response ti = Response.newInstance(cursor);
+        Response response = Response.newInstance(cursor);
         TextView title = (TextView) view.findViewById(R.id.response_row_title);
         TextView description = (TextView) view.findViewById(R.id.response_row_description);
         TextView dateView = (TextView) view.findViewById(R.id.response_row_date);
 
+        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.response_progressBar);
+
         ImageView imageView = (ImageView) view.findViewById(R.id.response_row_image);
 
-        Picasso.with(context).load(ti.photo).into(imageView);
+        Picasso.with(context).load(response.photo).into(imageView);
 
-//        Uri uri = Uri.parse(ti.photo);
+        progressBar.setProgress(response.percentUploaded);
+
+//        Uri uri = Uri.parse(response.photo);
 //
 //        MyApp.loadBitmap(uri,imageView);
 
 //        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
 //        imageView.setImageURI(uri);
 
-        title.setText(ti.questionnaire.getName());
-        description.setText(ti.questionnaire.getDescription());
 
-        dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateCompleted().getTimeInMillis()));
+
+        title.setText(response.questionnaire.getName());
+        description.setText(response.questionnaire.getDescription());
+
+        dateView.setText(DateUtils.getRelativeTimeSpanString(response.getDateCompleted().getTimeInMillis()));
     }
 }

@@ -45,6 +45,19 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="" />
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/response_progressBar"
+            android:max="100"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/response_row_title"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
 </LinearLayout>

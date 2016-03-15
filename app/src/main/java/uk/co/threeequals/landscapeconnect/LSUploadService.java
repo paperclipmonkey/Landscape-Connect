@@ -14,9 +14,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.alexbbb.uploadservice.AllCertificatesAndHostsTruster;
-import com.alexbbb.uploadservice.MultipartUploadRequest;
-import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
+import net.gotev.uploadservice.AllCertificatesAndHostsTruster;
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 import java.util.List;
 
@@ -60,7 +60,9 @@ public class LSUploadService extends Service {
                 @Override
                 public void onCompleted(String uploadId,
                                         int serverResponseCode,
-                                        String serverResponseMessage) {
+                                        byte[] serverResponseBody) {
+                    String serverResponseMessage = new String(serverResponseBody);
+
                     if(serverResponseCode == 200) {//Success HTTP status code
                         Log.i(TAG, "Upload with ID " + uploadId
                                 + " has been completed with HTTP " + serverResponseCode

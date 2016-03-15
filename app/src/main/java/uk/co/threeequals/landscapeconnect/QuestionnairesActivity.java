@@ -15,10 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.alexbbb.uploadservice.UploadServiceBroadcastReceiver;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 /**
  * First Activity shown on load
@@ -38,8 +39,13 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 // override the method below this one
                 @Override
                 public void onProgress(String uploadId, int progress) {
-                    Log.i(TAG, "The progress of the upload with ID "
+                    Log.i(TAG, "Updating response % with  ID "
                             + uploadId + " is: " + progress);
+
+
+                    Response response = Response.load(Response.class, Integer.parseInt(uploadId));
+                    response.percentUploaded = progress;
+                    response.save();
                 }
 
                 @Override
@@ -55,12 +61,16 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 public void onError(String uploadId, Exception exception) {
                     Log.e(TAG, "Error in upload with ID: " + uploadId + ". "
                             + exception.getLocalizedMessage(), exception);
+
+                    Response response = Response.load(Response.class, Integer.parseInt(uploadId));
+                    response.percentUploaded = 0;
                 }
 
                 @Override
                 public void onCompleted(String uploadId,
                                         int serverResponseCode,
-                                        String serverResponseMessage) {
+                                        byte[] serverResponse) {
+                    String serverResponseMessage = new String(serverResponse);
                     Log.i(TAG, "Upload with ID " + uploadId
                             + " has been completed with HTTP " + serverResponseCode
                             + ". Response from server: " + serverResponseMessage);
@@ -125,7 +135,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                         startActivity(intent);
                         return true;
                     default:
-                        fragment = new ResponseListFragment();
+                        fragment = new ResponsesFragment();
                         setTitle(getString(R.string.upload_queue));
                         break;
                 }
@@ -149,7 +159,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
             fragment = new QuestionnairesFragment();
         } else if (fragmentId == UPLOAD_FRAGMENT) {
             setTitle(R.string.upload_queue);
-            fragment = new ResponseListFragment();
+            fragment = new ResponsesFragment();
         } else {
             setTitle(R.string.about);
             fragment = new AboutFragment();

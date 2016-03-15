@@ -49,6 +49,10 @@ public class Response extends Model {
     @Column(name = "id")
     private int id;
 
+    @Expose
+    @Column(name = "PercentUploaded")
+    public int percentUploaded;
+
     public static Response newInstance(Cursor c) {
         int _id = c.getInt(c.getColumnIndex("_id"));
         return new Select()
