@@ -20,9 +20,9 @@ import com.activeandroid.content.ContentProvider;
  * Displayed in the QuestionnairesActivity
  * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
-public class ResponseListFragment extends Fragment {
+public class ResponsesFragment extends Fragment {
 
-    public ResponseListFragment() {
+    public ResponsesFragment() {
     }
 
     @Override

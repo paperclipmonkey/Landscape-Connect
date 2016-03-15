@@ -16,9 +16,9 @@ import com.squareup.picasso.Picasso;
  * Attaches Response objects to Lists.
  * Styles pending uploads ready for display
  */
-class ResponseAdapter extends CursorAdapter {
+class ResponsesAdapter extends CursorAdapter {
 
-    public ResponseAdapter(Context context, Cursor c, boolean autoReQuery) {
+    public ResponsesAdapter(Context context, Cursor c, boolean autoReQuery) {
         super(context, c, autoReQuery);
     }
 
