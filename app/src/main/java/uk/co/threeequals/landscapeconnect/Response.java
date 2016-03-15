@@ -70,7 +70,7 @@ public class Response extends Model {
 
     public Calendar getDateCompleted() {
         Calendar rDate = Calendar.getInstance();
-        rDate.setTimeInMillis(timestamp * 1000);
+        rDate.setTimeInMillis(timestamp);
         return rDate;
     }
 

@@ -38,11 +38,14 @@ class ResponseAdapter extends CursorAdapter {
 
         Uri uri = Uri.parse(ti.photo);
 
-        imageView.setImageURI(uri);
+        MyApp.loadBitmap(uri,imageView);
+
+//        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
+//        imageView.setImageURI(uri);
 
         title.setText(ti.questionnaire.getName());
         description.setText(ti.questionnaire.getDescription());
 
-        dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateCompleted().getTimeInMillis() / 1000));
+        dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateCompleted().getTimeInMillis()));
     }
 }
