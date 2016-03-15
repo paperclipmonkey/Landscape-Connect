@@ -61,25 +61,25 @@
                     android:id="@+id/questionnaire_details_website" />
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent" >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/shortcode"
-                    android:id="@+id/textView9" />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/shortcode"-->
+                    <!--android:id="@+id/textView9" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Text"
-                    android:autoLink="web"
-                    android:id="@+id/questionnaire_details_shortcode" />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="New Text"-->
+                    <!--android:autoLink="web"-->
+                    <!--android:id="@+id/questionnaire_details_shortcode" />-->
+            <!--</LinearLayout>-->
 
             <LinearLayout
                 android:orientation="vertical"

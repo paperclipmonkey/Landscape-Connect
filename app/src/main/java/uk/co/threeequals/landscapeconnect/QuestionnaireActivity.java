@@ -42,7 +42,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.questionnaire_details);
+        setContentView(R.layout.activity_questionnaire);
 
         long questionnaireNum =  getIntent().getLongExtra("id", -1);
 
@@ -52,14 +52,14 @@ public class QuestionnaireActivity extends AppCompatActivity {
         TextView descriptionView = (TextView) findViewById(R.id.questionnaire_details_description);
         TextView installedView = (TextView) findViewById(R.id.questionnaire_details_installed);
         TextView websiteView = (TextView) findViewById(R.id.questionnaire_details_website);
-        TextView shortCodeView = (TextView) findViewById(R.id.questionnaire_details_shortcode);
+        //TextView shortCodeView = (TextView) findViewById(R.id.questionnaire_details_shortcode);
 
         DateFormat df = DateFormat.getDateInstance();
 
         descriptionView.setText(questionnaire.getDescription());
         installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
-        shortCodeView.setText(questionnaire.getServerId());
+        //shortCodeView.setText(questionnaire.getServerId());
 
 
         //nextButton = (Button) findViewById(R.id.section_button_next_done);
