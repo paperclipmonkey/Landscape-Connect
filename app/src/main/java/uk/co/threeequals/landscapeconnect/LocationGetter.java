@@ -47,6 +47,8 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
     private LatLng position;
     private float accuracy;
 
+    private float accuracyTarget = 10;
+
     public static final String INTENT_STATUS = "Status";
     public static final String INTENT_STATUS_STATUS = "StatusObj";
     /**
@@ -58,8 +60,9 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
      */
     private Location mCurrentLocation;
 
-    public LocationGetter(Context context) {
+    public LocationGetter(Context context, float mAccuracyTarget) {
         mContext = context;
+        this.accuracyTarget = mAccuracyTarget;
         buildGoogleApiClient();
     }
 
@@ -267,7 +270,7 @@ public class LocationGetter extends AsyncTask<String, String, String> implements
         mCurrentLocation = location;
         position = new LatLng(location.getLatitude(), location.getLongitude());
         accuracy = location.getAccuracy();
-        if (location.getAccuracy() < 10) {
+        if (accuracy < accuracyTarget) {
             stopLocationUpdates();
         }
         //mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
