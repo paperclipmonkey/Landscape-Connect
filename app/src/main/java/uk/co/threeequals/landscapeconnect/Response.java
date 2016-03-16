@@ -11,34 +11,33 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Responses Model as used to save Questionnaire Responses
  * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
-
 @Table(name = "Responses", id = BaseColumns._ID)
 public class Response extends Model {
 
     @Expose
     @Column(name = "Timestamp")
     public Long timestamp;//Date & Time to be completed
-    @Expose
-    @Column(name = "Lat")
-    public Double lat;//Date & Time to be completed
-
     // - - - - - - Location fields - - - - - - - -
     @Expose
     @Column(name = "Lng")
     public Double lng;//Date & Time to be completed
     @Expose
+    @Column(name = "Lat")
+    public Double lat;//Date & Time to be completed
+    @Expose
     @Column(name = "LocAcc")
     public Float locAcc;//Location accuracy
+    // - - - - - - End Location fields - - - - - - - -
     @Expose
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
 
-    // - - - - - - End Location fields - - - - - - - -
     @Expose
     @Column(name = "Photo")
     public String photo;//File address to photo
@@ -49,13 +48,18 @@ public class Response extends Model {
 
     @Expose
     @Column(name = "Finished")
-    public Boolean finished;
+    public Boolean finished;//Finished is when all required sections are complete and the user says it's finished, ready for upload
+
     @Column(name = "id")
     private int id;
 
     @Expose
+    @Column(name = "Uuid")
+    public String uuid;
+
+    @Expose
     @Column(name = "PercentUploaded")
-    public int percentUploaded;
+    public int percentUploaded;//Save the % the response has been uploaded. Used to display in the uploading responses UI
 
     public static Response newInstance(Cursor c) {
         int _id = c.getInt(c.getColumnIndex("_id"));
@@ -96,5 +100,15 @@ public class Response extends Model {
 
     public void setFinished() {
         this.finished = true;
+    }
+    public boolean getFinished() { return this.finished; }
+
+    /**
+     * UUIDs are used to provide a unique ID to the server. This stops duplicate entries being uploaded.
+     */
+    public void generateUUID(){
+        if(this.uuid == null){
+            this.uuid = UUID.randomUUID().toString();
+        }
     }
 }

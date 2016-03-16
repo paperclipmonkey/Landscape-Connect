@@ -251,6 +251,7 @@ public class LSUploadService extends Service {
 //        private int id;
         try {
             request.addParameter("timestamp", "" + response.getDateCompleted().getTimeInMillis());
+            request.addParameter("uuid", response.uuid);
 
             request.addParameter("lat", response.lat.toString());
             request.addParameter("lng", response.lng.toString());
