@@ -45,9 +45,13 @@ public class ResponsesFragment extends Fragment {
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.UPLOAD_FRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
-                return new CursorLoader(getActivity(),
-                        ContentProvider.createUri(Response.class, null),
-                        projection, "Finished = 1", null, null
+                return new CursorLoader(
+                        getActivity(),                                      // Parent activity context
+                        ContentProvider.createUri(Response.class, null),    // Table to query
+                        projection,                                         // Projection to return
+                        "Finished = 1",                                     // Selection clause
+                        null,                                               // Selection arguments
+                        "Timestamp DESC"                                    // Default sort order
                 );
             }
 
