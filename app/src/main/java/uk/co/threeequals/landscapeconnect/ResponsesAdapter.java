@@ -40,18 +40,14 @@ class ResponsesAdapter extends CursorAdapter {
 
         ImageView imageView = (ImageView) view.findViewById(R.id.response_row_image);
 
-        Picasso.with(context).load(response.photo).into(imageView);
+        Picasso.with(context).load(response.thumb).into(imageView);
 
         progressBar.setProgress(response.percentUploaded);
 
 //        Uri uri = Uri.parse(response.photo);
-//
-//        MyApp.loadBitmap(uri,imageView);
-
-//        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
 //        imageView.setImageURI(uri);
-
-
+//        MyApp.loadBitmap(uri,imageView);
+//        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
 
         title.setText(response.questionnaire.getName());
         description.setText(response.questionnaire.getDescription());

@@ -32,7 +32,10 @@ import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,29 +59,10 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     private Questionnaire questionnaire;
     private Response response;
     private ArrayList<SectionResponseLink> sectionResponseLinks;
-    //private ProgressBar progressBar;
     private LocationGetter locationGetter;
 
     public SectionsFragment() {
     }
-
-    private void setTaskProgress(int percentage) {
-        Log.d("Progress", "" + percentage);
-
-//        //Remove old progress bar from the UI
-//        ViewGroup progressHolder = (ViewGroup) base.findViewById(R.id.task_progressbar_holder);
-//        progressHolder.removeAllViews();
-//
-//        ViewGroup child = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.progress_bar, null);
-//
-//        progressBar = (ProgressBar) child.findViewById(R.id.task_progressbar);
-//
-//        progressBar.setIndeterminate(false);
-//        progressBar.setProgress(percentage);
-//
-//        progressHolder.addView(child);
-    }
-
 
     private void pageNext() {
         flipper.showNext();  // Switches to the next view
@@ -88,7 +72,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (base == null) {
-            //Log.d("Base", "Base null");
             base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
 
             //View Flipper for switching between pages
@@ -96,8 +79,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             Button b = (Button) base.findViewById(R.id.button_take_photo);
             b.setOnClickListener(this);
         }
-
-        //progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
 
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
@@ -138,8 +119,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             pageNext();
         }
 
-        calculateTaskProgress();
-
         getActivity().invalidateOptionsMenu();
 
         checkLocationPermissions();
@@ -161,25 +140,9 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             byte[] decodedString = Base64.decode(questionnaire.getIntroImage().substring(introEnd), Base64.DEFAULT);//Remove metadata from the start of the string
             Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             image.setImageBitmap(decodedByte);
-            //image.setImageResource(R.drawable.hi_res_icon);
         } else {
             Log.d("Qs", "No intro image");
         }
-
-        //page1_title, page1_subtitle
-    }
-
-    private void calculateTaskProgress() {
-        int completedCount = 1;
-        for (SectionResponseLink srl : sectionResponseLinks) {
-            //Set whether the section is complete
-            if (srl.sectionResponse != null && srl.sectionResponse.isCompleted()) {
-                completedCount++;
-            }
-        }
-
-        int percentage = Math.round(((float) completedCount / (float) (1 + sectionResponseLinks.size())) * 100);//Photo included as task
-        setTaskProgress(percentage);
     }
 
     @Override
@@ -215,7 +178,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         Start the location watcher
         We can't do this until the permission requests have gone through
          */
-        locationGetter = new LocationGetter(getContext());
+        locationGetter = new LocationGetter(getContext(), 10);//Context, accuracy target
     }
 
     private void checkPermissions() {
@@ -282,6 +245,24 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         return image;
     }
 
+    private File createThumbImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_s";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        response.thumb = "file:" + image.getAbsolutePath();
+        response.save();
+        return image;
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -298,23 +279,47 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             menu.getItem(0).setEnabled(false);
     }
 
+    /**
+     * Ensure all required sections of response exist
+     * @return Bool - is response completed
+     */
     private boolean checkComplete() {
-        if(response.photo == null || response.photo.length() < 1) return false;//Questionnaire not complete until it has a photo
+        if(questionnaire.getGetLocation()){
+            if(response.lat == null){
+                //To do this now or somewhere else?
+            }
+        }
+        if(questionnaire.getGetInitialPhoto()){//We wanted to take a photo
+            if(response.photo == null || response.photo.length() < 1) return false;//Questionnaire not complete until it has a photo
+        }
+
         for (SectionResponseLink srl : sectionResponseLinks) {
-            //Required and not complete Escape.
             if (srl.section.hasRequiredQuestions() && !srl.sectionResponse.isCompleted()) {
+                //Required and not completed - Escape.
                 return false;
             }
         }
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            /**
+             * Clicked upload button in top menu
+             */
             case R.id.action_upload:
+
+                //Check if response has location
+                if(response.lat == null){
+                    Toast.makeText(getContext(), "Still trying to find location...", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
                 response.setFinished();
                 response.percentUploaded = 0;
+                response.generateUUID();
                 response.save();
 
                 //Start the upload service...
@@ -328,6 +333,12 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Ensure we have all the permissions we asked for
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -339,8 +350,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                     checkPermissions();
                 } else {
                     Log.d("TAG", "Permission denied camera");
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }
@@ -366,23 +375,14 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Check if we can get location
+     */
     private void getLocation() {
-        //Check if we can get location
         LatLng latLng = locationGetter.getLocation();
-        if(latLng == null){
-            Toast.makeText(getContext(), "Can't grab location", Toast.LENGTH_LONG).show();
-            return;
-        }
-        Float accuracy = locationGetter.getAccuracy();
-        Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
-        if (locationGetter.getAccuracy() < 50) {
-            locationGetter.cancel(true);
-            response.lat = latLng.latitude;
-            response.lng = latLng.longitude;
-            response.locAcc = accuracy;
-            response.save();
-        } else {
-            Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
+
+        if(latLng == null) {
+            Log.d("SectionFragment", "LatLng empty. Setting 1s timeout");
             final Handler h = new Handler();
             h.postDelayed(new Runnable() {
                 @Override
@@ -390,17 +390,111 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                     getLocation();
                 }
             }, 1000); // 1 second delay (takes millis)
+        } else {
+            Float accuracy = locationGetter.getAccuracy();
+            Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
+            if (accuracy < questionnaire.getGetLocationAccuracy()) {
+                locationGetter.cancel(true);
+                response.lat = latLng.latitude;
+                response.lng = latLng.longitude;
+                response.locAcc = accuracy;
+                response.save();
+            } else {
+                Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
+                final Handler h = new Handler();
+                h.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getLocation();
+                    }
+                }, 1000); // 1 second delay (takes millis)
+            }
         }
     }
 
+    /**
+     * Respond to taking a photo returning to activity
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             getLocation();
             response.timestamp = Calendar.getInstance().getTimeInMillis();
+            resizeToThumb();
             response.save();
             pageNext();
+        }
+    }
+
+    /**
+     * Resize a thumbnail to 100x100 pixels
+     */
+    private void resizeToThumb() {
+        // Get the dimensions of the View
+        int targetW = 100;
+        int targetH = 100;
+
+        String filename = response.photo.substring(response.photo.indexOf(":") + 1);
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filename, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        Log.i("SectionsFragment", "PhotoW:" + photoW + ", PhotoH:" + photoH);
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized correctly
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap imageBitmap = BitmapFactory.decodeFile(filename, bmOptions);
+
+        if(imageBitmap == null){
+            Log.i("SectionsFragment", "BitMap Null!");
+            return;
+        }
+
+        Log.i("SectionsFragment", "Writing to size H: " + imageBitmap.getHeight() + ", W:" + imageBitmap.getWidth());
+
+        //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        File thumbFile = null;
+        try {
+            thumbFile = createThumbImageFile();
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            Log.e("Log", ex.getLocalizedMessage());
+        }
+
+        // Continue only if the File was successfully created
+        if (thumbFile != null) {
+            //write the bytes in file
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(thumbFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+                Log.i("SectionsFragment", "Successfully saved resized thumbnail");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

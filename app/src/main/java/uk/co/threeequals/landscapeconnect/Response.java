@@ -42,7 +42,11 @@ public class Response extends Model {
     @Expose
     @Column(name = "Photo")
     public String photo;//File address to photo
-    //Finished is when all required sections are complete and the user says it's finished, ready for upload
+
+    @Expose
+    @Column(name = "Thumb")
+    public String thumb;//File address to thumbnail photo
+
     @Expose
     @Column(name = "Finished")
     public Boolean finished;
