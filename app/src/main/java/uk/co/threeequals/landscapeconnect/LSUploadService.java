@@ -83,10 +83,6 @@ public class LSUploadService extends Service {
                 }
             };
 
-    //public LSUploadService() {
-//        super("LSUploadService");
-//    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -240,23 +236,26 @@ public class LSUploadService extends Service {
 
 
 
+        /**
+         * Response object
+        public Long timestamp;//Date & Time to be completed
+        public Double lat;//Date & Time to be completed
+        public Double lng;//Date & Time to be completed
+        public Float locAcc;//Location accuracy
+        public Questionnaire questionnaire;
+        public String photo;//File address to photo
+        public Boolean finished;
+        private int id;
+         */
 
-//        public Long timestamp;//Date & Time to be completed
-//        public Double lat;//Date & Time to be completed
-//        public Double lng;//Date & Time to be completed
-//        public Float locAcc;//Location accuracy
-//        public Questionnaire questionnaire;
-//        public String photo;//File address to photo
-//        public Boolean finished;
-//        private int id;
         try {
             request.addParameter("timestamp", "" + response.getDateCompleted().getTimeInMillis());
             request.addParameter("uuid", response.uuid);
+            request.addParameter("questionnaire", response.questionnaire.getServerId());
 
             request.addParameter("lat", response.lat.toString());
             request.addParameter("lng", response.lng.toString());
             request.addParameter("locAcc", response.locAcc.toString());
-            request.addParameter("questionnaire", response.questionnaire.getServerId());
         } catch(Exception e){
             Log.e(TAG, e.getLocalizedMessage());
         }
@@ -278,87 +277,9 @@ public class LSUploadService extends Service {
 //        request.setNotificationConfig(notificationConfig);
 
         try {
-            //Start upload service and display the notification
-            request.startUpload();
-
+            request.startUpload(); //Start upload service and display the notification
         } catch (Exception exc) {
-            //You will end up here only if you pass an incomplete UploadRequest
-            Log.e("AndroidUploadService", exc.getLocalizedMessage(), exc);
+            Log.e("AndroidUploadService", exc.getLocalizedMessage(), exc); //You will end up here only if you pass an incomplete UploadRequest
         }
     }
-
-
-//    public class UploadReceiver extends BroadcastReceiver {
-//
-//        public UploadReceiver(){
-//            super();
-//            Log.d(TAG, "creating Upload Receiver");
-//        }
-//
-//        /**
-//         * Receiving status notifications from the system.
-//         * If complete call onCompleted
-//         * @param context
-//         * @param intent
-//         */
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            Log.d(TAG, "onReceive");
-//            if (intent != null) {
-//                //if (com.alexbbb.uploadservice.LSUploadService.getActionBroadcast().equals(intent.getAction())) {
-//                final int status = intent.getIntExtra(com.alexbbb.uploadservice.UploadService.STATUS, 0);
-//                final String uploadId = intent.getStringExtra(com.alexbbb.uploadservice.UploadService.UPLOAD_ID);
-//
-//                switch (status) {
-//                    case com.alexbbb.uploadservice.UploadService.STATUS_COMPLETED:
-//                        final int responseCode = intent.getIntExtra(com.alexbbb.uploadservice.UploadService.SERVER_RESPONSE_CODE, 0);
-//                        final String responseMsg = intent.getStringExtra(com.alexbbb.uploadservice.UploadService.SERVER_RESPONSE_MESSAGE);
-//                        onCompleted(context, uploadId, responseCode, responseMsg);
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//                //}
-//            }
-//        }
-//
-//        /**
-//         * Once the upload has completed check the response
-//         * @param context
-//         * @param uploadId
-//         * @param serverResponseCode
-//         * @param serverResponseMessage
-//         */
-//        public void onCompleted(Context context,
-//                                String uploadId,
-//                                int serverResponseCode,
-//                                String serverResponseMessage) {
-//            Log.i(TAG, "Upload with ID " + uploadId
-//                    + " has completed with HTTP " + serverResponseCode
-//                    + ". Response from server: " + serverResponseMessage);
-//
-//            Log.d(TAG, "Server code:" + serverResponseCode);
-//            if (serverResponseCode == 200) {
-//                //try {
-//                Log.d(TAG, "Got here");
-//
-//                //JSONObject jsonObject = new JSONObject(serverResponseMessage);
-//
-//
-//                //Start the upload service...
-////                Intent serviceIntent = new Intent(context, LSUploadService.class);
-////                context.startService(serviceIntent);
-//                removeUploaded();
-//                redoOrNotify();
-//
-//                //buildSuccessNotification(context, jsonObject);
-//
-//                //deleteResponse(context);
-////            } catch (JSONException e) {
-////                e.printStackTrace();
-////            }
-//            }
-//        }
-//    }
 }

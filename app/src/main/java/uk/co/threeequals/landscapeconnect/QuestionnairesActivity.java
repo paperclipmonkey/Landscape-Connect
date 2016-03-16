@@ -147,6 +147,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
         });
 
         switchFragment(QUESTIONNAIRES_FRAGMENT);
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -169,12 +170,6 @@ public class QuestionnairesActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.contentFragment, fragment);
         transaction.commit();
-    }
-
-    public void switchToQuestionnaire(int questionnaire) {
-        Intent intent = new Intent(this, QuestionnaireActivity.class);
-        intent.putExtra("id", questionnaire);
-        startActivity(intent);
     }
 
     @Override

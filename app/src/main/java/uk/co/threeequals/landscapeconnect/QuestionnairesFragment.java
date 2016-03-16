@@ -119,14 +119,6 @@ public class QuestionnairesFragment extends Fragment {
             }
         });
 
-        // Must add the progress bar to the root of the layout
-        //ViewGroup root = (ViewGroup) getActivity().findViewById(android.R.id.content);
-        //root.addView(progressBar);
-
-//        final QuestionnairesAdapter adapter = new QuestionnairesAdapter(Questionnaire.getAll());
-//        // Assign adapter to ListView
-//        listView.setAdapter(adapter);
-
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             int selectedCount = 0;
 
@@ -210,21 +202,16 @@ public class QuestionnairesFragment extends Fragment {
         });
 
         //Registered handlers for FAB events
-        //FloatingActionMenu floatingActionMenu = (FloatingActionMenu) base.findViewById(R.id.fab_menu);
-
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
         fabButton1.setOnClickListener(fabClickListener);
         fabButton2.setOnClickListener(fabClickListener);
-
         fabButton2.setMax(100);
-
 
         return base;
     }
 
     private void getFabQr() {
-        // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -254,7 +241,7 @@ public class QuestionnairesFragment extends Fragment {
         }
     }
 
-    private void showHideProgress(boolean show) {
+    private void showHideInstallProgress(boolean show) {
         if (dialog != null && !show) {
             dialog.dismiss();
             dialog = null;
@@ -295,7 +282,7 @@ public class QuestionnairesFragment extends Fragment {
         }
         Log.d(TAG, "Downloading JSON: " + url);
         new DownloadToString().execute(url);
-        showHideProgress(true);
+        showHideInstallProgress(true);
     }
 
     @Override
@@ -306,7 +293,6 @@ public class QuestionnairesFragment extends Fragment {
                 Log.d(TAG, "Cancelled from fragment");
             } else {
                 Log.d(TAG, "Scanned from fragment: " + result.getContents());
-                //TODO - Check is URL
                 addNewQs(result.getContents());
             }
         }
@@ -318,15 +304,6 @@ public class QuestionnairesFragment extends Fragment {
     class DownloadToString extends AsyncTask<String, String, String> {
         // Output stream
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-//        /**
-//         * Before starting background thread Show Progress Bar Dialog
-//         * */
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            //showDialog(progress_bar_type);
-//        }
 
         /**
          * Downloading file in background thread
@@ -341,25 +318,14 @@ public class QuestionnairesFragment extends Fragment {
 
                 connection.connect();
 
-                // this will be useful so that you can show a typical 0-100%
-                // progress bar
-
-                int lengthOfFile = connection.getContentLength();
-
                 // download the file
                 InputStream input = new BufferedInputStream(connection.getInputStream(),
                         8192);
 
                 byte data[] = new byte[1024];
 
-                long total = 0;
 
                 while ((count = input.read(data)) != -1) {
-                    total += count;
-                    // publishing the progress....
-                    // After this onProgressUpdate will be called
-                    publishProgress("" + (int) ((total * 100) / lengthOfFile));
-
                     // writing data to buffer
                     output.write(data, 0, count);
                 }
@@ -379,31 +345,22 @@ public class QuestionnairesFragment extends Fragment {
         }
 
         /**
-         * Updating progress bar
-         */
-        protected void onProgressUpdate(String... progress) {
-            // setting progress percentage
-            //pDialog.setProgress(Integer.parseInt(progress[0]));
-        }
-
-        /**
-         * After completing background task Dismiss the progress dialog
+         * After completing background task
+         * save the questionnaire to Db
          **/
         @Override
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after the file was downloaded
-            //dismissDialog(progress_bar_type);
             try {
                 String parsedString = output.toString("UTF-8");
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 Questionnaire questionnaire = gson.fromJson(parsedString, Questionnaire.class);
                 questionnaire.saveQuestionnaire();
-                showHideProgress(false);//Hide the progress spinner when fully finished.
+                showHideInstallProgress(false);//Hide the progress spinner when fully finished.
             } catch (Exception e) {
                 Toast toast = Toast.makeText(getContext(), R.string.failed_to_download, Toast.LENGTH_SHORT);
                 toast.show();
                 Log.e(TAG, e.getLocalizedMessage());
-                showHideProgress(false);//Hide the progress spinner when fully finished.
+                showHideInstallProgress(false);//Hide the progress spinner when fully finished.
             }
         }
     }

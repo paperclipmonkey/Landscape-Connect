@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.text.DateFormat;
 
 /**
+ * Show one questionnaire's details
  * Created by michaelwaterworth on 28/01/2016. Copyright Michael Waterworth
  */
 public class QuestionnaireActivity extends AppCompatActivity {
@@ -48,7 +49,6 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireNum);
 
-
         TextView descriptionView = (TextView) findViewById(R.id.questionnaire_details_description);
         TextView installedView = (TextView) findViewById(R.id.questionnaire_details_installed);
         TextView websiteView = (TextView) findViewById(R.id.questionnaire_details_website);
@@ -61,10 +61,6 @@ public class QuestionnaireActivity extends AppCompatActivity {
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
         //shortCodeView.setText(questionnaire.getServerId());
 
-
-        //nextButton = (Button) findViewById(R.id.section_button_next_done);
-        //nextButton.setOnClickListener(this);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -75,8 +71,6 @@ public class QuestionnaireActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

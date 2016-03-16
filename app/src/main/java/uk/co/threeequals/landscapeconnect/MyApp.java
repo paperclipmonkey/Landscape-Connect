@@ -2,9 +2,10 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.content.Intent;
 
-import com.alexbbb.uploadservice.UploadService;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
+
+import net.gotev.uploadservice.UploadService;
 
 /**
  * Base class for the App which initialises all of the libraries

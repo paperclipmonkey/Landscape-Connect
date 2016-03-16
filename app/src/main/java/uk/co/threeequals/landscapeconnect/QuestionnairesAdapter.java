@@ -10,7 +10,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 /**
- * Attaches Questionnaires to Lists.
+ * Attaches Questionnaires to Lists
  * Adapter supplies stylised Data
  */
 class QuestionnairesAdapter extends CursorAdapter {

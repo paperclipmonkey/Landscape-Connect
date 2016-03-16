@@ -180,6 +180,9 @@ public class Question extends Model {
         return null;
     }
 
+    /**
+     * Save a question to the Database, drilling in to its choices and saving them as well
+     */
     public void saveQuestion() {
         this.save();
         if (choices != null) {
