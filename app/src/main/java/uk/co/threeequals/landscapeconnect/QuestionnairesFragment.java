@@ -102,9 +102,13 @@ public class QuestionnairesFragment extends Fragment {
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
-                return new CursorLoader(getActivity(),
-                        ContentProvider.createUri(Questionnaire.class, null),
-                        projection, null, null, null
+                return new CursorLoader(
+                        getActivity(),                                          // Parent activity context
+                        ContentProvider.createUri(Questionnaire.class, null),   // Table to query
+                        projection,                                             // Projection to return
+                        null,                                                   // Selection clause
+                        null,                                                   // Selection arguments
+                        "DateAdded DESC"                                        // Default sort order
                 );
             }
 
