@@ -34,6 +34,6 @@ class QuestionnairesAdapter extends CursorAdapter {
         title.setText(ti.getName());
         description.setText(ti.getDescription());
 
-        dateView.setText(DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
+        dateView.setText(context.getString(R.string.installed) + DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
     }
 }

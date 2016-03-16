@@ -30,6 +30,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
     public static final int QUESTIONNAIRES_FRAGMENT = 0;
     public static final int UPLOAD_FRAGMENT = 1;
     private static final String TAG = "QuestionnairesActivity";
+
     private final UploadServiceBroadcastReceiver uploadReceiver =
             new UploadServiceBroadcastReceiver() {
 
@@ -104,7 +105,8 @@ public class QuestionnairesActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         //Initializing NavigationView
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -113,12 +115,12 @@ public class QuestionnairesActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+               // menuItem.setChecked(true);
 
                 //Closing drawer on item click
                 mDrawerLayout.closeDrawers();
                 Fragment fragment;
+
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
@@ -139,6 +141,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                         setTitle(getString(R.string.upload_queue));
                         break;
                 }
+                
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.contentFragment, fragment);
                 fragmentTransaction.commit();
