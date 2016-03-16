@@ -23,7 +23,6 @@
             android:paddingBottom="70dp"
             android:clipToPadding="false"
             android:choiceMode="multipleChoiceModal"
-            android:listSelector="#DDDDDD"
             />
 
         </LinearLayout>
