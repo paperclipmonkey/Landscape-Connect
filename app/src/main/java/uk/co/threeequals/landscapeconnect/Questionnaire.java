@@ -56,7 +56,42 @@ public class Questionnaire extends Model {
     @Column(name = "UploadUrl")
     private String uploadUrl;//Any serverId to be sent to the Task class
     @Expose
+    @Column(name = "GetLocation")
+    private Boolean getLocation;//Any serverId to be sent to the Task class
+    @Expose
+    @Column(name = "GetLocationAccuracy")
+    private int getLocationAccuracy;//Any serverId to be sent to the Task class
+    @Expose
+    @Column(name = "GetInitialPhoto")
+    private Boolean getInitialPhoto;//Any serverId to be sent to the Task class
+
+    @Expose
     private Section[] sections;
+
+    public Boolean getGetLocation() {
+        return getLocation;
+    }
+
+    public void setGetLocation(Boolean getLocation) {
+        this.getLocation = getLocation;
+    }
+
+    public int getGetLocationAccuracy() {
+        return getLocationAccuracy;
+    }
+
+    public void setGetLocationAccuracy(int getLocationAccuracy) {
+        this.getLocationAccuracy = getLocationAccuracy;
+    }
+
+    public Boolean getGetInitialPhoto() {
+        return getInitialPhoto;
+    }
+
+    public void setGetInitialPhoto(Boolean getInitialPhoto) {
+        this.getInitialPhoto = getInitialPhoto;
+    }
+
 
     public Questionnaire() {
         dateAdded = Calendar.getInstance().getTimeInMillis() / 1000;
