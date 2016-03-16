@@ -6,31 +6,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ViewFlipper;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
+ * Introduces the user to the application
  * Created by michaelwaterworth on 08/03/2016. Copyright Michael Waterworth
  */
-public class IntroActivity extends AppCompatActivity implements View.OnClickListener {
-    ViewFlipper flipper;
-    Button nextButton;
-    Button prevButton;
+public class IntroActivity extends AppCompatActivity {
+    @Bind(R.id.intro_flipper) ViewFlipper flipper;
+    @Bind(R.id.intro_button_next) Button nextButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
-
-        flipper = (ViewFlipper) findViewById(R.id.intro_flipper);
-
-
-        nextButton = (Button) findViewById(R.id.intro_button_next);
-        nextButton.setOnClickListener(this);
-
-        prevButton = (Button) findViewById(R.id.intro_button_prev);
-        prevButton.setOnClickListener(this);
+        ButterKnife.bind(this);
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({ R.id.intro_button_next, R.id.intro_button_prev })
+    public void nextPrevClick(View v) {
         if(v.getId() == R.id.intro_button_next){
             if(flipper.getDisplayedChild() == flipper.getChildCount() - 1){
                 finish();
