@@ -57,7 +57,9 @@
 
     <string name="failed_to_download">Failed to download</string>
     <string name="get_location">getting location</string>
+    <string name="got_location">got location</string>
     <string name="fa_compass_spin">" {fa-compass spin}"</string>
+    <string name="fa_check">" {fa-check}"</string>
     <string name="about">About</string>
     <string name="about_title">Landscape Connect</string>
     <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\n It allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nInstall a questionnaire to get started."</string>
