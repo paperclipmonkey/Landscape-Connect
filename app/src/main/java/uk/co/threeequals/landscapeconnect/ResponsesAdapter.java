@@ -42,7 +42,12 @@ class ResponsesAdapter extends CursorAdapter {
 
         Picasso.with(context).load(response.thumb).into(imageView);
 
-        progressBar.setProgress(response.percentUploaded);
+        if(response.percentUploaded > 0) {
+            progressBar.setProgress(response.percentUploaded);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
 
 //        Uri uri = Uri.parse(response.photo);
 //        imageView.setImageURI(uri);

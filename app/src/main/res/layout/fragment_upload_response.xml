@@ -57,7 +57,8 @@
             android:layout_marginLeft="45dp"
             android:layout_marginStart="45dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:visibility="invisible"/>
     </RelativeLayout>
 
 </LinearLayout>
