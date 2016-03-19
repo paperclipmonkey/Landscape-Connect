@@ -230,7 +230,9 @@ public class LSUploadService extends Service {
         for (SectionResponse sectionResponse : responseList) {
             List<QuestionResponse> questionResponses = sectionResponse.getQuestionResponses();
             for (QuestionResponse questionResponse : questionResponses) {
-                request.addParameter("data[" + sectionResponse.title + "/" + questionResponse.question.getTitle() + "]", questionResponse.rData);
+                if(questionResponse.rData != null) {//Don't upload empty data
+                    request.addParameter("data[" + sectionResponse.title + "]" + "[" + questionResponse.question.getTitle() + "]", questionResponse.rData);
+                }
             }
         }
 
