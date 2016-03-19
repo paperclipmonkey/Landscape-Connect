@@ -1,11 +1,24 @@
 package uk.co.threeequals.landscapeconnect;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
 
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 import net.gotev.uploadservice.UploadService;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Base class for the App which initialises all of the libraries
@@ -25,6 +38,118 @@ public class MyApp extends com.activeandroid.app.Application {
         //Start the upload service...
         Intent serviceIntent = new Intent(this, LSUploadService.class);
         getApplicationContext().startService(serviceIntent);
+    }
+
+    /**
+     * Create thumbnail file handle ready for data
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    public static File createThumbImageFile(Response response) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_s";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        response.thumb = "file:" + image.getAbsolutePath();
+        response.save();
+        return image;
+    }
+
+
+    public static File createImageFile(Response response) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        response.photo = "file:" + image.getAbsolutePath();
+        response.save();
+        return image;
+    }
+
+    /**
+     * Resize a thumbnail to 100x100 pixels
+     */
+    public static void resizeToThumb(Response response) {
+        // Get the dimensions of the View
+        int targetW = 100;
+        int targetH = 100;
+
+        String filename = response.photo.substring(response.photo.indexOf(":") + 1);
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filename, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        Log.i("SectionsFragment", "PhotoW:" + photoW + ", PhotoH:" + photoH);
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized correctly
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap imageBitmap = BitmapFactory.decodeFile(filename, bmOptions);
+
+        if(imageBitmap == null){
+            Log.i("SectionsFragment", "BitMap Null!");
+            return;
+        }
+
+        Log.i("SectionsFragment", "Writing to size H: " + imageBitmap.getHeight() + ", W:" + imageBitmap.getWidth());
+
+        //Convert bitmap to byte array
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+        byte[] bitmapdata = bos.toByteArray();
+
+        File thumbFile = null;
+        try {
+            thumbFile = MyApp.createThumbImageFile(response);
+        } catch (IOException ex) {
+            // Error occurred while creating the File
+            Log.e("Log", ex.getLocalizedMessage());
+        }
+
+        // Continue only if the File was successfully created
+        if (thumbFile != null) {
+            //write the bytes in file
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(thumbFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                fos.write(bitmapdata);
+                fos.flush();
+                fos.close();
+                Log.i("SectionsFragment", "Successfully saved resized thumbnail");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 

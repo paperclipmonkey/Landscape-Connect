@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,30 +30,32 @@ import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Fragment that is displayed when starting a new response
  * Takes image, grabs location, lists sections, saves response
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
-public class SectionsFragment extends Fragment implements View.OnClickListener {
+public class SectionsFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private static final int MY_PERMISSIONS_REQUEST_STORAGE = 3;
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 4;
-    private ViewFlipper flipper;
+
+    @Bind(R.id.switcher) ViewFlipper flipper;
+    @Bind(R.id.sections_list) ListView listView;
+
     private ViewGroup base;
+
     private Questionnaire questionnaire;
     private Response response;
     private ArrayList<SectionResponseLink> sectionResponseLinks;
@@ -73,12 +73,11 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         if (base == null) {
             base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
-
-            //View Flipper for switching between pages
-            flipper = (ViewFlipper) base.findViewById(R.id.switcher);
-            Button b = (Button) base.findViewById(R.id.button_take_photo);
-            b.setOnClickListener(this);
         }
+
+        //Dependancy injection for views
+        ButterKnife.bind(this, base);
+
 
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
@@ -104,9 +103,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         SectionAdapter adapter = new SectionAdapter(getContext(), sectionResponseLinks);
 
         // Attach the adapter to a ListView
-        ListView listView = (ListView) base.findViewById(R.id.sections_list);
         listView.setAdapter(adapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -121,13 +118,23 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
 
         getActivity().invalidateOptionsMenu();
 
-        checkLocationPermissions();
+        if(questionnaire.getGetLocation()) {
+            //Check permissions and turn on Location Listener Service
+            checkLocationPermissions();
+        } else {
+            //Hide the checker on both pages
+
+        }
 
         buildIntroPage();
 
         return base;
     }
 
+    /**
+     * Build the UI for the intro page
+     * Customised with title, description and image
+     */
     private void buildIntroPage() {
         TextView title = (TextView) base.findViewById(R.id.page1_intro_title);
         TextView subTitle = (TextView) base.findViewById(R.id.page1_intro_desciprion);
@@ -143,9 +150,15 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         } else {
             Log.d("Qs", "No intro image");
         }
+
+        if (!questionnaire.getGetLocation()) {
+            //Hide location spinner when we don't need to use it
+            ViewGroup locationView = (ViewGroup) base.findViewById(R.id.page1_intro_location);
+            locationView.setVisibility(View.GONE);
+        }
     }
 
-    @Override
+    @OnClick({R.id.button_take_photo, R.id.section_row})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_take_photo:
@@ -213,7 +226,7 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = MyApp.createImageFile(response);
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 Log.e("Log", ex.getLocalizedMessage());
@@ -226,43 +239,6 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        response.photo = "file:" + image.getAbsolutePath();
-        response.save();
-        return image;
-    }
-
-    private File createThumbImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_s";
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        response.thumb = "file:" + image.getAbsolutePath();
-        response.save();
-        return image;
-    }
-
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -399,6 +375,12 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
                 response.lng = latLng.longitude;
                 response.locAcc = accuracy;
                 response.save();
+
+                //Hide notification / Show success
+                View getLocationView = (View) base.findViewById(R.id.sections_get_location);
+                getLocationView.setVisibility(View.GONE);
+                View gotLocationView = (View) base.findViewById(R.id.sections_got_location);
+                gotLocationView.setVisibility(View.VISIBLE);
             } else {
                 Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
                 final Handler h = new Handler();
@@ -423,79 +405,12 @@ public class SectionsFragment extends Fragment implements View.OnClickListener {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             getLocation();
             response.timestamp = Calendar.getInstance().getTimeInMillis();
-            resizeToThumb();
+            MyApp.resizeToThumb(response);
             response.save();
             pageNext();
         }
     }
 
-    /**
-     * Resize a thumbnail to 100x100 pixels
-     */
-    private void resizeToThumb() {
-        // Get the dimensions of the View
-        int targetW = 100;
-        int targetH = 100;
 
-        String filename = response.photo.substring(response.photo.indexOf(":") + 1);
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(filename, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        Log.i("SectionsFragment", "PhotoW:" + photoW + ", PhotoH:" + photoH);
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized correctly
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap imageBitmap = BitmapFactory.decodeFile(filename, bmOptions);
-
-        if(imageBitmap == null){
-            Log.i("SectionsFragment", "BitMap Null!");
-            return;
-        }
-
-        Log.i("SectionsFragment", "Writing to size H: " + imageBitmap.getHeight() + ", W:" + imageBitmap.getWidth());
-
-        //Convert bitmap to byte array
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
-        byte[] bitmapdata = bos.toByteArray();
-
-        File thumbFile = null;
-        try {
-            thumbFile = createThumbImageFile();
-        } catch (IOException ex) {
-            // Error occurred while creating the File
-            Log.e("Log", ex.getLocalizedMessage());
-        }
-
-        // Continue only if the File was successfully created
-        if (thumbFile != null) {
-            //write the bytes in file
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(thumbFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
-                fos.write(bitmapdata);
-                fos.flush();
-                fos.close();
-                Log.i("SectionsFragment", "Successfully saved resized thumbnail");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
 }
