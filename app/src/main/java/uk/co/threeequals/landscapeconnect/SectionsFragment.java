@@ -25,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -158,23 +157,12 @@ public class SectionsFragment extends Fragment {
         }
     }
 
-    @OnClick({R.id.button_take_photo, R.id.section_row})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button_take_photo:
-                buttonTakePhoto(v);
-                break;
-            case R.id.section_row:
-                openSection(0);
-                break;
-        }
-    }
-
     private void openSection(int section_id) {
         ((SectionsActivity) getActivity()).switchToSection(section_id);
     }
 
-    private void buttonTakePhoto(View view) {
+    @OnClick({R.id.button_take_photo})
+    public void buttonTakePhoto(View view) {
         checkPermissions();
     }
 
@@ -260,9 +248,9 @@ public class SectionsFragment extends Fragment {
      * @return Bool - is response completed
      */
     private boolean checkComplete() {
-        if(questionnaire.getGetLocation()){
+        if(questionnaire.getGetLocation()){//If questionnaire asks for location
             if(response.lat == null){
-                //To do this now or somewhere else?
+                return false;
             }
         }
         if(questionnaire.getGetInitialPhoto()){//We wanted to take a photo
@@ -286,13 +274,6 @@ public class SectionsFragment extends Fragment {
              * Clicked upload button in top menu
              */
             case R.id.action_upload:
-
-                //Check if response has location
-                if(response.lat == null){
-                    Toast.makeText(getContext(), "Still trying to find location...", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-
                 response.setFinished();
                 response.percentUploaded = 0;
                 response.generateUUID();
@@ -381,6 +362,9 @@ public class SectionsFragment extends Fragment {
                 getLocationView.setVisibility(View.GONE);
                 View gotLocationView = (View) base.findViewById(R.id.sections_got_location);
                 gotLocationView.setVisibility(View.VISIBLE);
+
+                //Enable the upload button
+                checkComplete();
             } else {
                 Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
                 final Handler h = new Handler();
@@ -403,7 +387,9 @@ public class SectionsFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            getLocation();
+            if(questionnaire.getGetLocation()) {
+                getLocation();
+            }
             response.timestamp = Calendar.getInstance().getTimeInMillis();
             MyApp.resizeToThumb(response);
             response.save();
