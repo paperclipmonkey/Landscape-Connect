@@ -49,11 +49,19 @@ public class Question extends Model {
     @Column(name = "id")
     private int id;
 
-    public String getTitle() {
+    /**
+     * Get the title appended with optional
+     * @return String title
+     */
+    public String getDisplayTitle() {
         if (this.required) {
             return title;
         }
         return title + " (Optional)";
+    }
+
+    public String getTitle(){
+        return title;
     }
 
     public void setTitle(String title) {
@@ -81,7 +89,7 @@ public class Question extends Model {
         baseView = (ViewGroup) inflater.inflate(R.layout.question, null);// You would want to add your new inflated view to your layout
 
         TextView title = (TextView) baseView.findViewById(R.id.question_question);
-        title.setText(getTitle());
+        title.setText(getDisplayTitle());
 
         View view;
         switch (getType()) {
