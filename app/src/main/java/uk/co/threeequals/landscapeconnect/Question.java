@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,6 +146,8 @@ public class Question extends Model {
 
     public String getSerialisedAnswer() {
         int count;
+        Gson gson = new Gson();
+
         switch (type) {
             case QUESTION_TYPE_STRING:
             case QUESTION_TYPE_TEXTAREA:
@@ -159,16 +163,22 @@ public class Question extends Model {
                 String str = "";
                 //TODO clean up hack. Reliant on subview. Instead check if derived from ViewGroup and sub-drill?
                 ViewGroup answerBase = (ViewGroup) baseView.getChildAt(1);
+
+                ArrayList<String> response = new ArrayList<String>();
+
                 for (int i = 0; i <= answerBase.getChildCount(); i++) {
                     View v = answerBase.getChildAt(i);
                     if (v instanceof CheckBox) {
                         CheckBox checkBox = (CheckBox) v;
                         if (checkBox.isChecked()) {
-                            str += checkBox.getText().toString();
+                            response.add(checkBox.getText().toString());
                         }
                     }
                 }
-                return str;
+                if(response.size() > 0) {
+                    return gson.toJson(response);
+                }
+                return null;
             case QUESTION_TYPE_RADIO:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
