@@ -20,7 +20,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:contentDescription="@string/cont_desc_header_img"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true" />
 
     <!--android:layout_marginLeft="150dp"-->
     <!--android:layout_marginStart="261dp"-->

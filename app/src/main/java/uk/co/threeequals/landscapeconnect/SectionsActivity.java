@@ -144,7 +144,7 @@ public class SectionsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mStatusReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "got intent from Broadcast receiver");

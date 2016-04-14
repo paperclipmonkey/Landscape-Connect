@@ -160,11 +160,10 @@ public class Question extends Model {
                 }
                 break;
             case QUESTION_TYPE_MULTI:
-                String str = "";
                 //TODO clean up hack. Reliant on subview. Instead check if derived from ViewGroup and sub-drill?
                 ViewGroup answerBase = (ViewGroup) baseView.getChildAt(1);
 
-                ArrayList<String> response = new ArrayList<String>();
+                ArrayList<String> response = new ArrayList<>();
 
                 for (int i = 0; i <= answerBase.getChildCount(); i++) {
                     View v = answerBase.getChildAt(i);

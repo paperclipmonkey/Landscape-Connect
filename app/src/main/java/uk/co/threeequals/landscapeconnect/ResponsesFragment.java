@@ -24,9 +24,6 @@ public class ResponsesFragment extends Fragment {
 
     private static final String TAG = "ResponseFragment";
 
-    public ResponsesFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

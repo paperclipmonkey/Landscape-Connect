@@ -5,16 +5,12 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context="uk.co.threeequals.landscapeconnect.QuestionnairesActivity">
 
-    <ScrollView
+    <!-- Gives some padding at the bottom of the page for the FAB -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:fillViewport="true">
-
-        <!-- Gives some padding at the bottom of the page for the FAB -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
         <ListView
             android:id="@+id/qslist"
@@ -25,10 +21,7 @@
             android:choiceMode="multipleChoiceModal"
             />
 
-        </LinearLayout>
-
-
-    </ScrollView>
+    </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab_menu"

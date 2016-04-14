@@ -60,9 +60,6 @@ public class SectionsFragment extends Fragment {
     private ArrayList<SectionResponseLink> sectionResponseLinks;
     private LocationGetter locationGetter;
 
-    public SectionsFragment() {
-    }
-
     private void pageNext() {
         flipper.showNext();  // Switches to the next view
     }
@@ -121,7 +118,7 @@ public class SectionsFragment extends Fragment {
             //Check permissions and turn on Location Listener Service
             checkLocationPermissions();
         } else {
-            //Hide the checker on both pages
+            //TODO Hide the checker on both pages
 
         }
 
@@ -292,9 +289,6 @@ public class SectionsFragment extends Fragment {
 
     /**
      * Ensure we have all the permissions we asked for
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
      */
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -358,9 +352,9 @@ public class SectionsFragment extends Fragment {
                 response.save();
 
                 //Hide notification / Show success
-                View getLocationView = (View) base.findViewById(R.id.sections_get_location);
+                View getLocationView = base.findViewById(R.id.sections_get_location);
                 getLocationView.setVisibility(View.GONE);
-                View gotLocationView = (View) base.findViewById(R.id.sections_got_location);
+                View gotLocationView = base.findViewById(R.id.sections_got_location);
                 gotLocationView.setVisibility(View.VISIBLE);
 
                 //Enable the upload button
@@ -380,9 +374,6 @@ public class SectionsFragment extends Fragment {
 
     /**
      * Respond to taking a photo returning to activity
-     * @param requestCode
-     * @param resultCode
-     * @param data
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

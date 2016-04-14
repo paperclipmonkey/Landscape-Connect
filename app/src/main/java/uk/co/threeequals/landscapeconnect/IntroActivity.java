@@ -16,8 +16,10 @@ import butterknife.OnClick;
  * Created by michaelwaterworth on 08/03/2016. Copyright Michael Waterworth
  */
 public class IntroActivity extends AppCompatActivity {
-    @Bind(R.id.intro_flipper) ViewFlipper flipper;
-    @Bind(R.id.intro_button_next) Button nextButton;
+    @Bind(R.id.intro_flipper)
+    public ViewFlipper flipper;
+    @Bind(R.id.intro_button_next)
+    public Button nextButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

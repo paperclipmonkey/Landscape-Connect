@@ -28,7 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
  * TODO Don't stop updating until the Activity asks it to
  * Created by michaelwaterworth on 15/12/2015. Copyright Michael Waterworth
  */
-public class LocationGetter extends AsyncTask<String, String, String> implements
+class LocationGetter extends AsyncTask<String, String, String> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.

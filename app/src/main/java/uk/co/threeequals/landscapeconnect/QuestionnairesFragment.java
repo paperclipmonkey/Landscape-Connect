@@ -82,9 +82,6 @@ public class QuestionnairesFragment extends Fragment {
         }
     };
 
-    public QuestionnairesFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

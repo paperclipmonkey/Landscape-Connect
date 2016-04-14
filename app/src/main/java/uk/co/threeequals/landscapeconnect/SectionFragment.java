@@ -26,8 +26,6 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int QUESTIONS_PER_PAGE = 3;
     private ViewGroup base;
-    private Response response;
-    private Section section;
     private SectionResponse sectionResponse;
     private int sectionNum;
     private List<Question> questionsArr;
@@ -41,8 +39,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 //        }
 //    }
 
-    public SectionFragment() {
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -63,9 +59,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         flipper = (ViewFlipper) base.findViewById(R.id.section_page_switcher);
 
         sectionNum = getArguments().getInt("section_num");
-        section = ((SectionsActivity) getActivity()).getSection(sectionNum);
+        Section section = ((SectionsActivity) getActivity()).getSection(sectionNum);
         questionsArr = section.getQuestions();
-        response = ((SectionsActivity) getActivity()).getResponse();
+        Response response = ((SectionsActivity) getActivity()).getResponse();
         sectionResponse = response.getSectionResponses().get(sectionNum);
 
         doneButton = (Button) base.findViewById(R.id.section_button_next_done);

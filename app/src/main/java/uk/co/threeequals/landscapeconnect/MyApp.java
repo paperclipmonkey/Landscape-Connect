@@ -13,7 +13,6 @@ import net.gotev.uploadservice.UploadService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -46,11 +45,11 @@ public class MyApp extends com.activeandroid.app.Application {
 
     /**
      * Create thumbnail file handle ready for data
-     * @param response
-     * @return
+     * @param response Response object to create thumb for
+     * @return File handle of created file
      * @throws IOException
      */
-    public static File createThumbImageFile(Response response) throws IOException {
+    private static File createThumbImageFile(Response response) throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.UK).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_s";
@@ -142,15 +141,11 @@ public class MyApp extends com.activeandroid.app.Application {
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(thumbFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            try {
                 fos.write(bitmapdata);
                 fos.flush();
                 fos.close();
                 Log.i("SectionsFragment", "Successfully saved resized thumbnail");
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
