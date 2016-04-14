@@ -76,4 +76,22 @@
     <string name="cont_desc_sections_intro">Section intro</string>
     <string name="cont_desc_section_comp">Section completed?</string>
     <string name="cont_desc_response_photo">User photo</string>
+
+
+
+    <!-- Intro strings -->
+    <string name="intro_1_title">Landscape Connect</string>
+    <string name="intro_1_subtitle">Engage with users of your landscape</string>
+
+    <string name="intro_2_title">Download a questionnaire</string>
+    <string name="intro_2_subtitle">Find them on our website then scan a QR code or enter a short code to install</string>
+
+    <string name="intro_3_title">Complete questionnaire</string>
+    <string name="intro_3_subtitle">Take a photo and answer questions</string>
+
+    <string name="intro_4_title">Background upload</string>
+    <string name="intro_4_subtitle">Completed questionnaires are automatically uploaded</string>
+
+    <string name="intro_5_title">Engage</string>
+    <string name="intro_5_subtitle">Optionally view aggregate results</string>
 </resources>

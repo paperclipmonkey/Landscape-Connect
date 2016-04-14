@@ -13,32 +13,11 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="40dp">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Landscape Connect"
-                    android:id="@+id/intro_1_title" />
-            </ScrollView>
-
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Download a questionnaire"
-                    android:id="@+id/intro_2_title" />
-            </ScrollView>
+            <include layout="@layout/activity_intro_page1"/>
+            <include layout="@layout/activity_intro_page2"/>
+            <include layout="@layout/activity_intro_page3"/>
+            <include layout="@layout/activity_intro_page4"/>
+            <include layout="@layout/activity_intro_page5"/>
 
         </ViewFlipper>
 
@@ -46,8 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" android:orientation="horizontal"
         android:weightSum="1"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
         android:layout_alignParentBottom="true">
 
         <Button
