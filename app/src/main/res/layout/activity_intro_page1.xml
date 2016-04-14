@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/intro_1_image"
         android:src="@drawable/hi_res_icon"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
-        android:layout_marginTop="-40dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="65dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -19,7 +19,8 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
         android:text="@string/intro_1_title"
         android:id="@+id/intro_1_title"
-        android:layout_above="@+id/intro_1_subtitle" />
+        android:layout_above="@+id/intro_1_subtitle"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,8 +28,8 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
         android:text="@string/intro_1_subtitle"
         android:id="@+id/intro_1_subtitle"
-        android:layout_alignBottom="@+id/intro_1_image"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp" />
+        android:layout_marginBottom="27dp" />
 
 </RelativeLayout>
