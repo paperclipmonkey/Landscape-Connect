@@ -25,6 +25,10 @@ import java.util.Locale;
  * Created by michaelwaterworth on 04/01/2016. Copyright Michael Waterworth
  */
 public class MyApp extends com.activeandroid.app.Application {
+    public static final String SEENINTRO = "firstRun";
+    public static final String SHAREDPREFERENCES = "lc";
+
+
     @Override
     public void onCreate() {
         super.onCreate();

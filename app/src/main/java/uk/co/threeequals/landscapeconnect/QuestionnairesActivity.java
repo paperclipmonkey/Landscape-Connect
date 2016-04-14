@@ -1,6 +1,7 @@
 package uk.co.threeequals.landscapeconnect;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -88,9 +89,33 @@ public class QuestionnairesActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    /**
+     * Check whether the user has signed the intro panel before
+     * @return Boolean whether they've signed
+     */
+    private boolean hasSeenIntro() {
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(MyApp.SHAREDPREFERENCES, 1);
+        return settings.getBoolean(MyApp.SEENINTRO, false);
+    }
+
+    /**
+     * Run on first opening of the app
+     */
+    public void startIntro() {
+        Intent intent = new Intent(this, IntroActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!hasSeenIntro()) {
+            //Show intro screens
+            startIntro();
+        }
+
         setContentView(R.layout.activity_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

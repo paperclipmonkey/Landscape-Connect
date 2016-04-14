@@ -1,5 +1,6 @@
 package uk.co.threeequals.landscapeconnect;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,6 +24,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
         ButterKnife.bind(this);
+        setSeenIntro();
     }
 
     @OnClick({ R.id.intro_button_next, R.id.intro_button_prev })
@@ -47,5 +49,16 @@ public class IntroActivity extends AppCompatActivity {
             //Show the previous page
             flipper.setDisplayedChild(flipper.getDisplayedChild() - 1);
         }
+    }
+
+    /**
+     * Once the user has signed the intro signature panel
+     */
+    private void setSeenIntro() {
+        SharedPreferences settings = getSharedPreferences(MyApp.SHAREDPREFERENCES, 1);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(MyApp.SEENINTRO, true);
+        // Commit the edit
+        editor.apply();
     }
 }
