@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Table(name = "Question", id = BaseColumns._ID)
 public class Question extends Model {
-    public static final String QUESTION_TYPE_STRING = "string";
+    public static final String QUESTION_TYPE_TEXT = "text";
     public static final String QUESTION_TYPE_MULTI = "multi";
     public static final String QUESTION_TYPE_RADIO = "radio";
     public static final String QUESTION_TYPE_TEXTAREA = "textarea";
@@ -102,7 +102,7 @@ public class Question extends Model {
                 }
                 view = textAreaObj;
                 break;
-            case QUESTION_TYPE_STRING:
+            case QUESTION_TYPE_TEXT:
                 EditText stringObj = new EditText(cx);
                 stringObj.setLines(1);
                 view = stringObj;
@@ -149,7 +149,7 @@ public class Question extends Model {
         Gson gson = new Gson();
 
         switch (type) {
-            case QUESTION_TYPE_STRING:
+            case QUESTION_TYPE_TEXT:
             case QUESTION_TYPE_TEXTAREA:
                 count = baseView.getChildCount();
                 for (int i = 0; i <= count; i++) {
