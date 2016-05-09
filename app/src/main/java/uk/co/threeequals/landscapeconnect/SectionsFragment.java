@@ -358,7 +358,9 @@ public class SectionsFragment extends Fragment {
                 gotLocationView.setVisibility(View.VISIBLE);
 
                 //Enable the upload button
-                checkComplete();
+                //By rebuilding the menu
+                getActivity().invalidateOptionsMenu();
+
             } else {
                 Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
                 final Handler h = new Handler();
