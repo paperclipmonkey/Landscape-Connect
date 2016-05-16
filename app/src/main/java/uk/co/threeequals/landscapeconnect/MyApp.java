@@ -1,11 +1,14 @@
 package uk.co.threeequals.landscapeconnect;
 
+import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.Log;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Configuration;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
@@ -23,7 +26,7 @@ import java.util.Locale;
  * Base class for the App which initialises all of the libraries
  * Created by michaelwaterworth on 04/01/2016. Copyright Michael Waterworth
  */
-public class MyApp extends com.activeandroid.app.Application {
+public class MyApp extends Application{//extends com.activeandroid.app.Application
     public static final String SEENINTRO = "firstRun";
     public static final String SHAREDPREFERENCES = "lc";
 
@@ -31,6 +34,13 @@ public class MyApp extends com.activeandroid.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Configuration.Builder config = new Configuration.Builder(this);
+        config.addModelClasses(Questionnaire.class, Section.class, Question.class, Choice.class, QuestionResponse.class, Response.class);
+        ActiveAndroid.initialize(config.create());
+        //<!--android:value="uk.co.threeequals.landscapeconnect.Questionnaire, uk.co.threeequals.landscapeconnect.Section, uk.co.threeequals.landscapeconnect.Question, uk.co.threeequals.landscapeconnect.Choice, uk.co.threeequals.landscapeconnect.QuestionResponse, uk.co.threeequals.landscapeconnect.Response"/>-->
+
+
         Iconify.with(new FontAwesomeModule());
 
         // setup the broadcast action namespace string which will
