@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -232,13 +233,20 @@ public class SectionsFragment extends Fragment {
         inflater.inflate(R.menu.sections_menubar, menu);
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        if (checkComplete())
-            menu.getItem(0).setEnabled(true);
-        else
-            menu.getItem(0).setEnabled(false);
-    }
+//    @Override
+//    public void onPrepareOptionsMenu(Menu menu) {
+//        if (checkComplete()) {
+//            MenuItem item = menu.getItem(0);
+//            SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString() + "Rdy");
+//            spanString.setSpan(new ForegroundColorSpan(Color.WHITE), 0, spanString.length(), 0); //fix the color to white
+//            item.setTitle(spanString);
+//        } else {
+//            MenuItem item = menu.getItem(0);
+//            SpannableString spanString = new SpannableString(menu.getItem(0).getTitle().toString() + "Not");
+//            spanString.setSpan(new ForegroundColorSpan(Color.BLACK), 0, spanString.length(), 0); //fix the color to white
+//            item.setTitle(spanString);
+//        }
+//    }
 
     /**
      * Ensure all required sections of response exist
@@ -271,17 +279,21 @@ public class SectionsFragment extends Fragment {
              * Clicked upload button in top menu
              */
             case R.id.action_upload:
-                response.setFinished();
-                response.percentUploaded = 0;
-                response.generateUUID();
-                response.save();
+                if(checkComplete()) {
+                    response.setFinished();
+                    response.percentUploaded = 0;
+                    response.generateUUID();
+                    response.save();
 
-                //Start the upload service...
-                Intent serviceIntent = new Intent(getContext(), LSUploadService.class);
-                getContext().startService(serviceIntent);
+                    //Start the upload service...
+                    Intent serviceIntent = new Intent(getContext(), LSUploadService.class);
+                    getContext().startService(serviceIntent);
 
-                getActivity().finish();
-                return true;
+                    getActivity().finish();
+                    return true;
+                } else {
+                    Toast.makeText(getContext(), "Please complete all required sections", Toast.LENGTH_LONG).show();
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
