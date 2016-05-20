@@ -46,8 +46,10 @@ public class QuestionnairesActivity extends AppCompatActivity {
 
 
                     Response response = Response.load(Response.class, Integer.parseInt(uploadId));
-                    response.percentUploaded = progress;
-                    response.save();
+                    if(response != null) {
+                        response.percentUploaded = progress;
+                        response.save();
+                    }
                 }
 
                 @Override
