@@ -108,8 +108,14 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     sendResult();
                 } else {
                     flipper.setDisplayedChild(flipper.getDisplayedChild() + 1);
-                    ScrollView scrollView = (ScrollView) base;
-                    scrollView.fullScroll(View.FOCUS_UP);
+                    final ScrollView scrollView = (ScrollView) base;
+
+                    scrollView.post(new Runnable() {
+                        public void run() {
+                            scrollView.scrollTo(0, scrollView.getTop());
+                            scrollView.fullScroll(scrollView.FOCUS_UP);
+                        }
+                    });
                     setButtonText();
                 }
                 break;
