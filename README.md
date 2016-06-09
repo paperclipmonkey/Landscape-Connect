@@ -1,11 +1,13 @@
 #Landscape Connect Android
 
-Landscape Connect is a new way to gather responses to landscape based questionnaires. It supports grabbing of GPS and a photo as well as a fully customised questionnaire.
+Landscape Connect is a new way to gather responses to landscape based questionnaires. It supports grabbing of location and a photo as well as a fully customised questionnaire.
 
-##Usage
-The Android code has been developed inside Android studio with Gradle. 
+The questionnairecan be loaded in to the app from JSON and results are submitted using standard HTTP POST parameters.
 
-It's designed to work with a JSON Api which is described in the Api documentation.
+The app defaults to the Landscape Connect server but can use any server by providing a full URL to download a valid questionnaire.
+
+##Installation
+The Android code has been developed inside Android studio with Gradle. A Google API key will need to be grabbed to use the FusedLocationProvider service.
 
 ##Testing
 ADB Monkey can be used to perform automated monkey testing on the app:

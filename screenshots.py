@@ -1,3 +1,7 @@
+#Take screenshots of all pages in the Landscape Connect App
+#Save images as .png files
+#This is tailored to the Nexus 5 screen size. YMMV
+
 # Imports the monkeyrunner modules used by this program
 from com.android.monkeyrunner import MonkeyRunner, MonkeyDevice
 import time
@@ -40,12 +44,11 @@ def takeActivityScreenshot(activity):
 	device.startActivity(component=runComponent)
 
 	# Wait for the activity to start
-	MonkeyRunner.sleep(3)
+	MonkeyRunner.sleep(5)
 
-	result = device.takeSnapshot()
-	# Write the screenshot to a file
-	result.writeToFile('screenshots/' + activity + '.png','png')
-
+	# result = device.takeSnapshot()
+	# # Write the screenshot to a file
+	# result.writeToFile('screenshots/' + activity + '.png','png')
 
 
 	# - - - - - - - - - - - INTRO PAGES - - - - - - - - - - - - - -
@@ -125,30 +128,6 @@ def takeActivityScreenshot(activity):
 	result = device.takeSnapshot()
 	# Write the screenshot to a file
 	result.writeToFile('screenshots/' + activity + '-about.png','png')
-
-	# - - - - - - - - - - - INTRO PAGES - - - - - - - - - - - - - -
-	print '--- Intro page ---'
-
-	device.touch(100, 100, 'DOWN_AND_UP')
-	MonkeyRunner.sleep(1)
-	device.touch(100, 1000, 'DOWN_AND_UP')
-
-	# Wait for the activity to start
-	MonkeyRunner.sleep(0.5)
-
-	result = device.takeSnapshot()
-	# Write the screenshot to a file
-	result.writeToFile('screenshots/' + activity + '-intro-1.png','png')
-
-	device.touch(800, 1700, 'DOWN_AND_UP')#Next
-	result = device.takeSnapshot()
-	# Write the screenshot to a file
-	result.writeToFile('screenshots/' + activity + '-intro-2.png','png')
-
-	device.touch(800, 1700, 'DOWN_AND_UP')#Next
-	result = device.takeSnapshot()
-	# Write the screenshot to a file
-	result.writeToFile('screenshots/' + activity + '-intro-3.png','png')
 
 	# - - - - - - - - - - - INSTALL QUESTIONNAIRE PAGE - - - - - - - - - - - - - -
 	print '--- Install Questionnaire ---'
