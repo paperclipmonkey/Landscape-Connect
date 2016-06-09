@@ -4,8 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,8 +27,11 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -142,8 +143,25 @@ public class SectionsFragment extends Fragment {
             Log.d("Qs", "intro image");
             int introEnd = questionnaire.getIntroImage().indexOf(",");
             byte[] decodedString = Base64.decode(questionnaire.getIntroImage().substring(introEnd), Base64.DEFAULT);//Remove metadata from the start of the string
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            image.setImageBitmap(decodedByte);
+
+            File outputFile;
+
+            try {
+                File outputDir = base.getContext().getCacheDir(); // context being the Activity pointer
+                outputFile = File.createTempFile("prefix", "extension", outputDir);
+
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(outputFile));
+                bos.write(decodedString);
+                bos.flush();
+                bos.close();
+
+                Picasso.with(base.getContext()).load(outputFile).resize(600, 0).into(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            //image.setImageBitmap(decodedByte);
         } else {
             Log.d("Qs", "No intro image");
         }
