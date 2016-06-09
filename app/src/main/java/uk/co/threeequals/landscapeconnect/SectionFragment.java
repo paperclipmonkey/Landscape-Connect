@@ -106,7 +106,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 serialiseData();
                 for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
                     //Check all questions on pages up to the current page
-                    Log.d("SectionFragment", "Flipper Index: " + flipper.getDisplayedChild());
                     if (questionResponse.question.isRequired()) {
                         if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + QUESTIONS_PER_PAGE)) {
                             Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
