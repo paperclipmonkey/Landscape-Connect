@@ -47,6 +47,47 @@ def takeActivityScreenshot(activity):
 	result.writeToFile('screenshots/' + activity + '.png','png')
 
 
+
+	# - - - - - - - - - - - INTRO PAGES - - - - - - - - - - - - - -
+	print '--- Intro pages ---'
+
+	result2 = device.takeSnapshot()
+	# Write the screenshot to a file
+	result2.writeToFile('screenshots/' + activity + '-intro-1.png','png')
+
+
+	device.touch(800, 1700, 'DOWN_AND_UP')
+	# Wait for the activity to start
+	MonkeyRunner.sleep(0.5)
+	result2 = device.takeSnapshot()
+	# Write the screenshot to a file
+	result2.writeToFile('screenshots/' + activity + '-intro-2.png','png')
+
+	device.touch(800, 1700, 'DOWN_AND_UP')
+	# Wait for the activity to start
+	MonkeyRunner.sleep(0.5)
+	result2 = device.takeSnapshot()
+	# Write the screenshot to a file
+	result2.writeToFile('screenshots/' + activity + '-intro-3.png','png')
+
+	device.touch(800, 1700, 'DOWN_AND_UP')
+	# Wait for the activity to start
+	MonkeyRunner.sleep(0.5)
+	result2 = device.takeSnapshot()
+	# Write the screenshot to a file
+	result2.writeToFile('screenshots/' + activity + '-intro-4.png','png')
+
+	device.touch(800, 1700, 'DOWN_AND_UP')
+	# Wait for the activity to start
+	MonkeyRunner.sleep(0.5)
+	result2 = device.takeSnapshot()
+	# Write the screenshot to a file
+	result2.writeToFile('screenshots/' + activity + '-intro-5.png','png')
+
+
+	device.touch(800, 1700, 'DOWN_AND_UP')
+	MonkeyRunner.sleep(0.5)
+
 	# - - - - - - - - - - - MENU PAGE - - - - - - - - - - - - - -
 	print '--- Menu page ---'
 
