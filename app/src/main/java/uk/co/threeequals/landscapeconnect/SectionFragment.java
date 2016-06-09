@@ -49,6 +49,21 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        base = null;
+        flipper = null;
+        doneButton = null;
+        questionsArr = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sectionResponse = null;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         base = (ViewGroup) inflater.inflate(R.layout.fragment_section, container, false);

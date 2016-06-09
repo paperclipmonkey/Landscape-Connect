@@ -170,4 +170,13 @@ public class SectionsActivity extends AppCompatActivity {
         outState.putLong(R_ID_KEY, response.getId());
         super.onSaveInstanceState(outState);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.unregisterReceiver(mStatusReceiver);
+        questionnaire = null;
+        response = null;
+    }
 }

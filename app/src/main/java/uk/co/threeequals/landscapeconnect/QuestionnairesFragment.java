@@ -51,8 +51,10 @@ import java.net.URLConnection;
 public class QuestionnairesFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;
     private final String TAG = "QuestionnairesFragment";
-    private QuestionnairesFragment mThis;
     private MaterialDialog dialog;
+    private ListView listView;
+    private QuestionnairesAdapter questionnairesAdapter;
+
     private final View.OnClickListener fabClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -82,43 +84,46 @@ public class QuestionnairesFragment extends Fragment {
         }
     };
 
+    final String[] projection = {"_id"};
+
+
+    private final LoaderManager.LoaderCallbacks loaderCB = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @Override
+        public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
+            return new CursorLoader(
+                    getActivity(),                                          // Parent activity context
+                    ContentProvider.createUri(Questionnaire.class, null),   // Table to query
+                    projection,                                             // Projection to return
+                    null,                                                   // Selection clause
+                    null,                                                   // Selection arguments
+                    "DateAdded DESC"                                        // Default sort order
+            );
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
+            ((CursorAdapter) listView.getAdapter()).swapCursor(cursor);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> arg0) {
+            ((CursorAdapter) listView.getAdapter()).swapCursor(null);
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mThis = this;
         final View base = inflater.inflate(R.layout.fragment_questionnaires, container, false);
-        final ListView listView = (ListView) base.findViewById(R.id.qslist);
 
         // Setup cursor adapter
-        final QuestionnairesAdapter questionnairesAdapter = new QuestionnairesAdapter(getContext(), null, true);
+        questionnairesAdapter = new QuestionnairesAdapter(getContext(), null, true);
+
+        listView = (ListView) base.findViewById(R.id.qslist);
         // Attach cursor adapter to the ListView
         listView.setAdapter(questionnairesAdapter);
 
-        final String[] projection = {"_id"};
-
-        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT, null, new LoaderManager.LoaderCallbacks<Cursor>() {
-            @Override
-            public Loader<Cursor> onCreateLoader(int arg0, Bundle cursor) {
-                return new CursorLoader(
-                        getActivity(),                                          // Parent activity context
-                        ContentProvider.createUri(Questionnaire.class, null),   // Table to query
-                        projection,                                             // Projection to return
-                        null,                                                   // Selection clause
-                        null,                                                   // Selection arguments
-                        "DateAdded DESC"                                        // Default sort order
-                );
-            }
-
-            @Override
-            public void onLoadFinished(Loader<Cursor> arg0, Cursor cursor) {
-                ((CursorAdapter) listView.getAdapter()).swapCursor(cursor);
-            }
-
-            @Override
-            public void onLoaderReset(Loader<Cursor> arg0) {
-                ((CursorAdapter) listView.getAdapter()).swapCursor(null);
-            }
-        });
+        getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT, null, loaderCB);
 
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             int selectedCount = 0;
@@ -212,6 +217,23 @@ public class QuestionnairesFragment extends Fragment {
         return base;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i(TAG, "destroying questionnaires fragment view");
+        dialog = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().getSupportLoaderManager().destroyLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT);
+
+
+  //      questionnairesAdapter = null;
+        Log.i(TAG, "destroying questionnaires fragment");
+    }
+
     private void getFabQr() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.CAMERA)
@@ -234,7 +256,7 @@ public class QuestionnairesFragment extends Fragment {
                         MY_PERMISSIONS_REQUEST_CAMERA);
             }
         } else {
-            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(mThis);
+            IntentIntegrator integrator = IntentIntegrator.forSupportFragment(this);
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
             integrator.setPrompt(getActivity().getString(R.string.scan_qr_code));
             integrator.setBeepEnabled(true);

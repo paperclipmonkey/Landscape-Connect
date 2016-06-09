@@ -65,4 +65,10 @@ public class ResponsesFragment extends Fragment {
 
         return base;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().getSupportLoaderManager().destroyLoader(QuestionnairesActivity.UPLOAD_FRAGMENT);
+    }
 }

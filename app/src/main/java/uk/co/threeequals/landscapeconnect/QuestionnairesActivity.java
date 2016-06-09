@@ -110,8 +110,19 @@ public class QuestionnairesActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDrawerLayout = null;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseCrash.report(new Exception("Questionnaire Activity Error"));
+
+        FirebaseCrash.log("Questionnaire Activity created");
+
 
         if (!hasSeenIntro()) {
             //Show intro screens
