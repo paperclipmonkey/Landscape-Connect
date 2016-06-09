@@ -30,6 +30,7 @@ import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 public class QuestionnairesActivity extends AppCompatActivity {
     public static final int QUESTIONNAIRES_FRAGMENT = 0;
     public static final int UPLOAD_FRAGMENT = 1;
+    public static final int ABOUT_FRAGMENT = 2;
     private static final String TAG = "QuestionnairesActivity";
 
     private final UploadServiceBroadcastReceiver uploadReceiver =
@@ -163,54 +164,46 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.drawer_questionnaires:
-                        fragment = new QuestionnairesFragment();
-                        setTitle(R.string.questionnaires);
+                        switchFragment(QUESTIONNAIRES_FRAGMENT);
                         break;
                     case R.id.drawer_about:
-                        fragment = new AboutFragment();
-                        setTitle(R.string.about);
+                        switchFragment(ABOUT_FRAGMENT);
                         break;
                     case R.id.drawer_intro:
                         Intent intent = new Intent(getBaseContext(), IntroActivity.class);
                         startActivity(intent);
                         return true;
                     default:
-                        fragment = new ResponsesFragment();
-                        setTitle(getString(R.string.upload_queue));
+                        switchFragment(UPLOAD_FRAGMENT);
                         break;
                 }
-                
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.contentFragment, fragment);
-                fragmentTransaction.commit();
                 return true;
             }
         });
 
         switchFragment(QUESTIONNAIRES_FRAGMENT);
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void switchFragment(int fragmentId) {
-        Fragment fragment;
-        if (fragmentId == QUESTIONNAIRES_FRAGMENT) {
-            setTitle(R.string.questionnaires);
-            fragment = new QuestionnairesFragment();
-        } else if (fragmentId == UPLOAD_FRAGMENT) {
-            setTitle(R.string.upload_queue);
-            fragment = new ResponsesFragment();
-        } else {
-            setTitle(R.string.about);
-            fragment = new AboutFragment();
-        }
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Integer.toString(fragmentId));
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.contentFragment, fragment);
-        transaction.commit();
+        if(fragment == null) {
+            if (fragmentId == QUESTIONNAIRES_FRAGMENT) {
+                setTitle(R.string.questionnaires);
+                fragment = new QuestionnairesFragment();
+            } else if (fragmentId == UPLOAD_FRAGMENT) {
+                setTitle(R.string.upload_queue);
+                fragment = new ResponsesFragment();
+            } else {
+                setTitle(R.string.about);
+                fragment = new AboutFragment();
+            }
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.contentFragment, fragment, Integer.toString(fragmentId));
+            transaction.commit();
+        }
     }
 
     @Override
