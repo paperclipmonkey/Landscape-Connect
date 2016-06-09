@@ -43,9 +43,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1' //Use @Bind to attach views to code
-    compile 'com.google.android.gms:play-services-location:8.4.0'
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services-location:9.0.1'
+    compile 'com.google.android.gms:play-services-analytics:9.0.1'
+    compile 'com.google.android.gms:play-services-appindexing:9.0.1'
+
+    compile 'com.google.firebase:firebase-core:9.0.1'
+    compile 'com.google.firebase:firebase-crash:9.0.1'
 
     // Required for testing
     androidTestCompile 'com.android.support.test:runner:0.4'
@@ -57,5 +60,4 @@ dependencies {
     androidTestCompile 'com.android.support:support-annotations:23.1.1'
 }
 
-
-
+apply plugin: 'com.google.gms.google-services'
