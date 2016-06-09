@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -20,7 +19,6 @@ import java.text.DateFormat;
 public class QuestionnaireActivity extends AppCompatActivity {
 
     private Questionnaire questionnaire;
-    private Button nextButton;
     private String TAG = "QuestionnaireActivity";
 
     public QuestionnaireActivity(){
