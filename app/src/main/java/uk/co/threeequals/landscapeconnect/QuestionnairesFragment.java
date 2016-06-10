@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -185,7 +184,7 @@ public class QuestionnairesFragment extends Fragment {
 
                 v.setSelected(b);
 
-                Log.d(TAG, "Setting selected " + i + " to:" + b);
+                LCLog.d(TAG, "Setting selected " + i + " to:" + b);
 
                 actionMode.setTitle(selectedCount + getActivity().getString(R.string.space_selected));
 
@@ -220,7 +219,7 @@ public class QuestionnairesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.i(TAG, "destroying questionnaires fragment view");
+        LCLog.i(TAG, "destroying questionnaires fragment view");
         dialog = null;
     }
 
@@ -231,7 +230,7 @@ public class QuestionnairesFragment extends Fragment {
 
 
   //      questionnairesAdapter = null;
-        Log.i(TAG, "destroying questionnaires fragment");
+        LCLog.i(TAG, "destroying questionnaires fragment");
     }
 
     private void getFabQr() {
@@ -284,17 +283,17 @@ public class QuestionnairesFragment extends Fragment {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "Permission Granted");
+                    LCLog.d(TAG, "Permission Granted");
                     getFabQr();
                 } else {
-                    Log.d(TAG, "Permission denied");
+                    LCLog.d(TAG, "Permission denied");
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
                 return;
             }
             default:
-                Log.d(TAG, "Unknown request code");
+                LCLog.d(TAG, "Unknown request code");
         }
     }
 
@@ -303,7 +302,7 @@ public class QuestionnairesFragment extends Fragment {
         if (!url.startsWith("http", 0)) {
             url = getString(R.string.base_url) + getString(R.string.download_url_fragment) + url.toUpperCase();
         }
-        Log.d(TAG, "Downloading JSON: " + url);
+        LCLog.d(TAG, "Downloading JSON: " + url);
         new DownloadToString().execute(url);
         showHideInstallProgress(true);
     }
@@ -313,9 +312,9 @@ public class QuestionnairesFragment extends Fragment {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Log.d(TAG, "Cancelled from fragment");
+                LCLog.d(TAG, "Cancelled from fragment");
             } else {
-                Log.d(TAG, "Scanned from fragment: " + result.getContents());
+                LCLog.d(TAG, "Scanned from fragment: " + result.getContents());
                 addNewQs(result.getContents());
             }
         }
@@ -361,7 +360,7 @@ public class QuestionnairesFragment extends Fragment {
                 input.close();
 
             } catch (Exception e) {
-                Log.e("Error: ", e.getMessage());
+                LCLog.e(TAG, "Error: ", e);
             }
 
             return null;
@@ -382,7 +381,7 @@ public class QuestionnairesFragment extends Fragment {
             } catch (Exception e) {
                 Toast toast = Toast.makeText(getContext(), R.string.failed_to_download, Toast.LENGTH_SHORT);
                 toast.show();
-                Log.e(TAG, e.getLocalizedMessage());
+                LCLog.e(TAG, "Failed to install questionnaire", e);
                 showHideInstallProgress(false);//Hide the progress spinner when fully finished.
             }
         }

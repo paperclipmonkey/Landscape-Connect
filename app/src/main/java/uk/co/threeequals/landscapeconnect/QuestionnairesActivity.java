@@ -12,7 +12,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.firebase.crash.FirebaseCrash;
@@ -39,7 +38,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 // override the method below this one
                 @Override
                 public void onProgress(String uploadId, int progress) {
-                    Log.i(TAG, "Updating response % with  ID "
+                    LCLog.i(TAG, "Updating response % with  ID "
                             + uploadId + " is: " + progress);
 
 
@@ -54,14 +53,14 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 public void onProgress(final String uploadId,
                                        final long uploadedBytes,
                                        final long totalBytes) {
-                    Log.i(TAG, "Upload with ID " + uploadId +
+                    LCLog.i(TAG, "Upload with ID " + uploadId +
                             " uploaded bytes: " + uploadedBytes
                             + ", total: " + totalBytes);
                 }
 
                 @Override
                 public void onError(String uploadId, Exception exception) {
-                    Log.e(TAG, "Error in upload with ID: " + uploadId + ". "
+                    LCLog.e(TAG, "Error in upload with ID: " + uploadId + ". "
                             + exception.getLocalizedMessage(), exception);
 
                     Response response = Response.load(Response.class, Integer.parseInt(uploadId));
@@ -73,7 +72,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
                                         int serverResponseCode,
                                         byte[] serverResponse) {
                     String serverResponseMessage = new String(serverResponse);
-                    Log.i(TAG, "Upload with ID " + uploadId
+                    LCLog.i(TAG, "Upload with ID " + uploadId
                             + " has been completed with HTTP " + serverResponseCode
                             + ". Response from server: " + serverResponseMessage);
 

@@ -12,7 +12,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import net.gotev.uploadservice.AllCertificatesAndHostsTruster;
 import net.gotev.uploadservice.MultipartUploadRequest;
@@ -38,7 +37,7 @@ public class LSUploadService extends Service {
                 // override the method below this one
                 @Override
                 public void onProgress(String uploadId, int progress) {
-                    Log.i(TAG, "The progress of the upload with ID "
+                    LCLog.i(TAG, "The progress of the upload with ID "
                             + uploadId + " is: " + progress);
                 }
 
@@ -46,14 +45,14 @@ public class LSUploadService extends Service {
                 public void onProgress(final String uploadId,
                                        final long uploadedBytes,
                                        final long totalBytes) {
-                    Log.i(TAG, "Upload with ID " + uploadId +
+                    LCLog.i(TAG, "Upload with ID " + uploadId +
                             " uploaded bytes: " + uploadedBytes
                             + ", total: " + totalBytes);
                 }
 
                 @Override
                 public void onError(String uploadId, Exception exception) {
-                    Log.e(TAG, "Error in upload with ID: " + uploadId + ". "
+                    LCLog.e(TAG, "Error in upload with ID: " + uploadId + ". "
                             + exception.getLocalizedMessage(), exception);
                 }
 
@@ -64,18 +63,20 @@ public class LSUploadService extends Service {
                     String serverResponseMessage = new String(serverResponseBody);
 
                     if(serverResponseCode == 200) {//Success HTTP status code
-                        Log.i(TAG, "Upload with ID " + uploadId
-                                + " has been completed with HTTP " + serverResponseCode
-                                + ". Response from server: " + serverResponseMessage);
+                        if(serverResponseMessage.contains("LandscapeConnectDone")) {
+                            LCLog.i(TAG, "Upload with ID " + uploadId
+                                    + " has been completed with HTTP " + serverResponseCode
+                                    + ". Response from server: " + serverResponseMessage);
 
-                        Log.d(TAG, "Completed LS Upload");
+                            LCLog.d(TAG, "Completed LS Upload");
 
-                        removeUploaded();
-                        redoOrNotify();
+                            removeUploaded();
+                            redoOrNotify();
+                        }
                     } else {
-                        Log.e(TAG, "Upload error");
-                        Log.e(TAG, "UploadId: " + uploadId);
-                        Log.e(TAG, "Response: " + serverResponseMessage);
+                        LCLog.e(TAG, "Upload error");
+                        LCLog.e(TAG, "UploadId: " + uploadId);
+                        LCLog.e(TAG, "Response: " + serverResponseMessage);
                     }
                     //If your server responds with a JSON, you can parse it
                     //from serverResponseMessage string using a library
@@ -86,13 +87,13 @@ public class LSUploadService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "bound");
+        LCLog.d(TAG, "bound");
         return null;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Upload Service");
+        LCLog.d(TAG, "Upload Service");
 
         uploadReceiver.register(this);
 
@@ -126,12 +127,12 @@ public class LSUploadService extends Service {
     public void onDestroy() {
         super.onDestroy();
         uploadReceiver.unregister(this);
-        Log.i(TAG, "In onDestroy");
+        LCLog.i(TAG, "In onDestroy");
     }
 
     private void checkForPendingUploads() {
         List<Response> responseList = Response.getFinishedResponses();
-        Log.d("Upload", "Waiting responses: " + responseList.size());
+        LCLog.d("Upload", "Waiting responses: " + responseList.size());
         if (responseList.size() > 0) {
             //Pop one off the stack and upload it
             uploadingResponse = responseList.get(0);
@@ -146,7 +147,7 @@ public class LSUploadService extends Service {
     }
 
     private void redoOrNotify() {
-        Log.d(TAG, "redoOrNotify");
+        LCLog.d(TAG, "redoOrNotify");
         if (Response.getFinishedResponses().size() > 0) {
             checkForPendingUploads();
         } else if (completedUploads > 0) {
@@ -156,13 +157,13 @@ public class LSUploadService extends Service {
     }
 
     private void removeUploaded() {
-        Log.d(TAG, "removeUploaded");
+        LCLog.d(TAG, "removeUploaded");
         completedUploads++;//Add to count
         uploadingResponse.deleteFull();
     }
 
     private void buildSuccessNotification() {
-        Log.d(TAG, "buildSuccessNotification");
+        LCLog.d(TAG, "buildSuccessNotification");
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -204,7 +205,7 @@ public class LSUploadService extends Service {
      * @param context Context used to start service
      */
     private void upload(Context context, Response response) {
-        Log.d(TAG, "Uploading");
+        LCLog.d(TAG, "Uploading");
         AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
@@ -259,7 +260,7 @@ public class LSUploadService extends Service {
             request.addParameter("lng", response.lng.toString());
             request.addParameter("locAcc", response.locAcc.toString());
         } catch(Exception e){
-            Log.e(TAG, e.getLocalizedMessage());
+            LCLog.e(TAG, "Failed to add params to upload", e);
         }
 
 //        //configure the notification
@@ -280,8 +281,8 @@ public class LSUploadService extends Service {
 
         try {
             request.startUpload(); //Start upload service and display the notification
-        } catch (Exception exc) {
-            Log.e("AndroidUploadService", exc.getLocalizedMessage(), exc); //You will end up here only if you pass an incomplete UploadRequest
+        } catch (Exception e) {
+            LCLog.e("AndroidUploadService", e.getLocalizedMessage(), e); //You will end up here only if you pass an incomplete UploadRequest
         }
     }
 }
