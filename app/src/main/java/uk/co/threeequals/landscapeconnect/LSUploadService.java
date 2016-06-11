@@ -13,6 +13,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import net.gotev.uploadservice.AllCertificatesAndHostsTruster;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
@@ -61,26 +64,32 @@ public class LSUploadService extends Service {
                                         int serverResponseCode,
                                         byte[] serverResponseBody) {
                     String serverResponseMessage = new String(serverResponseBody);
+                    try {
+                        JsonObject resp = new JsonParser().parse(serverResponseMessage).getAsJsonObject();
 
-                    if(serverResponseCode == 200) {//Success HTTP status code
-                        if(serverResponseMessage.contains("LandscapeConnectDone")) {
-                            LCLog.i(TAG, "Upload with ID " + uploadId
-                                    + " has been completed with HTTP " + serverResponseCode
-                                    + ". Response from server: " + serverResponseMessage);
-
-                            LCLog.d(TAG, "Completed LS Upload");
-
-                            removeUploaded();
-                            redoOrNotify();
+                        if(serverResponseCode != 200) {//Success HTTP status code
+                            throw(new Exception("Wrong status code"));
                         }
-                    } else {
-                        LCLog.e(TAG, "Upload error");
+
+                        //Parse the response into JSON
+
+                        if(!resp.get("status").getAsString().equals("success")) {
+                            throw(new Exception("Wrong success code"));
+                        }
+                        LCLog.i(TAG, "Upload with ID " + uploadId
+                                + " has been completed with HTTP " + serverResponseCode
+                                + ". Response from server: " + serverResponseMessage);
+
+                        LCLog.d(TAG, "Completed LS Upload");
+
+                        removeUploaded();
+                        redoOrNotify();
+
+                    } catch(Exception e) {
+                        LCLog.e(TAG, "Error: ", e);
                         LCLog.e(TAG, "UploadId: " + uploadId);
                         LCLog.e(TAG, "Response: " + serverResponseMessage);
                     }
-                    //If your server responds with a JSON, you can parse it
-                    //from serverResponseMessage string using a library
-                    //such as org.json (embedded in Android) or Google's GSON
                 }
             };
 
