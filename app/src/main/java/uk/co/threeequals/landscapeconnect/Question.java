@@ -36,6 +36,9 @@ public class Question extends Model {
     @Column(name = "Title")
     @Expose
     public String title;
+    @Expose
+    @Column(name = "QuestionId")
+    public String questionId;
     @Column(name = "Type")
     @Expose
     public String type;
@@ -68,6 +71,10 @@ public class Question extends Model {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getQuestionId() {
+        return questionId;
     }
 
     public String getType() {

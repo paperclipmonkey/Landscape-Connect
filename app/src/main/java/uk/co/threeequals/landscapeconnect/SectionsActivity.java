@@ -95,7 +95,7 @@ public class SectionsActivity extends AppCompatActivity {
 
         for (Section section : arrayOfSections) {
             SectionResponse sectionResponse = new SectionResponse();
-            sectionResponse.title = section.title;//Copy title from section to section response
+            sectionResponse.sectionId = section.sectionId;//Copy title from section to section response
             sectionResponse.response = response;
             sectionResponse.save();
 

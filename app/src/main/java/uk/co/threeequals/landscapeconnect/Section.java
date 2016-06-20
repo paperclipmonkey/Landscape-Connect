@@ -21,6 +21,9 @@ public class Section extends Model {
     @Column(name = "Title")
     public String title;
     @Expose
+    @Column(name = "SectionId")
+    public String sectionId;
+    @Expose
     public Question[] questions;
     @Column(name = "Questionnaire", onDelete = Column.ForeignKeyAction.CASCADE)
     public Questionnaire questionnaire;
@@ -33,6 +36,10 @@ public class Section extends Model {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSectionId() {
+        return sectionId;
     }
 
     public List<Question> getQuestions() {

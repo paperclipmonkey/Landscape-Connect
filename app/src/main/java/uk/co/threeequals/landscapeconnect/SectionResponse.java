@@ -19,8 +19,8 @@ import java.util.List;
 public class SectionResponse extends Model {
 
     @Expose
-    @Column(name = "Title")
-    public String title;//Title of completed section
+    @Column(name = "SectionId")
+    public String sectionId;//Title of completed section
 
     @Expose
     @Column(name = "Response", onDelete = Column.ForeignKeyAction.CASCADE)
@@ -33,6 +33,12 @@ public class SectionResponse extends Model {
     public List<QuestionResponse> getQuestionResponses() {
         return getMany(QuestionResponse.class, "SectionResponse");
     }
+
+    public String getSectionId() {
+        return sectionId;
+    }
+
+
 
     public boolean isCompleted() {
         return complete;

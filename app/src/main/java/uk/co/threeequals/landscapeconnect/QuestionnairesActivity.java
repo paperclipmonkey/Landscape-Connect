@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.google.firebase.crash.FirebaseCrash;
-
 import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 /**
@@ -110,8 +108,6 @@ public class QuestionnairesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FirebaseCrash.log("Questionnaire Activity created");
-
 
         if (!hasSeenIntro()) {
             //Show intro screens
