@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
  * Styles pending uploads ready for display
  */
 class ResponsesAdapter extends CursorAdapter {
-    String TAG = "ResponsesAdapter";
 
     public ResponsesAdapter(Context context, Cursor c, boolean autoReQuery) {
         super(context, c, autoReQuery);

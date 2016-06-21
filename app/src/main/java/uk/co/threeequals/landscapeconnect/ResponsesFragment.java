@@ -22,8 +22,6 @@ import com.activeandroid.content.ContentProvider;
  */
 public class ResponsesFragment extends Fragment {
 
-    private static final String TAG = "ResponseFragment";
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

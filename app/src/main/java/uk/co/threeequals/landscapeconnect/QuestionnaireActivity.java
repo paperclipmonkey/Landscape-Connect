@@ -19,7 +19,6 @@ import java.text.DateFormat;
 public class QuestionnaireActivity extends AppCompatActivity {
 
     private Questionnaire questionnaire;
-    private String TAG = "QuestionnaireActivity";
 
     public QuestionnaireActivity(){
 

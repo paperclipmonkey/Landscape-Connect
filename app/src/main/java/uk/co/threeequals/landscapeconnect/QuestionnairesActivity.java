@@ -138,12 +138,9 @@ public class QuestionnairesActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 //Checking if the item is in checked state or not, if not make it in checked state
-               // menuItem.setChecked(true);
 
                 //Closing drawer on item click
                 mDrawerLayout.closeDrawers();
-                Fragment fragment;
-
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {

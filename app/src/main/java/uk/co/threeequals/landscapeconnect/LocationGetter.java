@@ -40,7 +40,6 @@ class LocationGetter extends AsyncTask<String, String, String> implements
      */
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
-    private static final int REQUEST_CHECK_SETTINGS = 11;
     private final String TAG = "Location";
     private final Context mContext;
     private GoogleApiClient mGoogleApiClient;

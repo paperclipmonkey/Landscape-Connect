@@ -20,7 +20,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 /**
  * Section Fragment shows a list of questions that can be answered
- * Works with a viewflipper to allow paging
+ * Works with a viewFlipper to allow paging
  * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
@@ -127,7 +127,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     scrollView.post(new Runnable() {
                         public void run() {
                             scrollView.scrollTo(0, scrollView.getTop());
-                            scrollView.fullScroll(scrollView.FOCUS_UP);
+                            scrollView.fullScroll(View.FOCUS_UP);
                         }
                     });
                     setButtonText();
@@ -179,9 +179,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     private void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse) {
         int i = 0;
-        int qppi = 1;
+        int qppi = 1;//Questions per page iterator
 
-        ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
+        ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, flipper);
         flipper.addView(currentBase);
 
         while (i < questions.size()) {

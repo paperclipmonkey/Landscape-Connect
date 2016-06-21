@@ -14,7 +14,7 @@
 
     <!-- Hold all location views -->
     <LinearLayout
-        android:id="@+id/page1_intro_location"
+        android:id="@+id/page2_intro_location"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="vertical">

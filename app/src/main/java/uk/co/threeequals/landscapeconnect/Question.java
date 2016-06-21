@@ -104,6 +104,7 @@ public class Question extends Model {
         switch (getType()) {
             case QUESTION_TYPE_TEXTAREA:
                 EditText textAreaObj = new EditText(cx);
+                textAreaObj.setLines(3);
                 if (questionResponse != null && questionResponse.rData != null) {
                     textAreaObj.setText(questionResponse.rData);
                 }

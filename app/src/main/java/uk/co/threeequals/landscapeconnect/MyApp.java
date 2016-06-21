@@ -135,7 +135,7 @@ public class MyApp extends Application{//extends com.activeandroid.app.Applicati
         //Convert bitmap to byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
-        byte[] bitmapdata = bos.toByteArray();
+        byte[] bitmapData = bos.toByteArray();
 
         File thumbFile = null;
         try {
@@ -148,10 +148,10 @@ public class MyApp extends Application{//extends com.activeandroid.app.Applicati
         // Continue only if the File was successfully created
         if (thumbFile != null) {
             //write the bytes in file
-            FileOutputStream fos = null;
+            FileOutputStream fos;
             try {
                 fos = new FileOutputStream(thumbFile);
-                fos.write(bitmapdata);
+                fos.write(bitmapData);
                 fos.flush();
                 fos.close();
                 Log.i("SectionsFragment", "Successfully saved resized thumbnail");

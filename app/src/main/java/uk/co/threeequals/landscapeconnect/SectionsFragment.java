@@ -73,9 +73,8 @@ public class SectionsFragment extends Fragment {
             base = (ViewGroup) inflater.inflate(R.layout.fragment_sections, container, false);
         }
 
-        //Dependancy injection for views
+        //Dependency injection for views
         ButterKnife.bind(this, base);
-
 
         getActivity().setTitle(getActivity().getString(R.string.new_landscape));
         setHasOptionsMenu(true);
@@ -119,10 +118,9 @@ public class SectionsFragment extends Fragment {
         if(questionnaire.getGetLocation()) {
             //Check permissions and turn on Location Listener Service
             checkLocationPermissions();
-        } else {
+        } //else {
             //TODO Hide the checker on both pages
-
-        }
+        //}
 
         buildIntroPage();
 

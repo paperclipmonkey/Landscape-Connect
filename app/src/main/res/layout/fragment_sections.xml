@@ -12,10 +12,10 @@
         android:layout_height="fill_parent">
 
         <!-- Intro screen -->
-        <include layout="@layout/fragment_sections_page1"></include>
+        <include layout="@layout/fragment_sections_page1"/>
 
         <!-- Sections list screen -->
-        <include layout="@layout/fragment_sections_page2"></include>
+        <include layout="@layout/fragment_sections_page2"/>
 
     </ViewFlipper>
 </LinearLayout>

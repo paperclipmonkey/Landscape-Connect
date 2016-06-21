@@ -8,7 +8,7 @@ import com.google.firebase.crash.FirebaseCrash;
  * Created by michaelwaterworth on 10/06/2016. Copyright Michael Waterworth
  */
 
-public class LCLog {
+class LCLog {
     public static void i(String TAG, String msg){
         Log.i(TAG, msg);
         FirebaseCrash.log("i: " + TAG + " : " +  msg);
