@@ -24,7 +24,6 @@ import java.util.List;
  * Used to collect a response from the user
  * Holds the fragments that do the heavy lifting
  * Provides helper functions for loading the Questionnaire
- * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsActivity extends AppCompatActivity {
     private static final String R_ID_KEY = "rId";

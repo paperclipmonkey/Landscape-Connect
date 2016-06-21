@@ -5,7 +5,7 @@ import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
 /**
- * Created by michaelwaterworth on 10/06/2016. Copyright Michael Waterworth
+ * 
  */
 
 class LCLog {

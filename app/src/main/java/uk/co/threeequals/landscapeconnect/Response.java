@@ -15,7 +15,6 @@ import java.util.UUID;
 
 /**
  * Responses Model as used to save Questionnaire Responses
- * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "Responses", id = BaseColumns._ID)
 public class Response extends Model {

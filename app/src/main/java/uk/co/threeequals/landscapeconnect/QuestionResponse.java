@@ -10,7 +10,6 @@ import com.google.gson.annotations.Expose;
 /**
  * Question Response saves a users response to a question
  * Data is serialised as rData
- * Created by michaelwaterworth on 29/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "QuestionResponse", id = BaseColumns._ID)
 public class QuestionResponse extends Model {

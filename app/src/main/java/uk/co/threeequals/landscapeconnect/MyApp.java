@@ -24,7 +24,6 @@ import java.util.Locale;
 
 /**
  * Base class for the App which initialises all of the libraries
- * Created by michaelwaterworth on 04/01/2016. Copyright Michael Waterworth
  */
 public class MyApp extends Application{//extends com.activeandroid.app.Application
     public static final String SEENINTRO = "firstRun";

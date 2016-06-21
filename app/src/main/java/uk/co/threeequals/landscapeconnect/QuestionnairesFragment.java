@@ -45,7 +45,6 @@ import java.net.URLConnection;
 /**
  * Shows questionnaires in the questionnaires activity
  * Loaded as the default page then uses an adapter coupled to a ViewList to show questionnaires
- * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class QuestionnairesFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;

@@ -21,7 +21,6 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 /**
  * Section Fragment shows a list of questions that can be answered
  * Works with a viewFlipper to allow paging
- * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int QUESTIONS_PER_PAGE = 3;

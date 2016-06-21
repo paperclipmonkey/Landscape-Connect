@@ -13,7 +13,6 @@ import butterknife.OnClick;
 
 /**
  * Introduces the user to the application
- * Created by michaelwaterworth on 08/03/2016. Copyright Michael Waterworth
  */
 public class IntroActivity extends AppCompatActivity {
     @Bind(R.id.intro_flipper)

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 /**
  * Display the about page as part of a fragment
- * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class AboutFragment extends Fragment {
 

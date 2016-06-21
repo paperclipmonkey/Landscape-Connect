@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * Holds questions model which is part of a section.
  * Created from GSON and serialised to and from the Db using Active Android
- * Created by michaelwaterworth on 28/10/2015. Copyright Michael Waterworth
  */
 @Table(name = "Question", id = BaseColumns._ID)
 public class Question extends Model {

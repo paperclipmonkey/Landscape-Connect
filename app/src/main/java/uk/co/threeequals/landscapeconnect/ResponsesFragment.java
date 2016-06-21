@@ -18,7 +18,6 @@ import com.activeandroid.content.ContentProvider;
 /**
  * Show a list of pending uploads.
  * Displayed in the QuestionnairesActivity
- * Created by michaelwaterworth on 16/08/15. Copyright Michael Waterworth
  */
 public class ResponsesFragment extends Fragment {
 

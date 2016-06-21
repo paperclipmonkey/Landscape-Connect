@@ -26,7 +26,6 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Use Google Fused location API to get the users location as part of an Async task. Returns when it has accurate location.
  * TODO Don't stop updating until the Activity asks it to
- * Created by michaelwaterworth on 15/12/2015. Copyright Michael Waterworth
  */
 class LocationGetter extends AsyncTask<String, String, String> implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {

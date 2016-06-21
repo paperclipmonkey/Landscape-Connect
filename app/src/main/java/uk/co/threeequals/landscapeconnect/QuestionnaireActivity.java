@@ -14,7 +14,6 @@ import java.text.DateFormat;
 
 /**
  * Show one questionnaire's details
- * Created by michaelwaterworth on 28/01/2016. Copyright Michael Waterworth
  */
 public class QuestionnaireActivity extends AppCompatActivity {
 

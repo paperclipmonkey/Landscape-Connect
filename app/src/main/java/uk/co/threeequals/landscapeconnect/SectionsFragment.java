@@ -44,7 +44,6 @@ import butterknife.OnClick;
 /**
  * Fragment that is displayed when starting a new response
  * Takes image, grabs location, lists sections, saves response
- * Created by michaelwaterworth on 27/10/2015. Copyright Michael Waterworth
  */
 public class SectionsFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 1;

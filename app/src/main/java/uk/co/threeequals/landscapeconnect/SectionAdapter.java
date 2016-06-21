@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 /**
  * Section Adapter is used to display Sections in a list
- * Created by michaelwaterworth on 03/11/2015. Copyright Michael Waterworth
  */
 class SectionAdapter extends ArrayAdapter<SectionResponseLink> {
     public SectionAdapter(Context context, ArrayList<SectionResponseLink> users) {

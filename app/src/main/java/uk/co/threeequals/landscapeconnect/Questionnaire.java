@@ -23,7 +23,6 @@ import java.util.List;
  * Response
  *      SectionResponse
  *          QuestionResponse
- * Created by michaelwaterworth on 30/07/15. Copyright Michael Waterworth
  */
 
 @Table(name = "Questionnaire", id = BaseColumns._ID)
