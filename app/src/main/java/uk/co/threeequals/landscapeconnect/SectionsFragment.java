@@ -384,6 +384,7 @@ public class SectionsFragment extends Fragment {
 
                 //Enable the upload button
                 //By rebuilding the menu
+
                 getActivity().invalidateOptionsMenu();
 
             } else {

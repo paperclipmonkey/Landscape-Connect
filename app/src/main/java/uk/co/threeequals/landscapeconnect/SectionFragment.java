@@ -172,7 +172,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         int i = 0;
         int qppi = 1;//Questions per page iterator
 
-        ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, flipper);
+        ViewGroup currentBase = (ViewGroup) getActivity().getLayoutInflater().inflate(R.layout.fragment_section_page, null);
         flipper.addView(currentBase);
 
         while (i < questions.size()) {
