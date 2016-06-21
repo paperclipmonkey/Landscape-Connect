@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Load on device reboot. Fires the Upload Service to check for pending uploads
+ * Load on device reboot. Starts the Upload Service to check for pending uploads
  */
 public class BootReceiver extends BroadcastReceiver {
     /**
@@ -18,7 +18,7 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 
-            //Start the upload service...
+            //Start the upload service
             Intent serviceIntent = new Intent(context, LSUploadService.class);
             context.startService(serviceIntent);
         }

@@ -48,11 +48,6 @@ class ResponsesAdapter extends CursorAdapter {
             progressBar.setVisibility(View.INVISIBLE);
         }
 
-//        Uri uri = Uri.parse(response.photo);
-//        imageView.setImageURI(uri);
-//        MyApp.loadBitmap(uri,imageView);
-//        imageView.setImageBitmap(MyApp.decodeSampledBitmapFromUri(context.getResources(), uri, 100, 100));
-
         title.setText(response.questionnaire.getName());
         description.setText(response.questionnaire.getDescription());
 

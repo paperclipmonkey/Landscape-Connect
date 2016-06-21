@@ -38,7 +38,6 @@ public class SectionResponse extends Model {
     }
 
 
-
     public boolean isCompleted() {
         return complete;
     }

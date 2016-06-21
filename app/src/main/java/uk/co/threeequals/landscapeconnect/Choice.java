@@ -8,6 +8,7 @@ import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 
 /**
+ * Choice Database Object
  * Choices are subjects of questions - Used to hold an individual choice for a question. Normalised dataSet
  */
 @Table(name = "Choice", id = BaseColumns._ID)

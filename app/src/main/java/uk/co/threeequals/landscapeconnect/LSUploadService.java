@@ -34,23 +34,19 @@ public class LSUploadService extends Service {
     private final UploadServiceBroadcastReceiver uploadReceiver =
             new UploadServiceBroadcastReceiver() {
 
-                // you can override this progress method if you want to get
-                // the completion progress in percent (0 to 100)
-                // or if you need to know exactly how many bytes have been transferred
-                // override the method below this one
                 @Override
                 public void onProgress(String uploadId, int progress) {
-                    LCLog.i(TAG, "The progress of the upload with ID "
-                            + uploadId + " is: " + progress);
+//                    LCLog.i(TAG, "The progress of the upload with ID "
+//                            + uploadId + " is: " + progress);
                 }
 
                 @Override
                 public void onProgress(final String uploadId,
                                        final long uploadedBytes,
                                        final long totalBytes) {
-                    LCLog.i(TAG, "Upload with ID " + uploadId +
-                            " uploaded bytes: " + uploadedBytes
-                            + ", total: " + totalBytes);
+//                    LCLog.i(TAG, "Upload with ID " + uploadId +
+//                            " uploaded bytes: " + uploadedBytes
+//                            + ", total: " + totalBytes);
                 }
 
                 @Override
@@ -72,7 +68,6 @@ public class LSUploadService extends Service {
                         }
 
                         //Parse the response into JSON
-
                         if(!resp.get("status").getAsString().equals("success")) {
                             throw(new Exception("Wrong success code"));
                         }
@@ -219,13 +214,6 @@ public class LSUploadService extends Service {
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
                 response.questionnaire.getUploadUrl());
-    /*
-     * parameter-name: is the name of the parameter that will contain file's data.
-     * Pass "uploaded_file" if you're using the test PHP script
-     *
-     * custom-file-name.extension: is the file name seen by the server.
-     * E.g. value of $_FILES["uploaded_file"]["name"] of the test PHP script
-     */
 
         //Add files for upload
         try {
@@ -245,8 +233,6 @@ public class LSUploadService extends Service {
                 }
             }
         }
-
-
 
         /**
          * Response object
@@ -271,22 +257,6 @@ public class LSUploadService extends Service {
         } catch(Exception e){
             LCLog.e(TAG, "Failed to add params to upload", e);
         }
-
-//        //configure the notification
-//        request.setNotificationConfig(R.drawable.app_icon_silhouette,
-//                context.getString(R.string.app_name),
-//                context.getString(R.string.uploading_toast),
-//                context.getString(R.string.uploading_success),
-//                context.getString(R.string.upload_failed),
-//                true);//Clear on success
-
-        // set the intent to perform when the user taps on the upload notification.
-        // currently tested only with intents that launches an activity
-        // if you comment this line, no action will be performed when the user taps on the notification
-
-//        UploadNotificationConfig notificationConfig = new UploadNotificationConfig();
-//        notificationConfig.setClickIntent(new Intent(context.getApplicationContext(), QuestionnairesActivity.class).putExtra("upload", "intent"));
-//        request.setNotificationConfig(notificationConfig);
 
         try {
             request.startUpload(); //Start upload service and display the notification

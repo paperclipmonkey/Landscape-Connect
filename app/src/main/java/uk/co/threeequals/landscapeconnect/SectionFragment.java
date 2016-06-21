@@ -31,14 +31,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
     private ViewFlipper flipper;
     private Button doneButton;
 
-//    protected void setTaskProgress(int percentage){
-//        ProgressBar progressBar = (ProgressBar) base.findViewById(R.id.task_progressbar);
-//        if(progressBar != null) {
-//            progressBar.setProgress(percentage);
-//        }
-//    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //TODO Hijacking all choice menu items from this Fragment

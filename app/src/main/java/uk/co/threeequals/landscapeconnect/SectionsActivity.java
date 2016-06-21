@@ -130,9 +130,6 @@ public class SectionsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         switch (id) {
@@ -151,8 +148,6 @@ public class SectionsActivity extends AppCompatActivity {
             if (intent.hasExtra(LocationGetter.INTENT_STATUS_STATUS)) {
 
                 try{
-                    // Show the dialog by calling startResolutionForResult(),
-                    // and check the result in onActivityResult().
                     Status status = intent.getParcelableExtra(LocationGetter.INTENT_STATUS_STATUS);
                     status.startResolutionForResult(
                             SectionsActivity.this,

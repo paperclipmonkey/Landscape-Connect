@@ -5,7 +5,8 @@ import android.util.Log;
 import com.google.firebase.crash.FirebaseCrash;
 
 /**
- * 
+ * Generic logging class
+ * Log everything to FirebaseCrash
  */
 
 class LCLog {

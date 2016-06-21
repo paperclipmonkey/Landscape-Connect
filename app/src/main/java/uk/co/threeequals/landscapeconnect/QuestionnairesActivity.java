@@ -110,8 +110,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (!hasSeenIntro()) {
-            //Show intro screens
-            startIntro();
+            startIntro();//Show intro screens
         }
 
         setContentView(R.layout.activity_list);
@@ -121,7 +120,6 @@ public class QuestionnairesActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_navigation_menu);
-            //actionBar.setTitle(R.string.questionnaires);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -189,9 +187,6 @@ public class QuestionnairesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         super.onOptionsItemSelected(item);

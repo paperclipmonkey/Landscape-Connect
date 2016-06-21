@@ -7,7 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Display the about page as part of a fragment
+ * About page fragment
+ * display the about page as part of a fragment
  */
 public class AboutFragment extends Fragment {
 

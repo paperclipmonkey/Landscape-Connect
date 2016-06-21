@@ -157,8 +157,6 @@ public class SectionsFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            //Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            //image.setImageBitmap(decodedByte);
         } else {
             Log.d("Qs", "No intro image");
         }
@@ -416,7 +414,4 @@ public class SectionsFragment extends Fragment {
             pageNext();
         }
     }
-
-
-
 }
