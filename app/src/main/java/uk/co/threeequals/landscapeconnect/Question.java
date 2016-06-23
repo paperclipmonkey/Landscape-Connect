@@ -111,7 +111,10 @@ public class Question extends Model {
                 break;
             case QUESTION_TYPE_TEXT:
                 EditText stringObj = new EditText(cx);
-                stringObj.setLines(1);
+                stringObj.setSingleLine(true);
+                if (questionResponse != null && questionResponse.rData != null) {
+                    stringObj.setText(questionResponse.rData);
+                }
                 view = stringObj;
                 break;
             case QUESTION_TYPE_RADIO:
