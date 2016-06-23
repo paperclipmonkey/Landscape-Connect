@@ -2,7 +2,6 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,7 +98,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                     //Check all questions on pages up to the current page
                     if (questionResponse.question.isRequired()) {
                         if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= ((flipper.getDisplayedChild() + 1) * QUESTIONS_PER_PAGE)) {
-                            Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
                             if (!questionResponse.isComplete()) {
                                 Toast.makeText(getContext(), R.string.please_complete, Toast.LENGTH_LONG).show();
                                 return;
