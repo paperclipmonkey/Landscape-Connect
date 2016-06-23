@@ -98,7 +98,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
                     //Check all questions on pages up to the current page
                     if (questionResponse.question.isRequired()) {
-                        if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= (flipper.getDisplayedChild() + QUESTIONS_PER_PAGE)) {
+                        if (sectionResponse.getQuestionResponses().indexOf(questionResponse) + 1 <= ((flipper.getDisplayedChild() + 1) * QUESTIONS_PER_PAGE)) {
                             Log.d("SectionFragment", "" + sectionResponse.getQuestionResponses().indexOf(questionResponse));
                             if (!questionResponse.isComplete()) {
                                 Toast.makeText(getContext(), R.string.please_complete, Toast.LENGTH_LONG).show();
