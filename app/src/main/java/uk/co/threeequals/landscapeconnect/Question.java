@@ -2,7 +2,6 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.provider.BaseColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +31,8 @@ public class Question extends Model {
     public static final String QUESTION_TYPE_MULTI = "multi";
     public static final String QUESTION_TYPE_RADIO = "radio";
     public static final String QUESTION_TYPE_TEXTAREA = "textarea";
+    public static final String QUESTION_TYPE_INFOTEXT = "infotext";
+
     @Column(name = "Title")
     @Expose
     public String title;
@@ -58,7 +59,7 @@ public class Question extends Model {
      * @return String title
      */
     public String getDisplayTitle() {
-        if (this.required) {
+        if (this.required || this.getType().contentEquals(QUESTION_TYPE_INFOTEXT)) {
             return title;
         }
         return title + " (Optional)";
@@ -99,7 +100,7 @@ public class Question extends Model {
         TextView title = (TextView) baseView.findViewById(R.id.question_question);
         title.setText(getDisplayTitle());
 
-        View view;
+        View view = null;
         switch (getType()) {
             case QUESTION_TYPE_TEXTAREA:
                 EditText textAreaObj = new EditText(cx);
@@ -145,11 +146,11 @@ public class Question extends Model {
                 }
                 view = layout;
                 break;
-            default:
-                view = new View(cx);
         }
 
-        baseView.addView(view);
+        if(view != null) {
+            baseView.addView(view);
+        }
         return baseView;
     }
 
@@ -203,7 +204,6 @@ public class Question extends Model {
                 }
                 break;
         }
-        Log.e("question", "Error parsing results");
         return null;
     }
 
