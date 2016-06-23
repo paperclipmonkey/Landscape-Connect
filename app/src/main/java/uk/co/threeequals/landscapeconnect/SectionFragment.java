@@ -140,10 +140,10 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
             // 1 - 1 mapping between questions and question responses. Messy but it works.
             QuestionResponse qr = sectionResponse.getQuestionResponses().get(i);
             String qSerialisedResponse = q.getSerialisedAnswer();
-            if(qSerialisedResponse!= null) {//Stop String "null"
+            //if(qSerialisedResponse != null) {//Stop String "null"
                 qr.rData = qSerialisedResponse;
                 qr.save();
-            }
+            //}
             i++;
         }
     }
