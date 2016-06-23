@@ -265,22 +265,37 @@ public class SectionsFragment extends Fragment {
      * Ensure all required sections of response exist
      * @return Bool - is response completed
      */
-    private boolean checkComplete() {
-        if(questionnaire.getGetLocation()){//If questionnaire asks for location
-            if(response.lat == null){
-                return false;
-            }
-        }
+    private boolean checkComplete(Boolean notify) {
         if(questionnaire.getGetInitialPhoto()){//We wanted to take a photo
-            if(response.photo == null || response.photo.length() < 1) return false;//Questionnaire not complete until it has a photo
+            if(questionnaire.getGetInitialPhoto()) {
+                if (response.photo == null || response.photo.length() < 1) {
+                    if(notify) {
+                        Toast.makeText(getContext(), R.string.error_required_photo, Toast.LENGTH_LONG).show();
+                    }
+                    return false;//Questionnaire not complete until it has a photo
+                }
+            }
         }
 
         for (SectionResponseLink srl : sectionResponseLinks) {
             if (srl.section.hasRequiredQuestions() && !srl.sectionResponse.isCompleted()) {
                 //Required and not completed - Escape.
+                if(notify) {
+                    Toast.makeText(getContext(), R.string.error_required_questions, Toast.LENGTH_LONG).show();
+                }
                 return false;
             }
         }
+
+        if(questionnaire.getGetLocation()){//If questionnaire asks for location
+            if(response.lat == null){
+                if(notify){
+                    Toast.makeText(getContext(), R.string.error_required_location, Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -292,7 +307,7 @@ public class SectionsFragment extends Fragment {
              * Clicked upload button in top menu
              */
             case R.id.action_upload:
-                if(checkComplete()) {
+                if(checkComplete(true)) {
                     response.setFinished();
                     response.percentUploaded = 0;
                     response.generateUUID();
@@ -304,8 +319,6 @@ public class SectionsFragment extends Fragment {
 
                     getActivity().finish();
                     return true;
-                } else {
-                    Toast.makeText(getContext(), "Please complete all required sections", Toast.LENGTH_LONG).show();
                 }
             default:
                 return super.onOptionsItemSelected(item);

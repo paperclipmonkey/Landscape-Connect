@@ -45,6 +45,10 @@
     <string name="optional">Optional</string>
     <string name="required">Required</string>
 
+    <string name="error_required_questions">Please complete all required questions</string>
+    <string name="error_required_photo">Please take a photo</string>
+    <string name="error_required_location">Waiting for location</string>
+
     <string name="upload_queue">Upload Queue</string>
 
     <string name="upload">Upload</string>
