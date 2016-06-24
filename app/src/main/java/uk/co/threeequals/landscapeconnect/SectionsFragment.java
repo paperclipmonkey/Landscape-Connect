@@ -397,8 +397,10 @@ public class SectionsFragment extends Fragment {
 
                 //Enable the upload button
                 //By rebuilding the menu
-
-                getActivity().invalidateOptionsMenu();
+                Activity activity = getActivity();
+                if(activity != null) {
+                    getActivity().invalidateOptionsMenu();
+                }
 
             } else {
                 Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
