@@ -49,7 +49,7 @@ public class MyApp extends Application{//extends com.activeandroid.app.Applicati
 
         //Start the upload service...
         Intent serviceIntent = new Intent(this, LSUploadService.class);
-        getApplicationContext().startService(serviceIntent);
+        this.startService(serviceIntent);
     }
 
     /**
