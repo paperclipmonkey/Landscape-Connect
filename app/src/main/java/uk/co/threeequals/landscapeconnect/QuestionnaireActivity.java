@@ -45,6 +45,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireNum);
 
+        TextView titleView = (TextView) findViewById(R.id.questionnaire_details_title);
         TextView descriptionView = (TextView) findViewById(R.id.questionnaire_details_description);
         TextView installedView = (TextView) findViewById(R.id.questionnaire_details_installed);
         TextView websiteView = (TextView) findViewById(R.id.questionnaire_details_website);
@@ -52,6 +53,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         DateFormat df = DateFormat.getDateInstance();
 
+        titleView.setText(questionnaire.getName());
         descriptionView.setText(questionnaire.getDescription());
         installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
