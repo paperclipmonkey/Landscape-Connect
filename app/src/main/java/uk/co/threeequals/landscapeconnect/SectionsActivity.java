@@ -31,6 +31,7 @@ public class SectionsActivity extends AppCompatActivity {
     private static final String TAG = "SectionsActivity";
     private Response response;
     private Questionnaire questionnaire;
+    private Fragment mFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +52,32 @@ public class SectionsActivity extends AppCompatActivity {
         loadQuestionnaire(getIntent().getLongExtra("id", -1));
         if (savedInstanceState != null && savedInstanceState.getLong(R_ID_KEY, -1) != -1) {
             loadResponse(savedInstanceState.getLong(R_ID_KEY));
+
+            //TODO Check if we have any info on a section we had open
+            if(savedInstanceState.getLong(R_ID_KEY) != 0){
+                //https://developer.android.com/training/basics/activity-lifecycle/recreating.html
+            }
+
+            mFragment = getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
+            if(mFragment == null){
+                mFragment = new SectionsFragment();
+            }
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.contentFragment, mFragment);
+            fragmentTransaction.commit();
+
         } else {
             createResponse();
+
+            mFragment = new SectionsFragment();
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            // Add this transaction to the back stack
+            transaction.addToBackStack("Section");
+            transaction.replace(R.id.contentFragment, mFragment);
+            transaction.commit();
         }
 
-        Fragment fragment = new SectionsFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.contentFragment, fragment);
-        fragmentTransaction.commit();
 
         getSupportFragmentManager().addOnBackStackChangedListener(
                 new FragmentManager.OnBackStackChangedListener() {
@@ -66,9 +85,27 @@ public class SectionsActivity extends AppCompatActivity {
                         // Update your UI here.
                     }
                 });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onStart();
         LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
         localBroadcastManager.registerReceiver(mStatusReceiver, new IntentFilter(LocationGetter.INTENT_STATUS));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.unregisterReceiver(mStatusReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        localBroadcastManager.unregisterReceiver(mStatusReceiver);
     }
 
     private void loadQuestionnaire(Long questionnaireId) {
@@ -116,15 +153,15 @@ public class SectionsActivity extends AppCompatActivity {
     }
 
     public void switchToSection(int section) {
-        Fragment fragment = new SectionFragment();
+        mFragment = new SectionFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("section_num", section);
-        fragment.setArguments(bundle);
+        mFragment.setArguments(bundle);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         // Add this transaction to the back stack
         transaction.addToBackStack("Section");
-        transaction.replace(R.id.contentFragment, fragment);
+        transaction.replace(R.id.contentFragment, mFragment);
         transaction.commit();
     }
 
@@ -161,15 +198,19 @@ public class SectionsActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putLong(R_ID_KEY, response.getId());
         super.onSaveInstanceState(outState);
+
+        outState.putLong(R_ID_KEY, response.getId());
+
+        //Save the Fragment
+        if (mFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "mFragment", mFragment);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        localBroadcastManager.unregisterReceiver(mStatusReceiver);
         questionnaire = null;
         response = null;
     }

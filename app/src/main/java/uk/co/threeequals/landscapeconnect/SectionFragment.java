@@ -2,6 +2,7 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,9 +24,12 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouch;
  */
 public class SectionFragment extends Fragment implements View.OnClickListener {
     private static final int QUESTIONS_PER_PAGE = 3;
+    private static final String R_SECTION_KEY = "sKey";
+    private static final String R_PAGE_KEY = "pKey";
     private ViewGroup base;
     private SectionResponse sectionResponse;
     private int sectionNum;
+    private int startPageNum = 0;//Allows coming back to the right page after orientation change
     private List<Question> questionsArr;
     private ViewFlipper flipper;
     private Button doneButton;
@@ -40,6 +44,7 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onDestroyView() {
+        saveResult();//Save the data out when destroying
         super.onDestroyView();
         base = null;
         flipper = null;
@@ -65,6 +70,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
         sectionNum = getArguments().getInt("section_num");
         Section section = ((SectionsActivity) getActivity()).getSection(sectionNum);
+
+        if(savedInstanceState != null){
+            startPageNum = savedInstanceState.getInt(R_PAGE_KEY);
+        }
+
         questionsArr = section.getQuestions();
         Response response = ((SectionsActivity) getActivity()).getResponse();
         sectionResponse = response.getSectionResponses().get(sectionNum);
@@ -83,6 +93,9 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 .centerInside()
                 //.placeholder(R.drawable.loading)
                 .into(imageViewTouch);
+
+        //Go to the correct page in the section
+        flipper.setDisplayedChild(startPageNum);
 
         return base;
     }
@@ -108,7 +121,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
 
 
                 if (flipper.getDisplayedChild() + 1 == flipper.getChildCount()) {
-                    sendResult();
+                    saveResult();
+                    getFragmentManager().popBackStackImmediate();
                 } else {
                     flipper.setDisplayedChild(flipper.getDisplayedChild() + 1);
                     final ScrollView scrollView = (ScrollView) base;
@@ -123,6 +137,28 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    public int getDisplayedPage(){
+        return flipper.getDisplayedChild();
+    }
+
+    public int getDisplayedSection(){
+        return sectionNum;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        int currentPage = getDisplayedPage();
+        outState.putInt(R_PAGE_KEY, currentPage);
+
+        int currentSection = getDisplayedSection();
+        outState.putInt(R_SECTION_KEY, currentSection);
+
+        Log.i("SectionsActivity", "Current Section: " + currentSection);
+        Log.i("SectionsActivity", "Current Page: " + currentPage);
     }
 
     private void setButtonText() {
@@ -146,12 +182,8 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void sendResult() {
+    private void saveResult() {
         serialiseData();
-
-        //TODO - Check if section is complete.
-        //Check if section required.
-        //If is then ensure all questions completed.
         sectionResponse.setCompleted(true);
         for (QuestionResponse questionResponse : sectionResponse.getQuestionResponses()) {
             if (questionResponse.question.isRequired()) {
@@ -162,8 +194,6 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         }
 
         sectionResponse.save();
-
-        getFragmentManager().popBackStackImmediate();
     }
 
     private void buildQuestionsView(List<Question> questions, ViewGroup flipper, SectionResponse sectionResponse) {
