@@ -108,8 +108,10 @@ public class SectionsFragment extends Fragment {
         });
 
         //Ensure we're on the right page based on the current Response status
-        if (response.photo != null && !response.photo.isEmpty() && flipper.getDisplayedChild() == 0) {
-            pageNext();
+        if (response.photo != null && !response.photo.isEmpty()){//If has photo
+            if(flipper.getDisplayedChild() == 0) {//If on first page
+                pageNext();
+            }
         }
 
         getActivity().invalidateOptionsMenu();
@@ -166,6 +168,12 @@ public class SectionsFragment extends Fragment {
             ViewGroup locationView = (ViewGroup) base.findViewById(R.id.page1_intro_location);
             locationView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.i("SectionsFragment", "Saving Instance State");
+        super.onSaveInstanceState(outState);
     }
 
     private void openSection(int section_id) {
