@@ -1,17 +1,15 @@
 package uk.co.threeequals.landscapeconnect;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -53,6 +51,13 @@ public class LSUploadService extends Service {
                 public void onError(String uploadId, Exception exception) {
                     LCLog.e(TAG, "Error in upload with ID: " + uploadId + ". "
                             + exception.getLocalizedMessage(), exception);
+                    redoOrNotify();
+                }
+
+                @Override
+                public void onCancelled(String uploadId) {
+                    LCLog.e(TAG, "Cancelled upload with ID: " + uploadId);
+                    redoOrNotify();
                 }
 
                 @Override
@@ -71,87 +76,78 @@ public class LSUploadService extends Service {
                         if(!resp.get("status").getAsString().equals("success")) {
                             throw(new Exception("Wrong success code"));
                         }
-                        LCLog.i(TAG, "Upload with ID " + uploadId
+                        Log.i(TAG, "Upload with ID " + uploadId
                                 + " has been completed with HTTP " + serverResponseCode
                                 + ". Response from server: " + serverResponseMessage);
 
-                        LCLog.d(TAG, "Completed LS Upload");
-
                         removeUploaded();
-                        redoOrNotify();
 
                     } catch(Exception e) {
                         LCLog.e(TAG, "Error: ", e);
                         LCLog.e(TAG, "UploadId: " + uploadId);
                         LCLog.e(TAG, "Response: " + serverResponseMessage);
                     }
+                    redoOrNotify();
                 }
             };
+
+    public LSUploadService() {
+        Log.i(TAG, "Constructor");
+    }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        LCLog.d(TAG, "bound");
+        Log.i(TAG, "bound");
         return null;
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        LCLog.d(TAG, "Upload Service");
-
-        uploadReceiver.register(this);
-
-        checkForPendingUploads();
-
-        Intent notificationIntent = new Intent(this, QuestionnairesActivity.class);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
-
-        Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.drawable.hi_res_icon);
-
-        Notification notification = new NotificationCompat.Builder(this)
-                .setContentTitle(getString(R.string.app_name))
-                .setTicker(getString(R.string.uploading_title))
-                .setContentText(getString(R.string.uploading_description))
-                .setSmallIcon(R.drawable.hi_res_icon)
-                .setLargeIcon(
-                        Bitmap.createScaledBitmap(icon, 128, 128, false))
-                .setContentIntent(pendingIntent)
-                .setOngoing(true).build();
-        startForeground(0, notification);
-
-        return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         uploadReceiver.unregister(this);
-        LCLog.i(TAG, "In onDestroy");
+        Log.i(TAG, "In onDestroy");
     }
 
     private void checkForPendingUploads() {
+//        new android.os.Handler().postDelayed(
+//            new Runnable() {
+//                public void run() {
+//                    Log.i(TAG, "Timer ending");
+//                    stopSelf();
+//                }
+//            },
+//            30000);
+
         List<Response> responseList = Response.getFinishedResponses();
-        LCLog.d("Upload", "Waiting responses: " + responseList.size());
+        Log.i("Upload", "Waiting responses: " + responseList.size());
         if (responseList.size() > 0) {
             //Pop one off the stack and upload it
-            uploadingResponse = responseList.get(0);
-            upload(getApplicationContext(), uploadingResponse);
-        } else {
-            stop();
+            if(NetworkChangeReceiver.isOnline(this)) {//End upload process if known to be offline
+                uploadingResponse = responseList.get(0);
+                upload(getApplicationContext(), uploadingResponse);
+                return;
+            }
         }
-    }
 
-    private void stop() {
         stopSelf();
     }
 
+    /**
+     * Do our work in onCreate - Turns this in to a Singleton.
+     * All new calls whilst running go to 'onStartCommand'
+     * Stopped with a call to stopSelf()
+     */
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate");
+        uploadReceiver.register(this);
+        checkForPendingUploads();
+    }
+
     private void redoOrNotify() {
-        LCLog.d(TAG, "redoOrNotify");
+        Log.d(TAG, "redoOrNotify");
         if (Response.getFinishedResponses().size() > 0) {
             checkForPendingUploads();
         } else if (completedUploads > 0) {
@@ -161,13 +157,13 @@ public class LSUploadService extends Service {
     }
 
     private void removeUploaded() {
-        LCLog.d(TAG, "removeUploaded");
+        Log.d(TAG, "removeUploaded");
         completedUploads++;//Add to count
         uploadingResponse.deleteFull();
     }
 
     private void buildSuccessNotification() {
-        LCLog.d(TAG, "buildSuccessNotification");
+        Log.d(TAG, "buildSuccessNotification");
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -203,13 +199,19 @@ public class LSUploadService extends Service {
         mNotificationManager.notify(0, mBuilder.build());
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i(TAG, "onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     /**
      * Start a new upload
      *
      * @param context Context used to start service
      */
     private void upload(Context context, Response response) {
-        LCLog.d(TAG, "Uploading");
+        Log.d(TAG, "Uploading");
         AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
