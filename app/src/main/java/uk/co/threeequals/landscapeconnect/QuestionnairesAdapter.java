@@ -2,7 +2,6 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,11 @@ class QuestionnairesAdapter extends CursorAdapter {
         Questionnaire ti = Questionnaire.newInstance(cursor);
         TextView title = (TextView) view.findViewById(R.id.qs_row_title);
         TextView description = (TextView) view.findViewById(R.id.qs_row_description);
-        TextView dateView = (TextView) view.findViewById(R.id.qs_row_date);
+//        TextView dateView = (TextView) view.findViewById(R.id.qs_row_date);
 
         title.setText(ti.getName());
         description.setText(ti.getDescription());
 
-        dateView.setText(context.getString(R.string.installed) + DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
+//        dateView.setText(context.getString(R.string.installed) + DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
     }
 }

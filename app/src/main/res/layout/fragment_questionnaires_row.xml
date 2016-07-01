@@ -28,14 +28,14 @@
         android:ellipsize="end"
         android:maxLines="1" />
 
-    <TextView
-        android:id="@+id/qs_row_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="" />
+    <!--<TextView-->
+        <!--android:id="@+id/qs_row_date"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:text="" />-->
 
     <ImageView
         android:id="@+id/qs_row_image"
