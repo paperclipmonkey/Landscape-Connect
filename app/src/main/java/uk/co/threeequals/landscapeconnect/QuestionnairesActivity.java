@@ -26,6 +26,7 @@ public class QuestionnairesActivity extends AppCompatActivity {
     public static final int UPLOAD_FRAGMENT = 1;
     public static final int ABOUT_FRAGMENT = 2;
     private static final String TAG = "QuestionnairesActivity";
+    private Fragment mFragment = null;
 
     private final UploadServiceBroadcastReceiver uploadReceiver =
             new UploadServiceBroadcastReceiver() {
@@ -106,6 +107,16 @@ public class QuestionnairesActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the Fragment
+        if (mFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "mFragment", mFragment);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -160,27 +171,37 @@ public class QuestionnairesActivity extends AppCompatActivity {
             }
         });
 
-        switchFragment(QUESTIONNAIRES_FRAGMENT);
+        if (savedInstanceState != null) {
+            mFragment = getSupportFragmentManager().getFragment(savedInstanceState, "mFragment");
+            if(mFragment == null){
+                mFragment = new QuestionnairesFragment();
+            }
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.contentFragment, mFragment);
+            fragmentTransaction.commit();
+        } else {
+            switchFragment(QUESTIONNAIRES_FRAGMENT);
+        }
     }
 
     private void switchFragment(int fragmentId) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(Integer.toString(fragmentId));
+        mFragment = getSupportFragmentManager().findFragmentByTag(Integer.toString(fragmentId));
 
-        if(fragment == null) {
+        if(mFragment == null) {
             if (fragmentId == QUESTIONNAIRES_FRAGMENT) {
                 setTitle(R.string.questionnaires);
-                fragment = new QuestionnairesFragment();
+                mFragment = new QuestionnairesFragment();
             } else if (fragmentId == UPLOAD_FRAGMENT) {
                 setTitle(R.string.upload_queue);
-                fragment = new ResponsesFragment();
+                mFragment = new ResponsesFragment();
             } else {
                 setTitle(R.string.about);
-                fragment = new AboutFragment();
+                mFragment = new AboutFragment();
             }
 
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.contentFragment, fragment, Integer.toString(fragmentId));
+            transaction.replace(R.id.contentFragment, mFragment, Integer.toString(fragmentId));
             transaction.commit();
         }
     }
