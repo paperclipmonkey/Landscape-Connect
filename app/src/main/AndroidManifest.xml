@@ -88,10 +88,17 @@
         </service>
 
         <!-- Start the service on boot -->
-        <receiver android:name="uk.co.threeequals.landscapeconnect.BootReceiver"
+        <receiver android:name=".BootReceiver"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
