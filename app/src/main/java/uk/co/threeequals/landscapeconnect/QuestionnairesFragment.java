@@ -218,7 +218,6 @@ public class QuestionnairesFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        LCLog.i(TAG, "destroying questionnaires fragment view");
         dialog = null;
     }
 
@@ -229,7 +228,6 @@ public class QuestionnairesFragment extends Fragment {
 
 
   //      questionnairesAdapter = null;
-        LCLog.i(TAG, "destroying questionnaires fragment");
     }
 
     private void getFabQr() {
@@ -282,7 +280,6 @@ public class QuestionnairesFragment extends Fragment {
             case MY_PERMISSIONS_REQUEST_CAMERA: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LCLog.d(TAG, "Permission Granted");
                     getFabQr();
                 } else {
                     LCLog.d(TAG, "Permission denied");
