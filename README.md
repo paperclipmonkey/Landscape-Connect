@@ -20,3 +20,8 @@ ADB Monkey can be used to perform automated monkey testing on the app:
  
 Additionally MonkeyRunner can be used to take screenshots of the app:
 `monkeyrunner screenshots.py `
+
+##Creating your own questionnaire
+The easiest way to create a questionnaire is to create an account on [landscape-connect.com]().
+
+Alternatively the JSON docs describing the format used to install a questionnaire is documented in the `docs` folder. Once created this can then be installed by typing in the full URL, or a QR code to the full url.
