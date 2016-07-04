@@ -34,8 +34,8 @@ public class Questionnaire extends Model {
     @Column(name = "DateAdded")
     private Long dateAdded;//Date & Time to be completed
     @Expose
-    @Column(name = "Name")
-    private String name;//Name of class to be run
+    @Column(name = "Title")
+    private String title;//Name of class to be run
     @Expose
     @Column(name = "Description")
     private String description;//Title to be used in notification
@@ -162,12 +162,12 @@ public class Questionnaire extends Model {
         }
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

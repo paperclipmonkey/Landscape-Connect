@@ -53,7 +53,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
         DateFormat df = DateFormat.getDateInstance();
 
-        titleView.setText(questionnaire.getName());
+        titleView.setText(questionnaire.getTitle());
         descriptionView.setText(questionnaire.getDescription());
         installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
@@ -63,7 +63,7 @@ public class QuestionnaireActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle(questionnaire.getName());
+            actionBar.setTitle(questionnaire.getTitle());
             actionBar.setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);

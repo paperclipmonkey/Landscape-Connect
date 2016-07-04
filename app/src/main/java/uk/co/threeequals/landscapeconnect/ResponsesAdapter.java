@@ -48,7 +48,7 @@ class ResponsesAdapter extends CursorAdapter {
             progressBar.setVisibility(View.INVISIBLE);
         }
 
-        title.setText(response.questionnaire.getName());
+        title.setText(response.questionnaire.getTitle());
         description.setText(response.questionnaire.getDescription());
 
         dateView.setText(DateUtils.getRelativeTimeSpanString(response.getDateCompleted().getTimeInMillis()));
