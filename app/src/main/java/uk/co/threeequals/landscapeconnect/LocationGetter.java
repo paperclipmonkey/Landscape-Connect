@@ -44,6 +44,7 @@ class LocationGetter extends AsyncTask<String, String, String> implements
     private GoogleApiClient mGoogleApiClient;
     private LatLng position;
     private float accuracy;
+    private long startSeconds;
 
     private float accuracyTarget = 10;
 
@@ -61,6 +62,7 @@ class LocationGetter extends AsyncTask<String, String, String> implements
     public LocationGetter(Context context, float mAccuracyTarget) {
         mContext = context;
         this.accuracyTarget = mAccuracyTarget;
+        startSeconds = System.currentTimeMillis() / 1000;
         buildGoogleApiClient();
     }
 
@@ -77,6 +79,10 @@ class LocationGetter extends AsyncTask<String, String, String> implements
                 .build();
         mGoogleApiClient.connect();
         createLocationRequest();
+    }
+
+    public long getRunningSeconds(){
+        return (System.currentTimeMillis() / 1000) - startSeconds;
     }
 
     /**

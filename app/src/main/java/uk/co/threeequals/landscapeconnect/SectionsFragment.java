@@ -389,8 +389,15 @@ public class SectionsFragment extends Fragment {
             }, 1000); // 1 second delay (takes millis)
         } else {
             Float accuracy = locationGetter.getAccuracy();
+            long runningSecs = locationGetter.getRunningSeconds();
+            if(runningSecs < 20){//Wait slightly longer for high-resolution
+                runningSecs = 0;
+            }
             Log.d("SectionFragment", "Location grabbed from Fragment" + latLng.toString());
-            if (accuracy < questionnaire.getGetLocationAccuracy()) {
+            Log.i("SectionFragment", "Running time: " + runningSecs);
+            long allowedAccuracy = questionnaire.getGetLocationAccuracy() + (runningSecs * 2);
+            Log.i("SectionFragment", "Current accuracy accepted: " + allowedAccuracy);
+            if (accuracy < allowedAccuracy) {
                 locationGetter.cancel(true);
                 response.lat = latLng.latitude;
                 response.lng = latLng.longitude;
