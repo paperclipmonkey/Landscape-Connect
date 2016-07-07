@@ -418,7 +418,7 @@ public class SectionsFragment extends Fragment {
                 }
 
             } else {
-                Log.d("SectionFragment", "Accuracy over 50m. Setting 1s timeout");
+                Log.d("SectionFragment", "Accuracy over " + questionnaire.getGetLocationAccuracy() + ". Setting 1s timeout");
                 final Handler h = new Handler();
                 h.postDelayed(new Runnable() {
                     @Override
