@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -15,8 +16,6 @@ import android.widget.ViewFlipper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 
 /**
  * Section Fragment shows a list of questions that can be answered
@@ -85,13 +84,11 @@ public class SectionFragment extends Fragment implements View.OnClickListener {
         //Build the UI
         buildQuestionsView(questionsArr, flipper, sectionResponse);
 
-        ImageViewTouch imageViewTouch = (ImageViewTouch) base.findViewById(R.id.section_image);
+        ImageView imageViewTouch = (ImageView) base.findViewById(R.id.section_image);
 
         Picasso.with(getContext())
                 .load(response.photo)
-                .fit()
-                .centerInside()
-                //.placeholder(R.drawable.loading)
+                .error(R.drawable.hi_res_icon)
                 .into(imageViewTouch);
 
         //Go to the correct page in the section

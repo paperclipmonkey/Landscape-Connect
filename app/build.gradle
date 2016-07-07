@@ -34,7 +34,6 @@ dependencies {
 
     compile 'com.github.clans:fab:1.6.1' //Featured Action Button Library
     compile 'com.squareup.picasso:picasso:2.5.2' //Image loading library
-    compile 'it.sephiroth.android.library.imagezoom:imagezoom:2.2.5'
     compile 'com.google.code.gson:gson:2.4' //Google JSON library
     compile 'net.gotev:uploadservice:2.0.1@aar' //Android Upload Service. Only supports files, no uploading without
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1' //Used for the getting location Spinner
