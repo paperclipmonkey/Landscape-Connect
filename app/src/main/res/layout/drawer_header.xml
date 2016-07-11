@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:background="?attr/colorPrimaryDark"
-    android:padding="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="bottom">
 
@@ -13,9 +12,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/hi_res_icon"
-        android:scaleType="fitStart"
-        android:alpha="0.3"
+        android:src="@drawable/cropped"
+        android:scaleType="centerCrop"
+        android:alpha="0.5"
         android:layout_above="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
@@ -37,5 +36,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:padding="16dp"
         android:id="@+id/textView" />
 </RelativeLayout>
