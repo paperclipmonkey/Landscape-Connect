@@ -121,6 +121,9 @@ public class QuestionnairesFragment extends Fragment {
         // Attach cursor adapter to the ListView
         listView.setAdapter(questionnairesAdapter);
 
+        listView.setEmptyView(base.findViewById(R.id.emptyQuestionnaires));
+
+
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT, null, loaderCB);
 
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {

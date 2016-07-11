@@ -73,6 +73,9 @@
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
     <string name="upload_queue_empty">Complete a questionnaire\n to see it in the upload queue</string>
+    <string name="questionnaires_empty">Install a questionnaire to get started! Go to http://www.landscape-connect.com/app/#/page/questionnaires \n \n Or click the + below</string>
+
+
 
     <!--Content description strings-->
     <string name="cont_desc_header_img">Header Image</string>
