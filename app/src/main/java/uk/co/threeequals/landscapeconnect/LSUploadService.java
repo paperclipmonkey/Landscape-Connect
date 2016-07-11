@@ -167,7 +167,7 @@ public class LSUploadService extends Service {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.hi_res_icon)
+                        .setSmallIcon(R.drawable.status_logo)
                         .setContentTitle("" + completedUploads + getString(R.string.upload_successful))
                         .setContentText(getString(R.string.upload_thanks));
 
