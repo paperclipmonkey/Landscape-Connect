@@ -108,20 +108,28 @@ public class SectionsFragment extends Fragment {
         });
 
         //Ensure we're on the right page based on the current Response status
-        if (response.photo != null && !response.photo.isEmpty()){//If has photo
+        if ((response.photo != null && !response.photo.isEmpty()) || !questionnaire.getGetInitialPhoto()){//If has photo or doesn't want photo
             if(flipper.getDisplayedChild() == 0) {//If on first page
+                Log.i("SectionsFragment", "Going to next page");
                 pageNext();
             }
         }
+
 
         getActivity().invalidateOptionsMenu();
 
         if(questionnaire.getGetLocation()) {
             //Check permissions and turn on Location Listener Service
             checkLocationPermissions();
-        } //else {
-            //TODO Hide the checker on both pages
-        //}
+
+            //If we want location, but not photo
+            if(!questionnaire.getGetInitialPhoto()){
+                getLocation();
+            }
+
+        } else {
+            hideLocationGetter();
+        }
 
         buildIntroPage();
 
@@ -161,12 +169,6 @@ public class SectionsFragment extends Fragment {
 
         } else {
             Log.d("Qs", "No intro image");
-        }
-
-        if (!questionnaire.getGetLocation()) {
-            //Hide location spinner when we don't need to use it
-            ViewGroup locationView = (ViewGroup) base.findViewById(R.id.page1_intro_location);
-            locationView.setVisibility(View.GONE);
         }
     }
 
@@ -275,13 +277,11 @@ public class SectionsFragment extends Fragment {
      */
     private boolean checkComplete(Boolean notify) {
         if(questionnaire.getGetInitialPhoto()){//We wanted to take a photo
-            if(questionnaire.getGetInitialPhoto()) {
-                if (response.photo == null || response.photo.length() < 1) {
-                    if(notify) {
-                        Toast.makeText(getContext(), R.string.error_required_photo, Toast.LENGTH_LONG).show();
-                    }
-                    return false;//Questionnaire not complete until it has a photo
+            if (response.photo == null || response.photo.length() < 1) {
+                if(notify) {
+                    Toast.makeText(getContext(), R.string.error_required_photo, Toast.LENGTH_LONG).show();
                 }
+                return false;//Questionnaire not complete until it has a photo
             }
         }
 
@@ -372,6 +372,21 @@ public class SectionsFragment extends Fragment {
         }
     }
 
+    private void hideLocationGetter(){
+        //Page 1
+        ViewGroup locationView = (ViewGroup) base.findViewById(R.id.page1_intro_location);
+        locationView.setVisibility(View.GONE);
+        //Page 2
+        View getLocationView = base.findViewById(R.id.sections_get_location);
+        getLocationView.setVisibility(View.GONE);
+    }
+
+    private void showLocationFound(){
+        View gotLocationView = base.findViewById(R.id.sections_got_location);
+        gotLocationView.setVisibility(View.VISIBLE);
+    }
+
+
     /**
      * Check if we can get location
      */
@@ -405,10 +420,8 @@ public class SectionsFragment extends Fragment {
                 response.save();
 
                 //Hide notification / Show success
-                View getLocationView = base.findViewById(R.id.sections_get_location);
-                getLocationView.setVisibility(View.GONE);
-                View gotLocationView = base.findViewById(R.id.sections_got_location);
-                gotLocationView.setVisibility(View.VISIBLE);
+                hideLocationGetter();
+                showLocationFound();
 
                 //Enable the upload button
                 //By rebuilding the menu
