@@ -28,10 +28,12 @@ class QuestionnairesAdapter extends CursorAdapter {
         Questionnaire ti = Questionnaire.newInstance(cursor);
         TextView title = (TextView) view.findViewById(R.id.qs_row_title);
         TextView description = (TextView) view.findViewById(R.id.qs_row_description);
+        TextView ownerName = (TextView) view.findViewById(R.id.qs_row_owner_name);
 //        TextView dateView = (TextView) view.findViewById(R.id.qs_row_date);
 
         title.setText(ti.getTitle());
         description.setText(ti.getDescription());
+        ownerName.setText(ti.getOwnerName());
 
 //        dateView.setText(context.getString(R.string.installed) + DateUtils.getRelativeTimeSpanString(ti.getDateAdded().getTimeInMillis()));
     }

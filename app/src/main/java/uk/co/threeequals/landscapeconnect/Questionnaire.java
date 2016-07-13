@@ -53,17 +53,22 @@ public class Questionnaire extends Model {
     private String serverId;//Any serverId to be sent to the Task class
     @Expose
     @Column(name = "UploadUrl")
-    private String uploadUrl;//Any serverId to be sent to the Task class
+    private String uploadUrl;//URL to upload to
     @Expose
     @Column(name = "GetLocation")
-    private Boolean getLocation;//Any serverId to be sent to the Task class
+    private Boolean getLocation;//Should the questionnaire get a location
     @Expose
     @Column(name = "GetLocationAccuracy")
-    private int getLocationAccuracy;//Any serverId to be sent to the Task class
+    private int getLocationAccuracy;//Accuracy to AIM for. Can be > if waiting
     @Expose
     @Column(name = "GetInitialPhoto")
-    private Boolean getInitialPhoto;//Any serverId to be sent to the Task class
-
+    private Boolean getInitialPhoto;//Should the questionnaire get a photo
+    @Expose
+    @Column(name = "OwnerName")
+    private String ownerName;//Name of questionnaire owner
+    @Expose
+    @Column(name = "OwnerId")
+    private String ownerId;//Name of questionnaire owner
     @Expose
     private Section[] sections;
 
@@ -90,6 +95,14 @@ public class Questionnaire extends Model {
     public void setGetInitialPhoto(Boolean getInitialPhoto) {
         this.getInitialPhoto = getInitialPhoto;
     }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+    public String getOwnerId() {
+        return ownerId;
+    }
+
 
 
     public Questionnaire() {
