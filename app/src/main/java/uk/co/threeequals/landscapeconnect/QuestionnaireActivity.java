@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -58,6 +59,20 @@ public class QuestionnaireActivity extends AppCompatActivity {
         installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
         //shortCodeView.setText(questionnaire.getServerId());
+
+        //Set visibility of check/cross bools
+        if(questionnaire.getGetInitialPhoto()){
+            findViewById(R.id.usesPhotoCheck).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.usesPhotoCross).setVisibility(View.VISIBLE);
+        }
+
+        if(questionnaire.getGetLocation()){
+            findViewById(R.id.usesLocationCheck).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.usesLocationCross).setVisibility(View.VISIBLE);
+        }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
