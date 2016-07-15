@@ -15,7 +15,6 @@
         android:src="@drawable/cropped"
         android:scaleType="centerCrop"
         android:alpha="0.5"
-        android:layout_above="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:contentDescription="@string/cont_desc_header_img"

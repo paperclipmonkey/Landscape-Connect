@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ls="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ListActivity">
-    <item android:id="@+id/action_new_response" android:title="@string/new_response"
+    <item android:id="@+id/action_new_response" android:title="@string/answer"
         android:orderInCategory="100" ls:showAsAction="always" />
 </menu>

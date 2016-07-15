@@ -10,8 +10,8 @@
     <string name="space_selected">" selected"</string>
 
     <string name="add_code_dialog_title">Add from Code</string>
-    <string name="add_code_dialog_content">Please add the 6 character Landscape Connect code</string>
-    <string name="add_code_dialog_hint">######</string>
+    <string name="add_code_dialog_content">Please add the 5 character code</string>
+    <string name="add_code_dialog_hint">#####</string>
     <string name="add_code_dialog_prefill">""</string>
 
     <string name="delete_dialog_title">Delete</string>
@@ -20,7 +20,7 @@
     <string name="delete_dialog_negative">Cancel</string>
 
     <!-- Questionnaire Page -->
-    <string name="installed">Installed:</string>
+    <string name="downloaded">Downloaded:</string>
     <string name="published">Published:</string>
     <string name="description">Description:</string>
     <string name="shortcode">Short code:</string>
@@ -30,7 +30,7 @@
 
     <string name="downloading_questionnaire">Downloading Questionnaire</string>
     <string name="please_wait">Please wait</string>
-    <string name="new_response">New Response</string>
+    <string name="answer">Answer</string>
     <string name="new_landscape">New Landscape</string>
     <string name="new_landscape_take_photo_button">Take Photo</string>
 
@@ -41,17 +41,17 @@
     <string name="letsgo">Lets go!</string>
 
     <string name="question_sections">Question sections</string>
-    <string name="please_complete">"Please complete all required questions</string>
+    <string name="please_complete">"Please answer all required questions</string>
     <string name="optional">Optional</string>
     <string name="required">Required</string>
 
-    <string name="error_required_questions">Please complete all required questions</string>
+    <string name="error_required_questions">Please answer all required questions</string>
     <string name="error_required_photo">Please take a photo</string>
     <string name="error_required_location">Waiting for location</string>
 
     <string name="upload_queue">Upload Queue</string>
 
-    <string name="upload">Upload</string>
+    <string name="send">Send</string>
 
     <string name="drawer_questionnaires">Questionnaires</string>
     <string name="drawer_queue">Upload Queue</string>
@@ -67,14 +67,14 @@
     <string name="fa_cross">" {fa-times}"</string>
     <string name="about">About</string>
     <string name="about_title">Landscape Connect</string>
-    <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\n It allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nInstall a questionnaire to get started."</string>
+    <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\n It allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nDownload a questionnaire to get started."</string>
 
     <string name="uploading_title">"Uploading"</string>
-    <string name="uploading_description">"Saved responses"</string>
+    <string name="uploading_description">"Saved answers"</string>
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
-    <string name="upload_queue_empty">Complete a questionnaire\n to see it in the upload queue</string>
-    <string name="questionnaires_empty">Install a questionnaire to get started! \n \n Go to http://landscape-connect.com/app/#/page/questionnaires \n \n Or click the + below</string>
+    <string name="upload_queue_empty">Answer a questionnaire\n to see it in the upload queue</string>
+    <string name="questionnaires_empty">Download a questionnaire to get started! \n \n Use the <a href="http://landscape-connect.com/app/#/page/questionnaires">Questionnaire Gallery</a> \n \n Or click the + below</string>
 
     <string name="uses_location">Uses location</string>
     <string name="uses_photo">Uses photo</string>
@@ -94,8 +94,8 @@
     <string name="intro_1_title">Landscape Connect</string>
     <string name="intro_1_subtitle">Engage with your Landscape</string>
 
-    <string name="intro_2_title">Install a questionnaire</string>
-    <string name="intro_2_subtitle">Scan a Landscape Connect barcode or enter the short code of a questionnaire to install it</string>
+    <string name="intro_2_title">Download a questionnaire</string>
+    <string name="intro_2_subtitle">Scan a Landscape Connect barcode or enter the short code of a questionnaire to download it</string>
 
     <string name="intro_3_title">Complete questionnaire</string>
     <string name="intro_3_subtitle">Take a photo and answer the associated questions</string>

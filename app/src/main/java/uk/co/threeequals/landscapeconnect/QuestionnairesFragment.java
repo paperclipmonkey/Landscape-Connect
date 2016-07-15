@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.content.ContentProvider;
@@ -123,8 +125,9 @@ public class QuestionnairesFragment extends Fragment {
         // Attach cursor adapter to the ListView
         listView.setAdapter(questionnairesAdapter);
 
-        listView.setEmptyView(base.findViewById(R.id.emptyQuestionnaires));
-
+        TextView emptyView = (TextView) base.findViewById(R.id.emptyQuestionnaires);
+        listView.setEmptyView(emptyView);
+        emptyView.setMovementMethod(LinkMovementMethod.getInstance());//HTML linking
 
         getActivity().getSupportLoaderManager().initLoader(QuestionnairesActivity.QUESTIONNAIRES_FRAGMENT, null, loaderCB);
 
