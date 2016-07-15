@@ -1,6 +1,6 @@
 <resources>
     <string name="download_url_fragment">questionnaires/</string>
-    <string name="base_url">http://www.landscape-connect.com/</string>
+    <string name="base_url">http://landscape-connect.com/</string>
     <string name="user_agent_http">LandscapeConnectV1</string>
     <string name="app_name">Landscape Connect</string>
     <string name="action_settings">Settings</string>
@@ -73,7 +73,7 @@
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
     <string name="upload_queue_empty">Complete a questionnaire\n to see it in the upload queue</string>
-    <string name="questionnaires_empty">Install a questionnaire to get started! \n \n Go to http://www.landscape-connect.com/app/#/page/questionnaires \n \n Or click the + below</string>
+    <string name="questionnaires_empty">Install a questionnaire to get started! \n \n Go to http://landscape-connect.com/app/#/page/questionnaires \n \n Or click the + below</string>
 
 
 
