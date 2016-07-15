@@ -40,6 +40,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
+                <data android:scheme="http" android:host="landscape-connect.com" android:pathPrefix="/questionnaires/" />
+                <data android:scheme="https" android:host="landscape-connect.com" android:pathPrefix="/questionnaires/" />
+            </intent-filter>
+
             <!-- ATTENTION: This intent was auto-generated. Follow instructions at
             https://g.co/AppIndexing/AndroidStudio to publish your Android app deep links. -->
             <!--<intent-filter>-->

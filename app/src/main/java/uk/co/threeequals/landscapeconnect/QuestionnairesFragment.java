@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -214,6 +216,16 @@ public class QuestionnairesFragment extends Fragment {
         fabButton1.setOnClickListener(fabClickListener);
         fabButton2.setOnClickListener(fabClickListener);
         fabButton2.setMax(100);
+
+        //Check if we were started with an install intent
+        Intent intent = getActivity().getIntent();
+        if(intent != null) {
+            Uri data = intent.getData();
+            if(data != null) {
+                Log.i(TAG, "Installing Questionnaire from URL: " + data.toString());
+                addNewQs(data.toString());
+            }
+        }
 
         return base;
     }
