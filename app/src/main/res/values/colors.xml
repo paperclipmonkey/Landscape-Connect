@@ -3,4 +3,10 @@
     <color name="primary">#12a600</color>
     <color name="primary_dark">#109600</color>
     <color name="accent">#4db6ac</color>
+    <color name="white">#FFFFFF</color>
+    <color name="dark_grey">#424242</color>
+    <color name="medium_grey">#9E9E9E</color>
+    <color name="button_grey">#757575</color>
+
 </resources>
+

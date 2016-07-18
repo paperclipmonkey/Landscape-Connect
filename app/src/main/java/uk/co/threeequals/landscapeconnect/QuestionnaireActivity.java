@@ -2,12 +2,11 @@ package uk.co.threeequals.landscapeconnect;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,17 +23,10 @@ public class QuestionnaireActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_new_response){
-            Intent intent = new Intent(this, SectionsActivity.class);
-            intent.putExtra("id", questionnaire.getId());
-            startActivity(intent);
-            return true;
-        } else {
-            super.onOptionsItemSelected(item);
-            return false;
-        }
+    public void startNewResponse(){
+        Intent intent = new Intent(this, SectionsActivity.class);
+        intent.putExtra("id", questionnaire.getId());
+        startActivity(intent);
     }
 
     @Override
@@ -42,22 +34,35 @@ public class QuestionnaireActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionnaire);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.questionnaire_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewResponse();
+            }
+        });
+
         long questionnaireNum =  getIntent().getLongExtra("id", -1);
 
         questionnaire = Questionnaire.load(Questionnaire.class, questionnaireNum);
 
-        TextView titleView = (TextView) findViewById(R.id.questionnaire_details_title);
         TextView descriptionView = (TextView) findViewById(R.id.questionnaire_details_description);
         TextView installedView = (TextView) findViewById(R.id.questionnaire_details_installed);
         TextView websiteView = (TextView) findViewById(R.id.questionnaire_details_website);
+        TextView creatorView = (TextView) findViewById(R.id.questionnaire_details_creator);
+
+        // Set Collapsing Toolbar layout to the screen
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         //TextView shortCodeView = (TextView) findViewById(R.id.questionnaire_details_shortcode);
 
         DateFormat df = DateFormat.getDateInstance();
 
-        titleView.setText(questionnaire.getTitle());
+        collapsingToolbar.setTitle(questionnaire.getTitle());
         descriptionView.setText(questionnaire.getDescription());
         installedView.setText(df.format(questionnaire.getDateAdded().getTime()));
         websiteView.setText(getString(R.string.base_url) + "questionnaires/" + questionnaire.getServerId());
+        creatorView.setText(questionnaire.getOwnerName());
         //shortCodeView.setText(questionnaire.getServerId());
 
         //Set visibility of check/cross bools
@@ -85,12 +90,12 @@ public class QuestionnaireActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        menu.clear();
-        MenuInflater mInflater =  getMenuInflater();
-        mInflater.inflate(R.menu.questionnaire_menubar, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//        menu.clear();
+//        MenuInflater mInflater =  getMenuInflater();
+//        mInflater.inflate(R.menu.questionnaire_menubar, menu);
+//        return true;
+//    }
 }
