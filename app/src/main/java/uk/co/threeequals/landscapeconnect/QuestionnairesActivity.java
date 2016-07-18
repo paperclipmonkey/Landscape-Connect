@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 /**
@@ -36,43 +38,32 @@ public class QuestionnairesActivity extends AppCompatActivity {
                 // or if you need to know exactly how many bytes have been transferred
                 // override the method below this one
                 @Override
-                public void onProgress(String uploadId, int progress) {
+                public void onProgress(UploadInfo uploadInfo) {
                     LCLog.i(TAG, "Updating response % with  ID "
-                            + uploadId + " is: " + progress);
+                            + uploadInfo.getUploadId() + " is: " + uploadInfo.getProgressPercent());
 
 
-                    Response response = Response.load(Response.class, Integer.parseInt(uploadId));
+                    Response response = Response.load(Response.class, Integer.parseInt(uploadInfo.getUploadId()));
                     if(response != null) {
-                        response.percentUploaded = progress;
+                        response.percentUploaded = uploadInfo.getProgressPercent();
                         response.save();
                     }
                 }
 
                 @Override
-                public void onProgress(final String uploadId,
-                                       final long uploadedBytes,
-                                       final long totalBytes) {
-                    LCLog.i(TAG, "Upload with ID " + uploadId +
-                            " uploaded bytes: " + uploadedBytes
-                            + ", total: " + totalBytes);
-                }
-
-                @Override
-                public void onError(String uploadId, Exception exception) {
-                    LCLog.e(TAG, "Error in upload with ID: " + uploadId + ". "
+                public void onError(final UploadInfo uploadInfo, final Exception exception) {
+                    LCLog.e(TAG, "Error in upload with ID: " + uploadInfo.getUploadId() + ". "
                             + exception.getLocalizedMessage(), exception);
 
-                    Response response = Response.load(Response.class, Integer.parseInt(uploadId));
+                    Response response = Response.load(Response.class, Integer.parseInt(uploadInfo.getUploadId()));
                     response.percentUploaded = 0;
                 }
 
                 @Override
-                public void onCompleted(String uploadId,
-                                        int serverResponseCode,
-                                        byte[] serverResponse) {
-                    String serverResponseMessage = new String(serverResponse);
-                    LCLog.i(TAG, "Upload with ID " + uploadId
-                            + " has been completed with HTTP " + serverResponseCode
+                public void onCompleted(final UploadInfo uploadInfo, final ServerResponse serverResponse) {
+                    String serverResponseMessage = new String(serverResponse.getBodyAsString());
+                    LCLog.i(TAG, "Upload with ID " + uploadInfo.getUploadId()
+                            + " has been completed with HTTP " + serverResponse.getHttpCode()
                             + ". Response from server: " + serverResponseMessage);
 
                     //If your server responds with a JSON, you can parse it

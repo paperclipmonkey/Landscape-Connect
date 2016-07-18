@@ -14,8 +14,9 @@ import android.util.Log;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import net.gotev.uploadservice.AllCertificatesAndHostsTruster;
 import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.ServerResponse;
+import net.gotev.uploadservice.UploadInfo;
 import net.gotev.uploadservice.UploadServiceBroadcastReceiver;
 
 import java.util.List;
@@ -33,42 +34,32 @@ public class LSUploadService extends Service {
             new UploadServiceBroadcastReceiver() {
 
                 @Override
-                public void onProgress(String uploadId, int progress) {
+                public void onProgress(UploadInfo uploadInfo) {
 //                    LCLog.i(TAG, "The progress of the upload with ID "
 //                            + uploadId + " is: " + progress);
                 }
 
                 @Override
-                public void onProgress(final String uploadId,
-                                       final long uploadedBytes,
-                                       final long totalBytes) {
-//                    LCLog.i(TAG, "Upload with ID " + uploadId +
-//                            " uploaded bytes: " + uploadedBytes
-//                            + ", total: " + totalBytes);
-                }
-
-                @Override
-                public void onError(String uploadId, Exception exception) {
-                    LCLog.e(TAG, "Error in upload with ID: " + uploadId + ". "
+                public void onError(final UploadInfo uploadInfo, final Exception exception) {
+                    LCLog.e(TAG, "Error in upload with ID: " + uploadInfo.getUploadId() + ". "
                             + exception.getLocalizedMessage(), exception);
                     redoOrNotify();
                 }
 
                 @Override
-                public void onCancelled(String uploadId) {
-                    LCLog.e(TAG, "Cancelled upload with ID: " + uploadId);
+                public void onCancelled(UploadInfo uploadInfo) {
+                    LCLog.e(TAG, "Cancelled upload with ID: " + uploadInfo.getUploadId());
                     redoOrNotify();
                 }
 
                 @Override
-                public void onCompleted(String uploadId,
-                                        int serverResponseCode,
-                                        byte[] serverResponseBody) {
-                    String serverResponseMessage = new String(serverResponseBody);
+                public void onCompleted(UploadInfo uploadInfo,
+                                        ServerResponse serverResponse) {
+                    String serverResponseMessage = new String(serverResponse.getBodyAsString());
                     try {
                         JsonObject resp = new JsonParser().parse(serverResponseMessage).getAsJsonObject();
 
-                        if(serverResponseCode != 200) {//Success HTTP status code
+                        if(serverResponse.getHttpCode() != 200) {//Success HTTP status code
                             throw(new Exception("Wrong status code"));
                         }
 
@@ -76,15 +67,15 @@ public class LSUploadService extends Service {
                         if(!resp.get("status").getAsString().equals("success")) {
                             throw(new Exception("Wrong success code"));
                         }
-                        Log.i(TAG, "Upload with ID " + uploadId
-                                + " has been completed with HTTP " + serverResponseCode
+                        Log.i(TAG, "Upload with ID " + uploadInfo.getUploadId()
+                                + " has been completed with HTTP " + serverResponse.getHttpCode()
                                 + ". Response from server: " + serverResponseMessage);
 
                         removeUploaded();
 
                     } catch(Exception e) {
                         LCLog.e(TAG, "Error: ", e);
-                        LCLog.e(TAG, "UploadId: " + uploadId);
+                        LCLog.e(TAG, "UploadId: " + uploadInfo.getUploadId());
                         LCLog.e(TAG, "Response: " + serverResponseMessage);
                     }
                     redoOrNotify();
@@ -212,7 +203,6 @@ public class LSUploadService extends Service {
      */
     private void upload(Context context, Response response) {
         Log.d(TAG, "Uploading");
-        AllCertificatesAndHostsTruster.apply();
         final MultipartUploadRequest request = new MultipartUploadRequest(context,
                 response.getId() + "",//Long used to keep track of db
                 response.questionnaire.getUploadUrl());

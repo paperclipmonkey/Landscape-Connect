@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "uk.co.threeequals.landscapeconnect"
@@ -33,14 +33,13 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT' //Database ORM
 
 
-    compile 'com.github.clans:fab:1.6.1' //Featured Action Button Library
+    compile 'com.github.clans:fab:1.6.4' //Featured Action Button Library
     compile 'com.squareup.picasso:picasso:2.5.2' //Image loading library
-    compile 'com.google.code.gson:gson:2.4' //Google JSON library
-    compile 'net.gotev:uploadservice:2.0.1@aar' //Android Upload Service. Only supports files, no uploading without
-    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.1.1' //Used for the getting location Spinner
-    compile 'com.journeyapps:zxing-android-embedded:3.0.2@aar' //Embedded scanning version of ZXing
-    compile 'com.google.zxing:core:3.2.0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.google.code.gson:gson:2.7' //Google JSON library
+    compile 'net.gotev:uploadservice:3.0@aar' //Android Upload Service. Only supports files, no uploading without
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.2.2' //Used for the getting location Spinner
+    compile 'com.journeyapps:zxing-android-embedded:3.3.0' //Embedded scanning version of ZXing
+    compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1' //Use @Bind to attach views to code
     compile 'com.google.android.gms:play-services-location:9.0.1'
@@ -57,7 +56,8 @@ dependencies {
 
     // Testing-only dependencies
     // Force usage of support annotations in the test app, since it is internally used by the runner module.
-    androidTestCompile 'com.android.support:support-annotations:23.1.1'
+    androidTestCompile 'com.android.support:support-annotations:23.4.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
