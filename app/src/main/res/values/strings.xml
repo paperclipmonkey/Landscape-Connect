@@ -105,4 +105,5 @@
 
     <string name="intro_5_title">Engage</string>
     <string name="intro_5_subtitle">"Optionally view yours and other's results online"</string>
+    <string name="created_by">Created by</string>
 </resources>
