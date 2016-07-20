@@ -50,6 +50,14 @@
             fab:fab_size="mini"
             fab:fab_label="Code" />
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ic_action_globe"
+            fab:fab_size="mini"
+            fab:fab_label="Gallery" />
+
     </com.github.clans.fab.FloatingActionMenu>
 
     <TextView

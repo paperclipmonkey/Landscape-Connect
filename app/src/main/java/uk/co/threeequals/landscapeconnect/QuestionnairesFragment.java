@@ -82,6 +82,11 @@ public class QuestionnairesFragment extends Fragment {
                 case R.id.fab_qr:
                     getFabQr();
                     break;
+                case R.id.fab_website:
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(getString(R.string.questionnaire_gallery_url)));
+                    startActivity(i);
+                    break;
             }
         }
     };
@@ -216,8 +221,10 @@ public class QuestionnairesFragment extends Fragment {
         //Registered handlers for FAB events
         final com.github.clans.fab.FloatingActionButton fabButton1 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_link);
         final com.github.clans.fab.FloatingActionButton fabButton2 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_qr);
+        final com.github.clans.fab.FloatingActionButton fabButton3 = (com.github.clans.fab.FloatingActionButton) base.findViewById(R.id.fab_website);
         fabButton1.setOnClickListener(fabClickListener);
         fabButton2.setOnClickListener(fabClickListener);
+        fabButton3.setOnClickListener(fabClickListener);
         fabButton2.setMax(100);
 
         //Check if we were started with an install intent
