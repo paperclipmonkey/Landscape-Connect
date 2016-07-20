@@ -67,14 +67,14 @@
     <string name="fa_cross">" {fa-times}"</string>
     <string name="about">About</string>
     <string name="about_title">Landscape Connect</string>
-    <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\n It allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nDownload a questionnaire to get started."</string>
+    <string name="about_description">"Landscape Connect is developed by the Rate my View team as a companion product to Rate my View. \n\nIt allows greater understanding of landscape perceptions by supporting tailored questions. It can be used by landscape stakeholders instead of traditional questionnaires.\n\nThe app allows clearer data and results to be gathered in a faster and more efficient way over paper and clipboard methods.\n\nDownload a questionnaire to get started."</string>
 
     <string name="uploading_title">"Uploading"</string>
     <string name="uploading_description">"Saved answers"</string>
     <string name="upload_successful">" upload(s) successful"</string>
     <string name="upload_thanks">"Thanks for completing the questionnaire"</string>
-    <string name="upload_queue_empty">Answer a questionnaire\n to see it in the upload queue</string>
-    <string name="questionnaires_empty">Download a questionnaire to get started! \n \n Use the <a href="http://landscape-connect.com/app/#/page/questionnaires">Questionnaire Gallery</a> \n \n Or click the + below</string>
+    <string name="upload_queue_empty">Answer a questionnaire\nto see it in the upload queue</string>
+    <string name="questionnaires_empty">Download a questionnaire to get started! \n\nUse the <a href="http://landscape-connect.com/app/#/page/questionnaires">Questionnaire Gallery</a> \n\nOr click the + below</string>
 
     <string name="uses_location">Uses location</string>
     <string name="uses_photo">Uses photo</string>
