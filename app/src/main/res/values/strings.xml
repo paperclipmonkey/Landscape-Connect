@@ -92,7 +92,7 @@
 
     <!-- Intro strings -->
     <string name="intro_1_title">Landscape Connect</string>
-    <string name="intro_1_subtitle">Engage with your Landscape</string>
+    <string name="intro_1_subtitle">The landscape based questionnaire tool</string>
 
     <string name="intro_2_title">Download a questionnaire</string>
     <string name="intro_2_subtitle">Scan a Landscape Connect barcode or enter the short code of a questionnaire to download it</string>
